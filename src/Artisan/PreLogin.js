@@ -43,6 +43,12 @@ const SignUpRap = styled.div`
     display: flex;
     gap: 20px;
   }
+        @media screen and (max-width: 768px) {
+    .sign-2 { 
+      flex-direction: column;
+      align-items: center;
+    }
+}
   .sub-sign-2 p {
     color: #101828;
     font-size: 16px;
@@ -60,6 +66,12 @@ const SignUpRap = styled.div`
     justify-content: space-between;
     padding: 20px;
   }
+        @media screen and (max-width: 768px) {
+    .sub-sign-2 {
+      width: 300px;
+    }
+  }
+
   .sub-sign-2.active {
     border: 1px solid #0067d0;
   }
