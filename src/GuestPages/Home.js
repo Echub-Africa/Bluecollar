@@ -602,7 +602,7 @@ const HomeRap = styled.div`
     font-size: 50px;
 }
 .sub-home-10 {
-    width: 300px;
+    width: 330px;
     gap: 20px;
 }
   }
@@ -1116,7 +1116,7 @@ const Home = () => {
                 width="14px"
                 height="14px"
                 icon={openIndex === index ? "ic:round-minus" : "ic:round-plus"}
-                style={{ color: "#101828", float: "right", marginLeft: "7px", marginTop: "10px" }}
+                style={{ color: "#101828", float: "right", marginLeft: "-27px", marginTop: "10px" }}
               />
             </div>
             {openIndex === index && (
