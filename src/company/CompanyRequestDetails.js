@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useEffect} from "react";
 
 
 const DetailRequestRap =  styled.div`
@@ -144,7 +145,12 @@ padding-bottom: 50px;
 
 const ClientRequestDetail = () => {
     const navigate = useNavigate()
-
+         useEffect(() => {
+      const token = localStorage.getItem("companyToken");
+      if (!token) {
+        navigate("/companyAuth/login");
+      }
+    }, [navigate]);
     const handleGoToRequest = () => {
 navigate("/client/request")
     }

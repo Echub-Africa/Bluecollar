@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useEffect} from "react";
 
 const DetailRap = styled.div`
   padding-top: 50px;
@@ -144,7 +145,12 @@ const DetailRap = styled.div`
 
 const ClientInvoiceDetails = () => {
   const navigate = useNavigate();
-
+         useEffect(() => {
+      const token = localStorage.getItem("companyToken");
+      if (!token) {
+        navigate("/companyAuth/login");
+      }
+    }, [navigate]);
   const handleGoToInvoice = () => {
     navigate("/admin/invoice");
   };

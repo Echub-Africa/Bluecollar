@@ -2,6 +2,8 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useEffect} from "react";
+
 
 const DetailRap = styled.div`
   padding-bottom: 50px;
@@ -448,6 +450,12 @@ const DetailRap = styled.div`
 
 const ClientJobDetail = () => {
   const navigate = useNavigate();
+           useEffect(() => {
+      const token = localStorage.getItem("companyToken");
+      if (!token) {
+        navigate("/companyAuth/login");
+      }
+    }, [navigate]);
   const [activeLink, setActiveLink] = useState("details");
   const [propose, setPropose] = useState(false);
   const [completePop, setCompletePop] = useState(false)

@@ -1,6 +1,8 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React from "react";
 import styled from "styled-components";
+import { useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const MessageRap = styled.div`
@@ -89,6 +91,13 @@ padding-bottom: 70px;
 
 
 const ClientMessage = () => {
+       const navigate = useNavigate(); 
+             useEffect(() => {
+      const token = localStorage.getItem("companyToken");
+      if (!token) {
+        navigate("/companyAuth/login");
+      }
+    }, [navigate]);
     return (
         <MessageRap>
             <div className="all-message containary">

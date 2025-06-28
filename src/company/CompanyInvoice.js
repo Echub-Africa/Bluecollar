@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useEffect} from "react";
 
 const RequestRap = styled.div`
   padding-top: 50px;
@@ -347,7 +348,12 @@ const ClientInvoice = () => {
     },
   ];
   const navigate = useNavigate();
-
+         useEffect(() => {
+      const token = localStorage.getItem("companyToken");
+      if (!token) {
+        navigate("/companyAuth/login");
+      }
+    }, [navigate]);
   const [dropdown, setDropdown] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [detailDrop, setDetailDrop] = useState(false);

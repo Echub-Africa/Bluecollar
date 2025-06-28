@@ -137,6 +137,11 @@ const HomeRap = styled.div`
     line-height: 18px;
     max-width: 129px;
   }
+        @media screen and (max-width: 767px) {
+    .new-dash-2-card h4{
+   font-size: 17px;
+}
+}
   .new-dash-2-card p {
     color: #667085;
     font-size: 12px;
@@ -144,6 +149,11 @@ const HomeRap = styled.div`
     line-height: 17px;
     max-width: 184px;
   }
+            @media screen and (max-width: 767px) {
+    .new-dash-2-card p{
+   font-size: 15px;
+}
+}
   .new-dash-2-card button {
     background: transparent;
     width: 90px;
@@ -152,8 +162,20 @@ const HomeRap = styled.div`
     border: 1px solid #1018281a;
     color: #101828;
     font-size: 12px;
+    cursor: pointer;
     font-weight: 500;
   }
+     .new-dash-2-card button:hover {
+     background:rgb(157, 204, 251);
+     color: black;
+  }
+  @media screen and (max-width: 767px) {
+    .new-dash-2-card button{
+   font-size: 15px;
+   padding: 10px 10px;
+   width: max-content;
+}
+}
   .new-dash-2-card {
     border: 1px solid #1018281a;
     background: #ffffff;
@@ -164,6 +186,11 @@ const HomeRap = styled.div`
     flex-direction: column;
     gap: 20px;
   }
+    @media screen and (max-width: 767px) {
+    .new-dash-2-card {
+    width: 100%;
+}
+}
   .new-dash-3-left h3 {
     color: #ffffff;
     font-size: 20px;
@@ -213,6 +240,12 @@ const HomeRap = styled.div`
     display: flex;
     gap: 20px;
     justify-content: space-between;
+  }
+    @media screen and (max-width: 767px) {
+    .new-dash-2 { 
+      flex-direction: column;
+      align-items: center;
+    }
   }
   .sub-dash-2 p {
     color: #667085;
@@ -688,13 +721,13 @@ const type = localStorage.getItem("companyType") ;
           <div className="dash-3">
             <img src="/images/img-10.png" alt="" />
             <div className="info">
-              <h4>{companyName} </h4>
+              <h4>{companyName} {companyNamee} </h4>
               <p>{Email}</p>
             </div>
             <div className="verify">
               <img src="/images/icon-18.png" alt="" />
 
-              <p>Active</p>
+              <p>Email Verified</p>
             </div>
           </div>
           <div className="dash-4">
@@ -710,13 +743,13 @@ const type = localStorage.getItem("companyType") ;
                         <h6>Email Address:</h6>
                         <p>{Email}</p>
                     </div>
-                    <div className="dash-4-inner">
+                    {/* <div className="dash-4-inner">
                         <h6>Phone Number:</h6>
                         <p>08066091125</p>
-                    </div>
+                    </div> */}
                     <div className="dash-4-inner">
-                        <h6>Industry:</h6>
-                        <p>Electrical</p>
+                        <h6>Role:</h6>
+                        <p>{role}</p>
                     </div>
                 </div>
           </div>

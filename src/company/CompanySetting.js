@@ -2,6 +2,8 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 
 const SettingRap = styled.div`
 padding-top: 50px;
@@ -361,7 +363,7 @@ const ClientSetting = () => {
         },
       ];
         const [dropdown, setDropdown] = useState(false);
-      
+         const navigate = useNavigate(); 
   const [activeLink, setActiveLink] = useState("profile");
   const [formData, setFormData] = useState({
     fullname: "Ikechukwu Goodswill",
@@ -369,7 +371,12 @@ const ClientSetting = () => {
     phone: "070660911112",
     address: "74 Shitta Street Allen Avenu Ikeja Lagos",
   });
-
+         useEffect(() => {
+      const token = localStorage.getItem("companyToken");
+      if (!token) {
+        navigate("/companyAuth/login");
+      }
+    }, [navigate]);
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };

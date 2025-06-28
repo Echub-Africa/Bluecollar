@@ -57,6 +57,11 @@ const NavRap = styled.div`
     background: #ffffff1f;
     padding-left: 30px;
   }
+    @media screen and (max-width: 767px) {
+    .search-div-input input {
+  width: 270px;
+    }
+  }
   .search-icon {
     position: absolute;
     top: 9px;
@@ -89,6 +94,11 @@ const NavRap = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
+  }
+    @media screen and (max-width: 767px) {
+    .sub-nav-div-right {
+      gap: 55px;
+    }
   }
   .nav-div-right {
     display: flex;
@@ -191,6 +201,7 @@ const NavRap = styled.div`
     }
     .nav-mobile {
       display: block;
+      margin-top: -60px;
     }
     .nav-upper {
       padding: 8px 30px;
