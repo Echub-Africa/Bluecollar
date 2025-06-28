@@ -8,35 +8,40 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 const faqs = [
   {
     question: "What services does ECHub provide?",
-    answer: "ECHub offers a wide range of home and office maintenance services including plumbing, electrical, carpentry, air conditioning, and more."
+    answer:
+      "ECHub offers a wide range of home and office maintenance services including plumbing, electrical, carpentry, air conditioning, and more.",
   },
   {
     question: "How do I request a service?",
-    answer: "You can request a service by signing up on our platform, selecting the service needed, and submitting a request through the dashboard."
+    answer:
+      "You can request a service by signing up on our platform, selecting the service needed, and submitting a request through the dashboard.",
   },
   {
     question: "Are your artisans trained and certified?",
-    answer: "Yes, all ECHub artisans go through a rigorous screening and training process before onboarding."
+    answer:
+      "Yes, all ECHub artisans go through a rigorous screening and training process before onboarding.",
   },
   {
     question: "Do you offer emergency repair services?",
-    answer: "Yes, ECHub provides emergency repair services depending on availability in your area."
+    answer:
+      "Yes, ECHub provides emergency repair services depending on availability in your area.",
   },
   {
     question: "Can businesses and commercial properties use ECHub?",
-    answer: "Absolutely! We offer tailored solutions for businesses and commercial properties."
+    answer:
+      "Absolutely! We offer tailored solutions for businesses and commercial properties.",
   },
   {
     question: "How do you ensure quality control?",
-    answer: "ECHub has a feedback and rating system, as well as periodic quality checks for all service providers."
+    answer:
+      "ECHub has a feedback and rating system, as well as periodic quality checks for all service providers.",
   },
   {
     question: "Do you provide warranties on services rendered?",
-    answer: "Yes, selected services come with warranties. Details are provided during booking."
-  }
+    answer:
+      "Yes, selected services come with warranties. Details are provided during booking.",
+  },
 ];
-
-
 
 const HomeRap = styled.div`
   .small-top-div p {
@@ -99,11 +104,13 @@ const HomeRap = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
-        margin-top: -120px;
+    margin-top: -120px;
   }
-        @media screen and (max-width: 767px) {
-        .home-sub-1 {
-        marign}}
+  @media screen and (max-width: 767px) {
+    .home-sub-1 {
+      margin-top: -20px;
+    }
+  }
   .home-1 {
     background: #101828;
     padding-top: 70px;
@@ -541,12 +548,12 @@ const HomeRap = styled.div`
     justify-content: space-between;
     align-items: center;
     border: 1px solid #1018281a;
-    border-radius: 100px;
+    border-radius: 20px;
     width: 653px;
     height: 100%;
-    padding: 10px 20px;
+    padding: 10px 10px;
   }
-      .sub-home-100 {
+  .sub-home-100 {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -564,80 +571,80 @@ const HomeRap = styled.div`
     flex-wrap: wrap;
   }
   @media (max-width: 1250px) {
-.mid-home-8 {
-    grid-template-columns: repeat(3, 1fr);
-}
+    .mid-home-8 {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
   @media (max-width: 950px) {
-.mid-home-8 {
-    grid-template-columns: repeat(2, 1fr);
-}
+    .mid-home-8 {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
   @media (max-width: 750px) {
-.sub-home-10 {
-    width: 500px;
-}
+    .sub-home-10 {
+      width: 500px;
+    }
   }
   @media (max-width: 620px) {
-.mid-home-8 {
-    grid-template-columns: repeat(1, 1fr);
-    align-items: center;
-}
-.home-8  {
-    align-items: center;
-}
-.sub-home-10 {
-    width: 400px;
-    gap: 20px;
-}
+    .mid-home-8 {
+      grid-template-columns: repeat(1, 1fr);
+      align-items: center;
+    }
+    .home-8 {
+      align-items: center;
+    }
+    .sub-home-10 {
+      width: 400px;
+      gap: 20px;
+    }
   }
   @media (max-width: 500px) {
-.home-1 img {
-    width: 350px;
-}
-.home-1-btn {
-    flex-wrap: wrap;
-}
-.home-sub-1 h1 {
-    font-size: 50px;
-}
-.sub-home-10 {
-    width: 350px;
-    gap: 20px;
-}
+    .home-1 img {
+      width: 350px;
+    }
+    .home-1-btn {
+      flex-wrap: wrap;
+    }
+    .home-sub-1 h1 {
+      font-size: 50px;
+    }
+    .sub-home-10 {
+      width: 100%;
+      gap: 30px;
+    }
   }
   @media (max-width: 400px) {
-.home-1 img {
-    width: 250px;
-}
-.sub-home-3-sub {
-    width: 250px;
-}
+    .home-1 img {
+      width: 250px;
+    }
+    .sub-home-3-sub {
+      width: 250px;
+    }
   }
   @media (max-width: 350px) {
     .home-sub-1 h1 {
-    font-size: 45px;
-}
-.sub-home-3-sub {
-    width: 220px;
-}
+      font-size: 45px;
+    }
+    .sub-home-3-sub {
+      width: 220px;
+    }
   }
 `;
 
 const Home = () => {
-    const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState(null);
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-    const wahalaStyles = [
-    { color: "#6333fb", textDecoration: "none" },       // China Wahala - Red
-    { color: "#BF3BD6", textDecoration: "none" },      // Ecom Wahala - Blue
-    { color: "#0067d0", textDecoration: "none" },        // Import Wahala - Green
+  const wahalaStyles = [
+    { color: "#6333fb", textDecoration: "none" }, // China Wahala - Red
+    { color: "#BF3BD6", textDecoration: "none" }, // Ecom Wahala - Blue
+    { color: "#0067d0", textDecoration: "none" }, // Import Wahala - Green
     { color: "#AA1C4D", textDecoration: "none" }, // Trade Wahala - Purple
-    { color: "#994A12", textDecoration: "none" },     // RMB Wahala - Orange
+    { color: "#994A12", textDecoration: "none" }, // RMB Wahala - Orange
   ];
-  
+
   return (
     <HomeRap>
       <div className="home-1 containery">
@@ -646,20 +653,20 @@ const Home = () => {
             <span></span>
             <p>Led by a team of over a decade of experience, we are →</p>
           </div>
-          <h1>Powering Solutions in   
+          <h1>
+            Powering Solutions in
             <Typewriter
-  texts={[
-    "Repairs",
-    "Maintenance",
-    "Construction",
-  ]}
-  styles={wahalaStyles}  // Pass the styles array
-  typingSpeed={150}
-  deletingSpeed={100}
-  delay={1000}
-/>for businesses and individuals across Africa.</h1>
+              texts={["Repairs", "Maintenance", "Construction"]}
+              styles={wahalaStyles} // Pass the styles array
+              typingSpeed={150}
+              deletingSpeed={100}
+              delay={1000}
+            />
+            for businesses and individuals across Africa.
+          </h1>
           <p>
-            We provide professional & expert services for ongoing maintenance, workforce support, and large-scale projects.
+            We provide professional & expert services for ongoing maintenance,
+            workforce support, and large-scale projects.
           </p>
           {/* <div className="home-1-btn">
             <Link className="hire">Home Owner</Link>
@@ -670,7 +677,10 @@ const Home = () => {
           <img src="/images/image-1.png" alt="" />
         </div>
       </div>
-      <br /><br /><br /><br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div className="all-home-3 containery">
         <div className="home-3 ">
           <div className="sub-home-3">
@@ -764,7 +774,7 @@ const Home = () => {
           <img src="/images/image-5.png" alt="" />
         </div>
       </div>
-        <div className="home-6 containery">
+      <div className="home-6 containery">
         <div className="sub-home-6">
           <h3>1K+</h3>
           <p>Top Rated, highly skilled technical talent poo</p>
@@ -782,14 +792,14 @@ const Home = () => {
           <p>Faster Project Delivery</p>
         </div>
       </div>
-       <div className="home-7 containery">
+      <div className="home-7 containery">
         <p>As featured on</p>
         <img src="/images/lag.png" alt="" />
         <img src="/images/lsetf.png" alt="" />
         <img src="/images/inn.png" alt="" />
         <img src="/images/m12.png" alt="" />
       </div>
-       <div className="home-8 containery">
+      <div className="home-8 containery">
         <div className="upper-home-8">
           <h2>
             Need the right team for the job? we have already built it for you
@@ -922,8 +932,8 @@ const Home = () => {
           </div>
         </div>
       </div>
-    
-           <div className="home-2 containery">
+
+      <div className="home-2 containery">
         <p>Trusted by top companies and contractors</p>
         <Marquee pauseOnHover={true} speed={10} direction="left">
           <div className="sub-home-2">
@@ -941,7 +951,7 @@ const Home = () => {
           </div>
         </Marquee>
       </div>
-     
+
       <div className="home-9 containery">
         <h2>See what our customers have to say about us</h2>
         <div className="all-home-9-sub">
@@ -1092,59 +1102,76 @@ const Home = () => {
         </div>
       </div>
 
-   <div className="home-10 containery">
-      <div className="home-10-left">
-        <h2>Frequently Asked Questions</h2>
-        <p>Do you still have any questions?</p>
-        <a href="/contact" className="contact-btn">
-          Contact us
-          <Icon
-            width="14px"
-            height="14px"
-            icon="akar-icons:arrow-up-right"
-            style={{ color: "#ffffff" }}
-          />
-        </a>
-      </div>
+      <div className="home-10 containery">
+        <div className="home-10-left">
+          <h2>Frequently Asked Questions</h2>
+          <p>Do you still have any questions?</p>
+          <a href="/contact" className="contact-btn">
+            Contact us
+            <Icon
+              width="14px"
+              height="14px"
+              icon="akar-icons:arrow-up-right"
+              style={{ color: "#ffffff" }}
+            />
+          </a>
+        </div>
 
-      <div className="home-10-right">
-        {faqs.map((faq, index) => (
-          <div key={index} className="sub-home-10" onClick={() => toggleFAQ(index)} style={{ cursor: "pointer", }}>
-            <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-              <p style={{ float: "left", padding: "10px" }}>{faq.question}</p>
-              <Icon
-                width="14px"
-                height="14px"
-                icon={openIndex === index ? "ic:round-minus" : "ic:round-plus"}
-                style={{ color: "#101828", float: "right", marginLeft: "-27px", marginTop: "10px" }}
-              />
+        <div className="home-10-right">
+          {faqs.map((faq, index) => (
+            <div
+              key={index}
+              className="sub-home-10"
+              onClick={() => toggleFAQ(index)}
+              style={{ cursor: "pointer" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <p style={{ float: "left", padding: "10px" }}>{faq.question}</p>
+                <Icon
+                  width="14px"
+                  height="14px"
+                  icon={
+                    openIndex === index ? "ic:round-minus" : "ic:round-plus"
+                  }
+                  style={{
+                    color: "#101828",
+                    float: "right",
+                    marginLeft: "-27px",
+                    marginTop: "10px",
+                  }}
+                />
+              </div>
+              {openIndex === index && (
+                <p className="sub-home-100">{faq.answer}</p>
+              )}
             </div>
-            {openIndex === index && (
-              <p className="sub-home-100">
-                {faq.answer}
-              </p>
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
 
       <div className="containery">
-      <div className="home-11">
-        <div className="home-11-left">
-          <h2>Build your carrier join the ECHub family today.</h2>
-          <p>
-         Are you a skilled artisan looking for growth opportunities? Join our network of professionals and build a thriving career with us.
-          </p>
-          <div className="home-11-left-btn">
-            <Link className="home-11-btn-1">Sign up</Link>
-            <Link className="home-11-btn-2">Learn more</Link>
+        <div className="home-11">
+          <div className="home-11-left">
+            <h2>Build your carrier join the ECHub family today.</h2>
+            <p>
+              Are you a skilled artisan looking for growth opportunities? Join
+              our network of professionals and build a thriving career with us.
+            </p>
+            <div className="home-11-left-btn">
+              <Link className="home-11-btn-1">Sign up</Link>
+              <Link className="home-11-btn-2">Learn more</Link>
+            </div>
+          </div>
+          <div>
+            <img src="/images/image-6.png" alt="" />
           </div>
         </div>
-        <div>
-            <img src="/images/image-6.png" alt="" />
-        </div>
-      </div>
       </div>
     </HomeRap>
   );
