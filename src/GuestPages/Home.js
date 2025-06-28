@@ -602,7 +602,7 @@ const HomeRap = styled.div`
     font-size: 50px;
 }
 .sub-home-10 {
-    width: 330px;
+    width: 350px;
     gap: 20px;
 }
   }
