@@ -233,7 +233,7 @@ const SignUpClient = () => {
       <div className="all-sign">
         <div className="upper-sign">
           <div className="sign-1">
-            <h2>Sign up to request for jobs</h2>
+            <h2>Sign up as an individual or Home Owner</h2>
             <p>Create account in few steps</p>
           </div>
           <div className="sign-2">

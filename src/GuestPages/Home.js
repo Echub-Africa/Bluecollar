@@ -705,7 +705,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <Link className="start-today">Start a Project Today</Link>
+        <Link to="/artisanAuth/signUp" className="start-today">Start a Project Today</Link>
       </div>
       <div className="home-4 containery">
         <div className="sub-home-4">
@@ -860,8 +860,8 @@ const Home = () => {
           </div>
         </div>
         <div className="down-home-8">
-          <Link className="indi-project">Start an Individual Project</Link>
-          <Link className="cor-project">Hire or start a corporate project</Link>
+          <Link to="/clientAuth/signUp" className="indi-project">Start an Individual Project</Link>
+          <Link to="/companyAuth/signUp" className="cor-project">Hire or start a corporate project</Link>
         </div>
       </div>
       <div className="home-5 containery">
@@ -1164,8 +1164,8 @@ const Home = () => {
               our network of professionals and build a thriving career with us.
             </p>
             <div className="home-11-left-btn">
-              <Link className="home-11-btn-1">Sign up</Link>
-              <Link className="home-11-btn-2">Learn more</Link>
+              <Link to="/artisan/artisanreg" className="home-11-btn-1">Sign up</Link>
+              <Link to="/artisan/artisanLog" className="home-11-btn-2">Sign In</Link>
             </div>
           </div>
           <div>
