@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const JobRap = styled.div`
@@ -318,7 +318,13 @@ padding-top: 50px;
 `;
 
 const ArtisanJobs = () => {
-
+  const navigate = useNavigate();
+    useEffect(() => {
+      const token = localStorage.getItem("artisanToken");
+      if (!token) {
+        navigate("/artisanAuth/login/Artisan");
+      }
+    }, [navigate]);
   const [activeLink, setActiveLink] = useState("progress");
   const [inProgressJob, setInProgressJob] = useState([]);
   const [completedJob, setCompletedJob] = useState([]);

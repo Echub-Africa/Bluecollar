@@ -101,6 +101,9 @@ const HomeRap = styled.div`
     gap: 20px;
         margin-top: -120px;
   }
+        @media screen and (max-width: 767px) {
+        .home-sub-1 {
+        marign}}
   .home-1 {
     background: #101828;
     padding-top: 70px;

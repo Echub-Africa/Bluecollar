@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -144,6 +144,12 @@ padding-bottom: 50px;
 
 const ClientRequestDetail = () => {
     const navigate = useNavigate()
+          useEffect(() => {
+    const token = localStorage.getItem("home-ownerToken");
+    if (!token) {
+      navigate("/clientAuth/login");
+    }
+  }, [navigate]);
 
     const handleGoToRequest = () => {
 navigate("/client/request")

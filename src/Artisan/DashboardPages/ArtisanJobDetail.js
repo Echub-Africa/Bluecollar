@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -390,6 +390,12 @@ const DetailRap = styled.div`
 
 const ArtisanDetail = () => {
   const navigate = useNavigate();
+    useEffect(() => {
+      const token = localStorage.getItem("artisanToken");
+      if (!token) {
+        navigate("/artisanAuth/login/Artisan");
+      }
+    }, [navigate]);
   const [activeLink, setActiveLink] = useState("details");
   const [propose, setPropose] = useState(false);
   const [completePop, setCompletePop] = useState(false)

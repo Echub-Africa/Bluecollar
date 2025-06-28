@@ -462,6 +462,14 @@ const ClientJobDetail = () => {
   const handleCompleteDrop = () => setCompletePop(!completePop);
   const moveBack = () => navigate("/client/jobs");
 
+    useEffect(() => {
+    const token = localStorage.getItem("home-ownerToken");
+    if (!token) {
+      navigate("/clientAuth/login");
+    }
+  }, [navigate]);
+
+
 
 useEffect(() => {
   const token = localStorage.getItem("home-ownerToken");

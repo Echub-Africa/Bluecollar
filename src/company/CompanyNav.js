@@ -248,13 +248,37 @@ const ClientDashboardNavbar = () => {
 
     const handleLogout = () => {
   // Clear localStorage
-  localStorage.removeItem("companyToken");
+  localStorage.removeItem("artisanToken");
+  localStorage.removeItem("artisanFirstName");
+  localStorage.removeItem("artisanLastName");
+  localStorage.removeItem("artisanEmail");
+  localStorage.removeItem("artisanType");
+  localStorage.removeItem("artisanRole");
+  localStorage.removeItem("artisanName");
+
+      localStorage.removeItem("home-ownerToken");
+    localStorage.removeItem("home-ownerFirstName");
+    localStorage.removeItem("home-ownerLastName");
+    localStorage.removeItem("home-ownerEmail");
+    localStorage.removeItem("home-ownerType");
+    localStorage.removeItem("home-ownerRole");
+
+        localStorage.removeItem("companyToken");
   localStorage.removeItem("companyfirstName");
   localStorage.removeItem("companylastName");
   localStorage.removeItem("companyEmail");
   localStorage.removeItem("companyName");
   localStorage.removeItem("companyType");
   localStorage.removeItem("companyRole");
+
+      localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminFirstName");
+    localStorage.removeItem("adminLastName");
+    localStorage.removeItem("adminEmail");
+    localStorage.removeItem("adminType");
+    localStorage.removeItem("adminRole");
+
+
 
   // Redirect to login page
   navigate("/"); // Or your landing page route
@@ -288,7 +312,7 @@ const ClientDashboardNavbar = () => {
 
         <div className="all-nav">
           <div className="nav-div-left">
-            <img src="/images/dash-logo.png" alt="" />
+           <Link to="/">  <img src="/images/dash-logo.png" alt="" /></Link>
             <div className="search-div-input">
               <Icon
                 className="search-icon"
@@ -304,28 +328,28 @@ const ClientDashboardNavbar = () => {
             <div className={clicked ? "navbar active" : "navbar"} id="#navbar">
               <Link
                 className={`nav-link ${activeLink === "home" ? "active" : ""}`}
-                to="/client"
+                to="/company"
                 onClick={() => handleLinkClick("home")}
               >
-                Homeee
+                Home
               </Link>
               <Link
                 className={`nav-link ${activeLink === "request" ? "active" : ""}`}
-                to="/client/request"
+                to="/company/request"
                 onClick={() => handleLinkClick("request")}
               >
                 Request
               </Link>
               <Link
                 className={`nav-link ${activeLink === "invoice" ? "active" : ""}`}
-                to="/client/invoice"
+                to="/company/invoice"
                 onClick={() => handleLinkClick("invoice")}
               >
                 Invoice
               </Link>
               <Link
                 className={`nav-link ${activeLink === "job" ? "active" : ""}`}
-                to="/client/jobs"
+                to="/company/jobs"
                 onClick={() => handleLinkClick("job")}
               >
                 My Jobs
@@ -335,7 +359,7 @@ const ClientDashboardNavbar = () => {
                 className={`nav-link ${
                   activeLink === "messages" ? "active" : ""
                 }`}
-                to="/client/messages"
+                to="/company/messages"
                 onClick={() => handleLinkClick("messages")}
               >
                 Messages

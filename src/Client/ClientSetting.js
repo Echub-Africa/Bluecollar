@@ -2,6 +2,8 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+
 
 const SettingRap = styled.div`
 padding-top: 50px;
@@ -361,6 +363,14 @@ const ClientSetting = () => {
         },
       ];
         const [dropdown, setDropdown] = useState(false);
+ const navigate = useNavigate();
+                  useEffect(() => {
+    const token = localStorage.getItem("home-ownerToken");
+    if (!token) {
+      navigate("/clientAuth/login");
+    }
+  }, [navigate]);
+
       
   const [activeLink, setActiveLink] = useState("profile");
  const [formData, setFormData] = useState({

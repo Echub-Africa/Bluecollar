@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const SettingRap = styled.div`
@@ -214,6 +214,14 @@ padding-bottom: 70px;
 `;
 
 const ArtisanSetting = () => {
+    const navigate = useNavigate();
+      useEffect(() => {
+        const token = localStorage.getItem("artisanToken");
+        if (!token) {
+          navigate("/artisanAuth/login/Artisan");
+        }
+      }, [navigate]);
+      
   const [activeLink, setActiveLink] = useState("profile");
   const [formData, setFormData] = useState({
     firstName: "",

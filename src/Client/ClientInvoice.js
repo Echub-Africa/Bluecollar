@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const RequestRap = styled.div`
   padding-top: 50px;
@@ -280,12 +281,21 @@ const RequestRap = styled.div`
 `;
 
 const ClientInvoice = () => {
+   const navigate = useNavigate();
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [detailDrop, setDetailDrop] = useState(false);
   const [dropdown, setDropdown] = useState(false);
 const [selectedInvoice, setSelectedInvoice] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("home-ownerToken");
+    if (!token) {
+      navigate("/clientAuth/login");
+    }
+  }, [navigate]);
+
   // Toggle dropdown
 const handleGoToDetail = (id) => {
   const found = invoices.find((inv) => inv._id === id);

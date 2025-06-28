@@ -148,6 +148,14 @@ const ClientJobs = () => {
   const [dropdown, setDropdown] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
 
+    useEffect(() => {
+    const token = localStorage.getItem("home-ownerToken");
+    if (!token) {
+      navigate("/clientAuth/login");
+    }
+  }, [navigate]);
+
+
   // Toggle dropdown
   const toggleDropdown = (id) => {
     setOpenDropdown(openDropdown === id ? null : id);

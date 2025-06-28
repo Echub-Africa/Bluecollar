@@ -38,7 +38,7 @@ const ArtisanSignNav = () => {
     return (
         <ArtisanNavRap>
             <div className="art-nav">
-                <img src="/images/sign-blue.png" alt="" />
+              <Link to="/">  <img src="/images/sign-blue.png" alt="" /></Link>
                 <div className="help">
                     <p>Need help?</p>
                     <Link className="contact">Contact us</Link>

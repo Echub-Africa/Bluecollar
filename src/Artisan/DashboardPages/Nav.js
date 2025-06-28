@@ -255,6 +255,28 @@ const ArtisanDashboardNavbar = () => {
   localStorage.removeItem("artisanType");
   localStorage.removeItem("artisanRole");
   localStorage.removeItem("artisanName");
+
+      localStorage.removeItem("home-ownerToken");
+    localStorage.removeItem("home-ownerFirstName");
+    localStorage.removeItem("home-ownerLastName");
+    localStorage.removeItem("home-ownerEmail");
+    localStorage.removeItem("home-ownerType");
+    localStorage.removeItem("home-ownerRole");
+
+        localStorage.removeItem("companyToken");
+  localStorage.removeItem("companyfirstName");
+  localStorage.removeItem("companylastName");
+  localStorage.removeItem("companyEmail");
+  localStorage.removeItem("companyName");
+  localStorage.removeItem("companyType");
+  localStorage.removeItem("companyRole");
+
+      localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminFirstName");
+    localStorage.removeItem("adminLastName");
+    localStorage.removeItem("adminEmail");
+    localStorage.removeItem("adminType");
+    localStorage.removeItem("adminRole");
  
 
   // Redirect to login page

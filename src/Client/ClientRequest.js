@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -152,6 +152,13 @@ const ClientRequest = () => {
 
   
     const [openDropdown, setOpenDropdown] = useState(null);
+    
+          useEffect(() => {
+    const token = localStorage.getItem("home-ownerToken");
+    if (!token) {
+      navigate("/clientAuth/login");
+    }
+  }, [navigate]);
 
     // Toggle dropdown
     const toggleDropdown = (id) => {

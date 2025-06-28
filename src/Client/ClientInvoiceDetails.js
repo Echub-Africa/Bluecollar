@@ -143,7 +143,15 @@ const DetailRap = styled.div`
 `;
 
 const ClientInvoiceDetails = () => {
+  
   const navigate = useNavigate();
+    useEffect(() => {
+      const token = localStorage.getItem("home-ownerToken");
+      if (!token) {
+        navigate("/clientAuth/login");
+      }
+    }, [navigate]);
+  
 
   const handleGoToInvoice = () => {
     navigate("/admin/invoice");

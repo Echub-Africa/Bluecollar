@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import CompanyDashboardNavbarr from "../company/CompanyNav";
+import CompanyDashboardNavbar from "../company/CompanyNav";
 
 
 
@@ -11,7 +11,7 @@ import CompanyDashboardNavbarr from "../company/CompanyNav";
 export default function CompanyDashboardLayout () {
     return (
         <>
-    <CompanyDashboardNavbarr />
+    <CompanyDashboardNavbar />
         <div className="artisan-oulet" style={{paddingTop: "90px", background: " #F7F7F7"}}>
         <Outlet />
         </div>

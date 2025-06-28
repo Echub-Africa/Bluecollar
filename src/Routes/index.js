@@ -52,12 +52,12 @@ import ClientSetting from "../Client/ClientSetting";
 import ClientMessage from "../Client/ClientMessages";
 import ClientConfirmEmail from "../Client/ClientLogins/ClientVerify";
 
-import CompanySignDashboardLayout from "../Controller/companyController";
+import CompanySignDashboardLayout from "../Controller/companySignContoller.js";
 import CompanySignUp from "../company/SIgnUpCompany";
 import CompanyLogin from "../company/LoginCompany";
 
 
-import CompanyDashboardLayout from "../Controller/clientController";
+import CompanyDashboardLayout from "../Controller/companyController.js";
 import CompanyHome from "../company/CompanyHome";
 import CompanyJobDetail from "../company/CompanyJobDetails";
 import CompanyInvoice from "../company/CompanyInvoice";
