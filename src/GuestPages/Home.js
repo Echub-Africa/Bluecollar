@@ -691,6 +691,24 @@ const Home = () => {
       <br />
       <br />
       <br />
+       <div className="home-6 containery">
+        <div className="sub-home-6">
+          <h3>1K+</h3>
+          <p>Top Rated, highly skilled technical talent poo</p>
+        </div>
+        <div className="sub-home-6">
+          <h3>$10K</h3>
+          <p>Cost savings per project handled by Bluecollar</p>
+        </div>
+        <div className="sub-home-6">
+          <h3>86%</h3>
+          <p>Faster time to hire</p>
+        </div>
+        <div className="sub-home-6">
+          <h3>74%</h3>
+          <p>Faster Project Delivery</p>
+        </div>
+      </div>
       <div className="all-home-3 containery">
         <div className="home-3 ">
           <div className="sub-home-3">
@@ -784,24 +802,7 @@ const Home = () => {
           <img src="/images/image-5.png" className="disturb" alt="" />
         </div>
       </div>
-      <div className="home-6 containery">
-        <div className="sub-home-6">
-          <h3>1K+</h3>
-          <p>Top Rated, highly skilled technical talent poo</p>
-        </div>
-        <div className="sub-home-6">
-          <h3>$10K</h3>
-          <p>Cost savings per project handled by Bluecollar</p>
-        </div>
-        <div className="sub-home-6">
-          <h3>86%</h3>
-          <p>Faster time to hire</p>
-        </div>
-        <div className="sub-home-6">
-          <h3>74%</h3>
-          <p>Faster Project Delivery</p>
-        </div>
-      </div>
+     
       <div className="home-7 containery">
         <p>As featured on</p>
            <Marquee pauseOnHover={true} speed={30} direction="left">
