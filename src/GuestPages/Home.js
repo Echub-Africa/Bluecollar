@@ -131,7 +131,13 @@ const HomeRap = styled.div`
     padding-top: 50px;
     padding-bottom: 70px;
   }
-  .sub-home-2 {
+  .sub-home-22 {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    height: 60px
+  }
+      .sub-home-2 {
     display: flex;
     gap: 30px;
     margin-top: 20px;
@@ -629,6 +635,10 @@ const HomeRap = styled.div`
       width: 220px;
     }
   }
+    @media screen and (max-width: 767px) {
+    .disturb {
+  width: 100%;
+    }}
 `;
 
 const Home = () => {
@@ -771,7 +781,7 @@ const Home = () => {
           </div>
         </div>
         <div>
-          <img src="/images/image-5.png" alt="" />
+          <img src="/images/image-5.png" className="disturb" alt="" />
         </div>
       </div>
       <div className="home-6 containery">
@@ -794,10 +804,14 @@ const Home = () => {
       </div>
       <div className="home-7 containery">
         <p>As featured on</p>
+           <Marquee pauseOnHover={true} speed={30} direction="left">
+          <div className="sub-home-22">
         <img src="/images/lag.png" alt="" />
         <img src="/images/lsetf.png" alt="" />
         <img src="/images/inn.png" alt="" />
         <img src="/images/m12.png" alt="" />
+         </div>
+        </Marquee>
       </div>
       <div className="home-8 containery">
         <div className="upper-home-8">
