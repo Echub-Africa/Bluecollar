@@ -873,7 +873,7 @@ const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
             <div className="verify">
               <img src="/images/icon-18.png" alt="" />
 
-              <p>Active</p>
+              <p>Email Verified</p>
             </div>
           </div>
           <div className="dash-4">

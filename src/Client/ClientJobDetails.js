@@ -474,7 +474,7 @@ const ClientJobDetail = () => {
 useEffect(() => {
   const token = localStorage.getItem("home-ownerToken");
 
-  fetch(`https://blucolar-be.onrender.com/api/client/project/${id}`, {
+  fetch(`https://blucolar-be.onrender.com/api/client/project/details/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
