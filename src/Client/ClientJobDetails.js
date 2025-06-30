@@ -519,8 +519,8 @@ useEffect(() => {
               <h2>Job ID: {jobData.jobId || "N/A"}</h2>
               <div className="inner-detail-1">
                 <p>
-                  Artisan: <span>{jobData.assignedArtisan || "N/A"}</span>
-                </p>
+     Client: <span>{jobData.assignedArtisan?.firstName} {jobData.assignedArtisan?.lastName || "N/A"}</span>
+   </p>
                 <p>{new Date(jobData.createdAt).toLocaleDateString()}</p>
                 <h6>{jobData?.status || "In progress"}</h6>
               </div>

@@ -153,7 +153,7 @@ export default function Routess() {
                     children:  [
                         {path: "/artisan", element: <ArisanHome />},
                         {path: "/artisan/jobs", element: <ArtisanJobs/>},
-                        {path: "/artisan/jobs/details", element: <ArtisanDetail/>},
+                        {path: "/artisan/jobs/details/:id", element: <ArtisanDetail/>},
                         {path: "/artisan/settings", element: <ArtisanSetting/>},
                         {path: "/artisan/messages", element: <ArtisanMessage/>},
                         {path: "/artisan/artisanreg", element: <Artisanreg />},

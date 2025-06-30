@@ -301,18 +301,101 @@ const HomeRap = styled.div`
       flex-wrap: wrap;
     }
   }
-    .onboard {
-    background:rgb(129, 113, 244);
+  .onboard {
+    background: rgb(129, 113, 244);
     padding: 20px;
     border-radius: 8px;
     text-align: center;
     color: #ffffff;
     pointer: cursor;
     font-size: 16px;
-    }
-    .onboard:hover {
+  }
+  .onboard:hover {
     background: rgb(129, 113, 244, 0.8);
-}
+  }
+      .all-progress {
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+     .all-inner-job h5 {
+    color: #101828;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .all-inner-job h6 {
+    color: #667085B2;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .all-inner-job  {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .inner-job P {
+    color: #667085;
+    font-size: 14px;
+    font-weight: 500;
+    padding-right: 15px;
+    border-right: 1.5px solid #10182826;
+  }
+  .inner-job  span {
+    color: #27A549;
+    font-size: 16px;
+    font-weight: 500;
+    padding-right: 15px;
+    border-right: 1.5px solid #10182826;
+  }
+  .inner-job  h6 {
+    font-style: italic;
+    color: #667085B2;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .inner-job {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .update-btn {
+    border: 1px solid #1018281A;
+    border-radius: 10px;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 105px;
+    height: 36px;
+    color: #667085;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .job-4 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #1018281A;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+  .no-jobs-now p {
+    color: #667085;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .no-jobs-now h4 {
+    color: #101828;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .no-jobs-now img {
+    width: 76px;
+    height: 76px;
+
+  }
 `;
 
 const ArisanHome = () => {
@@ -331,10 +414,10 @@ const ArisanHome = () => {
   const type = localStorage.getItem("artisanType");
 
   const [showAll, setShowAll] = useState(false);
- const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState([]);
   const [visibleJobs, setVisibleJobs] = useState([]);
   const [error, setError] = useState("");
-
+  const [isLoading, setIsLoading] = useState(true);
 
   const getGreeting = () => {
     const currentHour = new Date().getHours();
@@ -348,44 +431,52 @@ const ArisanHome = () => {
     }
   };
 
- useEffect(() => {
-    const fetchCompletedJobs = async () => {
-      const token = localStorage.getItem("artisanToken"); // Or adminToken, depending on your setup
+  useEffect(() => {
+    const fetchJobs = async () => {
+      const token = localStorage.getItem("artisanToken");
 
       if (!token) {
         setError("You must be logged in to view jobs.");
         return;
       }
-
       try {
-        const response = await fetch("https://blucolar-be.onrender.com/api/users/project/my/assigned", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-
+        const response = await fetch(
+          "https://blucolar-be.onrender.com/api/client/project/my/assigned",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch jobs");
         }
 
         const data = await response.json();
-        console.log("Fetched jobs:", data);
+        console.log("Fetched data:", data); // Log the entire response
 
-        const completedJobs = data.filter(
-          (job) => job.status?.toLowerCase() === "completed"
-        );
-
-        setJobs(completedJobs);
-        setVisibleJobs(completedJobs.slice(0, 3));
-      } catch (err) {
-        console.error("Error fetching completed jobs:", err.message);
-        setError("Something went wrong while fetching jobs.");
+        // Set jobs to the projects array from the response
+        if (data.projects && Array.isArray(data.projects)) {
+          setJobs(data.projects); // Set the jobs state to the projects array
+          console.log("Jobs set:", data.projects); // Log the jobs being set
+        } else {
+          console.error(
+            "Expected an array of projects but got:",
+            data.projects
+          );
+          setJobs([]); // Set to empty array if the structure is not as expected
+        }
+      } catch (error) {
+        console.error("Error fetching jobs:", error.message);
+        setJobs([]); // Set to empty array on error
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchCompletedJobs();
+    fetchJobs();
   }, []);
 
   const handleShowMore = () => {
@@ -396,6 +487,36 @@ const ArisanHome = () => {
     }
     setShowAll(!showAll);
   };
+
+  const [data, setData] = useState([]);
+  const url =
+    "https://blucolar-be.onrender.com/api/client/project/artisan-dashboard";
+
+  const token = localStorage.getItem("artisanToken");
+
+  const yourToken = token; // Replace with your actual token
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${yourToken}`, // Include your token here
+            "Content-Type": "application/json",
+          },
+          // Include credentials for CORS
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <HomeRap>
@@ -421,66 +542,70 @@ const ArisanHome = () => {
               </div>
               <div className="inner-dash-1">
                 <p>Open Jobs</p>
-                <h4>0</h4>
+                <h4>{data.assignedJobs || 0}</h4>
               </div>
               <div className="inner-dash-1 no-border">
                 <p>Completed Jobs</p>
-                <h4>0</h4>
+                <h4>{data.completedJobs || 0}</h4>
               </div>
             </div>
           </div>
-        <Link to="/artisanAuth/signUpOwner">  <div className="onboard">
-            <p>Complete Onboarding</p>
-          </div></Link>
-
-        <div
-      style={{
-        maxHeight: showAll ? "100%" : "430px",
-        overflow: "hidden",
-        transition: "max-height 0.3s ease-in-out",
-      }}
-      className="dash-2"
-    >
-      <div className="dash-2-header">
-        <h3>Recent jobs</h3>
-        <button onClick={handleShowMore}>
-          {showAll ? "See less" : "See all"}
-        </button>
-      </div>
-
-      {jobs && jobs.length > 0 ? (
-        <>
-          {visibleJobs.map((job, index) => (
-            <div key={index} className="sub-dash-2">
-              <h6>{job.datePosted}</h6>
-              <h4>{job.name}</h4>
-              <h5>Amount: {job.amount}</h5>
-              <p>{job.description}</p>
-              <div className="category-div">
-                <p>{job.category?.one}</p>
-                <p>{job.category?.two}</p>
-                <p>{job.category?.three}</p>
-              </div>
-              <div className="job-div">
-                <p>Job ID: {job.jobId}</p>
-                <p className="address-div">{job.address}</p>
-                <p>
-                  Status: <span>{job.status}</span>
-                </p>
-              </div>
+          <Link to="/artisanAuth/signUpOwner">
+            {" "}
+            <div className="onboard">
+              <p>Complete Onboarding</p>
             </div>
-          ))}
-        </>
-      ) : (
-        <div className="no-job-div">
-          <img src="/images/img-11.png" alt="" />
-          <p>
-            No available jobs at the moment, you will be notified once a job is available
-          </p>
-        </div>
-      )}
-    </div>
+          </Link>
 
+          <div
+            style={{
+              maxHeight: showAll ? "100%" : "430px",
+              overflow: "hidden",
+              transition: "max-height 0.3s ease-in-out",
+            }}
+            className="dash-2"
+          >
+            <div className="dash-2-header">
+              <h3>Recent jobs</h3>
+              <button onClick={handleShowMore}>
+                {showAll ? "See less" : "See all"}
+              </button>
+            </div>
+
+<div className="all-progress">
+  {isLoading ? (
+    <div className="no-jobs-now">
+      <h4>Loading...</h4>
+    </div>
+  ) : jobs.length === 0 ? (
+    <div className="no-jobs-now">
+      <h4>No jobs available.</h4>
+    </div>
+  ) : (
+    jobs.map((job, index) => (
+      <div key={index} className="job-4">
+        <div className="all-inner-job">
+          <h5>{job.description || "No description"}</h5> {/* Use description or another property */}
+        <h6>{new Date(job.createdAt).toLocaleString("en-NG", { 
+    year: 'numeric', 
+    month: '2-digit', 
+    day: '2-digit', 
+    hour: 'numeric', 
+    minute: 'numeric', 
+    hour12: true 
+}) || "N/A"}</h6> {/* Adjust based on your data structure */}
+          <div className="inner-job">
+            <p>Job ID: {job.jobId || job._id}</p> {/* Use jobId or _id */}
+            <span>{job.budget || "N/A"}</span> {/* Ensure budget exists */}
+            <h6>{job.status || "N/A"}</h6> {/* Display project status */}
+          </div>
+        </div>
+        <Link to={`/artisan/jobs/details/${job._id}`} className="update-btn">View Job</Link>
+      </div>
+    ))
+  )}
+</div>
+          </div>
         </div>
         <div className="dash-right">
           <div className="dash-3">

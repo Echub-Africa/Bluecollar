@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const DetailRap = styled.div`
@@ -390,6 +390,7 @@ const DetailRap = styled.div`
 
 const ArtisanDetail = () => {
   const navigate = useNavigate();
+   const { id } = useParams(); 
     useEffect(() => {
       const token = localStorage.getItem("artisanToken");
       if (!token) {
@@ -399,6 +400,10 @@ const ArtisanDetail = () => {
   const [activeLink, setActiveLink] = useState("details");
   const [propose, setPropose] = useState(false);
   const [completePop, setCompletePop] = useState(false)
+
+    const [jobData, setJobData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
@@ -413,6 +418,35 @@ const handleCompleteDrop = () => {
   const moveBack = () => {
     navigate("/artisan/jobs");
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("artisanToken");
+  
+    fetch(`https://blucolar-be.onrender.com/api/client/project/details/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      })
+      .then((data) => {
+        setJobData(data?.project); // ✅ set only the actual project
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [id]); // <-- include id in dependency array
+  
+  
+    if (loading) return <p style={{ padding: "20px" }}>Loading...</p>;
+    if (error) return <p style={{ padding: "20px", color: "red" }}>Error: {error}</p>;
+    if (!jobData) return <p>No project data found.</p>;
+
   return (
     <DetailRap>
       <div className="containary all-detail ">
@@ -428,28 +462,28 @@ const handleCompleteDrop = () => {
               />
             </div>
             <div className="detail-1-sub-1">
-              <h2>Job ID: OZTM42K3992</h2>
+              <h2>Job ID: {jobData.jobId || "N/A"}</h2>
               <div className="inner-detail-1">
-                <p>
-                  Client: <span>Bluecollar</span>
-                </p>
-                <p>Nov 20, 2024</p>
-                <h6>In progress</h6>
+                  <p>
+     Client: <span>{jobData.assignedArtisan?.firstName} {jobData.assignedArtisan?.lastName || "N/A"}</span>
+   </p>
+                <p>{new Date(jobData.createdAt).toLocaleDateString()}</p>
+                <h6>{jobData?.status || "In progress"}</h6>
               </div>
             </div>
           </div>
           <div className="detail-1-right">
             <div className="detail-1-sub-2-inner">
               <p>Project Price</p>
-              <h4>₦200k</h4>
+              <h4>₦{jobData?.budget || 0}</h4>
             </div>
             <div className="detail-1-sub-2-inner">
               <p>Milestone Paid</p>
-              <h4>₦50k</h4>
+              <h4>₦{jobData?.milestonePaid || 0}</h4>
             </div>
             <div className="detail-1-sub-2-inner no-border">
               <p>Milestone Remaining</p>
-              <h4>₦150k</h4>
+              <h4>₦{(jobData?.totalCost || 0) - (jobData?.milestonePaid || 0)}</h4>
             </div>
           </div>
         </div>
@@ -471,36 +505,30 @@ const handleCompleteDrop = () => {
             </div>
             {activeLink === "details" && (
               <div className="left-body">
+                   <div className="left-body-inner">
+                  <h4>Service Type</h4>
+                  <p>{jobData.projectType}</p>
+                </div>
                 <div className="left-body-inner">
                   <h4>Description</h4>
                   <p>
-                    Lorem ipsum dolor sit amet consectetur. Sed in gravida a
-                    platea lectus. Aenean facilisi id sit porta vestibulum
-                    bibendum interdum dolor. Nec mi interdum euismod at aliquam
-                    amet donec. Laoreet morbi arcu pellentesque malesuada. Odio
-                    quam imperdiet dignissim mi cursus eu venenatis. Tortor sed
-                    nibh enim rutrum. Dis tellus aliquam lacinia amet urna
-                    posuere. Gravida consectetur etiam amet maecenas quam.
-                  </p>
-                  <p>
-                    Platea et ac neque aliquam consectetur odio. Hendrerit elit
-                    nec vel tempus consectetur eget neque. Amet orci odio risus
-                    risus consectetur tellus. Eleifend cursus risus volutpat
-                    volutpat facilisis purus consectetur bibendum.{" "}
+                   {jobData.description || "No description provided."}
                   </p>
                 </div>
                 <div className="left-body-inner">
-                  <h4>Duration</h4>
-                  <p>45 Weeks (140 days)</p>
+                  <h4>Job Timeline (Start)</h4>
+                  <p>{new Date(jobData.timeline?.start).toLocaleDateString()}</p>
                 </div>
-                <div className="left-body-inner">
-                  <h4>Job ID</h4>
-                  <p>XYM-7649795</p>
+                  <div className="left-body-inner">
+                  <h4>Job Timeline (end)</h4>
+                  <p>{new Date(jobData.timeline?.end).toLocaleDateString()}</p>
                 </div>
-                <div className="left-body-inner">
-                  <h4>Priority</h4>
-                  <p>High</p>
+                 <div className="left-body-inner">
+                  <h4>Location</h4>
+                  <p>{jobData.address}</p>
                 </div>
+               
+               
               </div>
             )}
             {activeLink === "milestone" && (

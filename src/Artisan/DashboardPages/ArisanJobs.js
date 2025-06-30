@@ -319,39 +319,58 @@ padding-top: 50px;
 
 const ArtisanJobs = () => {
   const navigate = useNavigate();
-    useEffect(() => {
-      const token = localStorage.getItem("artisanToken");
-      if (!token) {
-        navigate("/artisanAuth/login/Artisan");
-      }
-    }, [navigate]);
   const [activeLink, setActiveLink] = useState("progress");
-  const [inProgressJob, setInProgressJob] = useState([]);
-  const [completedJob, setCompletedJob] = useState([]);
+  const [jobs, setJobs] = useState([]); // Single state for all jobs
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [inProgressCount, setInProgressCount] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
+
+  useEffect(() => {
+    const token = localStorage.getItem("artisanToken");
+    if (!token) {
+      navigate("/artisanAuth/login/Artisan");
+    }
+  }, [navigate]);
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchJobs = async () => {
+      const token = localStorage.getItem("artisanToken");
+
+      if (!token) {
+        setError("You must be logged in to view jobs.");
+        return;
+      }
       try {
-        const response = await fetch("http://localhost:5000/api/client/project/my/assigned");
+        const response = await fetch("https://blucolar-be.onrender.com/api/client/project/my/assigned", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch jobs");
         }
 
         const data = await response.json();
+        console.log("Fetched data:", data); // Log the entire response
 
-        // Assuming the response structure includes a `status` field to determine job status
-        const progress = data.filter(job => job.status?.toLowerCase() === "job in progress");
-        const completed = data.filter(job => job.status?.toLowerCase() === "completed");
-
-        setInProgressJob(progress);
-        setCompletedJob(completed);
+        // Set jobs to the projects array from the response
+        if (data.projects && Array.isArray(data.projects)) {
+          setJobs(data.projects); // Set the jobs state to the projects array
+          console.log("Jobs set:", data.projects); // Log the jobs being set
+        } else {
+          console.error("Expected an array of projects but got:", data.projects);
+          setJobs([]); // Set to empty array if the structure is not as expected
+        }
       } catch (error) {
         console.error("Error fetching jobs:", error.message);
+        setJobs([]); // Set to empty array on error
       } finally {
         setIsLoading(false);
       }
@@ -359,7 +378,15 @@ const ArtisanJobs = () => {
 
     fetchJobs();
   }, []);
-  
+
+  useEffect(() => {
+    // Calculate counts whenever jobs change
+    const inProgress = jobs.filter(job => job.status?.toLowerCase().trim() === "approved").length;
+    const completed = jobs.filter(job => job.status?.toLowerCase().trim() === "completed").length;
+    setInProgressCount(inProgress);
+    setCompletedCount(completed);
+  }, [jobs]);
+
   return (
     <JobRap>
       <div className="containary all-dash">
@@ -375,72 +402,63 @@ const ArtisanJobs = () => {
             <Link className="withdraw-btn">Withdraw</Link>
           </div>
 
-          <div className="job-2">
-            <div className="job-2-header">
-              <h4>All Jobs</h4>
-            </div>
+       <div className="job-2">
+  <div className="job-2-header">
+    <h4>All Jobs</h4>
+  </div>
 
-            <div className="job-links">
+<div className="job-links">
               <Link
                 className={`link ${activeLink === "progress" ? "active" : ""}`}
                 onClick={() => handleLinkClick("progress")}
               >
-                In Progress ({inProgressJob?.length || 0})
+                In Progress ({inProgressCount})
               </Link>
               <Link
                 className={`link ${activeLink === "completed" ? "active" : ""}`}
                 onClick={() => handleLinkClick("completed")}
               >
-                Completed ({completedJob?.length || 0})
+                Completed ({completedCount})
               </Link>
             </div>
 
-            <div className="all-progress">
-              {isLoading ? (
-                <div className="no-jobs-now">
-                  <h4>Loading...</h4>
-                </div>
-              ) : activeLink === "progress" && inProgressJob.length > 0 ? (
-                inProgressJob.map((job, index) => (
-                  <div key={index} className="job-4">
-                    <div className="all-inner-job">
-                      <h5>{job.name}</h5>
-                      <h6>{job.date || "N/A"}</h6>
-                      <div className="inner-job">
-                        <p>Job ID: {job.jobId}</p>
-                        <span>{job.amount}</span>
-                        <h6>{job.status}</h6>
-                      </div>
-                    </div>
-                    <Link to="/artisan/jobs/details" className="update-btn">Update Job</Link>
-                  </div>
-                ))
-              ) : activeLink === "completed" && completedJob.length > 0 ? (
-                completedJob.map((job, index) => (
-                  <div key={index} className="job-4">
-                    <div className="all-inner-job">
-                      <h5>{job.name}</h5>
-                      <h6>{job.date || "N/A"}</h6>
-                      <div className="inner-job">
-                        <p>Job ID: {job.jobId}</p>
-                        <span>{job.amount}</span>
-                        <h6>{job.status}</h6>
-                      </div>
-                    </div>
-                    <Link to="/artisan/jobs/details" className="update-btn">Update Job</Link>
-                  </div>
-                ))
-              ) : (
-                <div className="no-jobs-now">
-                  <img src="/images/img-11.png" alt="" />
-                  <h4>No {activeLink === "progress" ? "Active" : "Completed"} Jobs</h4>
-                  <p>Jobs you’re {activeLink === "progress" ? "actively working on" : "done with"} will appear here.</p>
-                </div>
-              )}
-            </div>
+<div className="all-progress">
+  {isLoading ? (
+    <div className="no-jobs-now">
+      <h4>Loading...</h4>
+    </div>
+  ) : jobs.length === 0 ? (
+    <div className="no-jobs-now">
+      <h4>No jobs available.</h4>
+    </div>
+  ) : (
+    jobs.map((job, index) => (
+      <div key={index} className="job-4">
+        <div className="all-inner-job">
+          <h5>{job.description || "No description"}</h5> {/* Use description or another property */}
+          <h6>{new Date(job.createdAt).toLocaleString("en-NG", { 
+    year: 'numeric', 
+    month: '2-digit', 
+    day: '2-digit', 
+    hour: 'numeric', 
+    minute: 'numeric', 
+    hour12: true 
+}) || "N/A"}</h6> {/* Adjust based on your data structure */}
+          <div className="inner-job">
+            <p>Job ID: {job.jobId || job._id}</p> {/* Use jobId or _id */}
+            <span>{job.budget || "N/A"}</span> {/* Ensure budget exists */}
+            <h6>{job.status || "N/A"}</h6> {/* Display project status */}
           </div>
         </div>
+        <Link to={`/artisan/jobs/details/${job._id}`} className="update-btn">View Job</Link>
+      </div>
+    ))
+  )}
+</div>
 
+</div>
+
+        </div>
         {/* DASHBOARD SIDEBAR - You can keep this as is */}
         <div className="dash-right">
           <div className="dash-3">
@@ -485,4 +503,3 @@ const ArtisanJobs = () => {
 };
 
 export default ArtisanJobs;
-
