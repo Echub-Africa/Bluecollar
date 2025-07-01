@@ -132,65 +132,64 @@ const DetailRap = styled.div`
     gap: 15px;
     padding: 20px;
   }
-.service-1 h6 {
+  .service-1 h6 {
     color: #101828;
     font-size: 14px;
     font-weight: 500;
-}
-.service-1 p {
+  }
+  .service-1 p {
     color: #667085;
     font-size: 14px;
     font-weight: 400;
-}
-.service-1 {
+  }
+  .service-1 {
     display: flex;
     flex-direction: column;
     gap: 10px;
-}
-.left-body-1 {
+  }
+  .left-body-1 {
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(2, 1fr);
-}
-.left-body-2 h4 {
+  }
+  .left-body-2 h4 {
     color: #101828;
     font-size: 14px;
     font-weight: 500;
-}
-.left-body-2 p {
+  }
+  .left-body-2 p {
     color: #667085;
     font-size: 14px;
     font-weight: 400;
     line-height: 19px;
     max-width: 518px;
-
-}
-.left-body-btn button {
+  }
+  .left-body-btn button {
     width: 153px;
     height: 40px;
     border-radius: 8px;
     font-size: 14px;
     font-weight: 500;
-}
-.btns-1 {
-    border: 1px solid #0067D0;
-    color: #0067D0;
+  }
+  .btns-1 {
+    border: 1px solid #0067d0;
+    color: #0067d0;
     background: transparent;
-}
-.btns-2 {
+  }
+  .btns-2 {
     border-style: none;
-    background: #27A549;
+    background: #27a549;
     color: #ffffff;
-}
-.left-body-btn {
+  }
+  .left-body-btn {
     display: flex;
     gap: 20px;
-}
-.left-body-2 {
+  }
+  .left-body-2 {
     display: flex;
     flex-direction: column;
     gap: 15px;
-}
+  }
   .complete-job {
     background: #27a549;
     width: 127px;
@@ -385,10 +384,10 @@ const DetailRap = styled.div`
     max-width: 342px;
   }
   .propose-body h4 {
-    color: #EA5455;
+    color: #ea5455;
     font-size: 12px;
     font-weight: 400;
-    background: #F9EFEF;
+    background: #f9efef;
     padding: 10px 20px;
     width: 358px;
     border-radius: 5px;
@@ -399,8 +398,9 @@ const DetailRap = styled.div`
     gap: 20px;
     margin-top: 10px;
   }
-  .cancel-btn, .confirm-btn {
-    background: #1018281A !important;
+  .cancel-btn,
+  .confirm-btn {
+    background: #1018281a !important;
     width: 173px !important;
     height: 47px !important;
     border-radius: 10px !important;
@@ -409,9 +409,8 @@ const DetailRap = styled.div`
     font-weight: 600 !important;
   }
   .confirm-btn {
-    background: #0067D0 !important;
+    background: #0067d0 !important;
     color: #ffffff !important;
-
   }
   .propose-div {
     background: #ffffff;
@@ -447,11 +446,11 @@ const DetailRap = styled.div`
 `;
 
 const ClientJobDetail = () => {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState("details");
   const [propose, setPropose] = useState(false);
   const [completePop, setCompletePop] = useState(false);
-    const { id } = useParams(); 
+  const { id } = useParams();
 
   const [jobData, setJobData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -462,44 +461,39 @@ const ClientJobDetail = () => {
   const handleCompleteDrop = () => setCompletePop(!completePop);
   const moveBack = () => navigate("/client/jobs");
 
-    useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("home-ownerToken");
     if (!token) {
       navigate("/clientAuth/login");
     }
   }, [navigate]);
 
+  useEffect(() => {
+    const token = localStorage.getItem("home-ownerToken");
 
-
-useEffect(() => {
-  const token = localStorage.getItem("home-ownerToken");
-
-  fetch(`https://blucolar-be.onrender.com/api/client/project/details/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-  
-    .then((res) => {
-      if (!res.ok) throw new Error("Network response was not ok");
-      return res.json();
+    fetch(`https://blucolar-be.onrender.com/api/client/project/details/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
-    .then((data) => {
-      setJobData(data?.project); // ✅ set only the actual project
-      setLoading(false);
-    })
-    .catch((err) => {
-      setError(err.message);
-      setLoading(false);
-    });
-}, [id]); // <-- include id in dependency array
-
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      })
+      .then((data) => {
+        setJobData(data?.project); // ✅ set only the actual project
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [id]); // <-- include id in dependency array
 
   if (loading) return <p style={{ padding: "20px" }}>Loading...</p>;
-  if (error) return <p style={{ padding: "20px", color: "red" }}>Error: {error}</p>;
+  if (error)
+    return <p style={{ padding: "20px", color: "red" }}>Error: {error}</p>;
   if (!jobData) return <p>No project data found.</p>;
-
-
 
   return (
     <DetailRap>
@@ -515,18 +509,22 @@ useEffect(() => {
                 style={{ color: "#101828" }}
               />
             </div>
-           <div className="detail-1-sub-1">
+            <div className="detail-1-sub-1">
               <h2>Job ID: {jobData.jobId || "N/A"}</h2>
               <div className="inner-detail-1">
                 <p>
-     Client: <span>{jobData.assignedArtisan?.firstName} {jobData.assignedArtisan?.lastName || "N/A"}</span>
-   </p>
+                  Client:{" "}
+                  <span>
+                    {jobData.client?.firstName}{" "}
+                    {jobData.client?.lastName || "N/A"}
+                  </span>
+                </p>
                 <p>{new Date(jobData.createdAt).toLocaleDateString()}</p>
                 <h6>{jobData?.status || "In progress"}</h6>
               </div>
             </div>
           </div>
-       <div className="detail-1-right">
+          <div className="detail-1-right">
             <div className="detail-1-sub-2-inner">
               <p>Project Cost</p>
               <h4>₦{jobData?.budget || 0}</h4>
@@ -562,33 +560,49 @@ useEffect(() => {
             {activeLink === "details" && (
               <div className="left-body">
                 <div className="left-body-1">
-                    <div className="service-1">
-                        <h6>Service Type</h6>
-                         <p>{jobData.projectType}</p>
-                    </div>
-                  
-                    <div className="service-1">
-                        <h6>Job Timeline (Start)</h6>
-                        <p>{new Date(jobData.createdAt).toLocaleDateString()}</p>
-                    </div>
-                      
-                    <div className="service-1">
-                        <h6>Location</h6>
-                        <p>{jobData.address}</p>
-                    </div>
-                    <div className="service-1">
-                        <h6>File Upload</h6>
-                       {jobData.document ? (
-  <img
-    src={`https://blucolar-be.onrender.com/${jobData.document}`}
-    alt="Uploaded File"
-    style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }}
-  />
-) : (
-  <p>No file uploaded.</p>
-)}
+                  <div className="service-1">
+                    <h6>Service Type</h6>
+                    <p>{jobData.projectType}</p>
+                  </div>
 
+                  <div className="service-1">
+                    <h6>Location</h6>
+                    <p>{jobData.address}</p>
+                  </div>
+                                        <div className="service-1">
+                      <h6>Job Timeline (Start)</h6>
+                      <p>{new Date(jobData.createdAt).toLocaleDateString()}</p>
                     </div>
+                      <div className="service-1">
+                      <h6>Job Timeline (End)</h6>
+                      <p>{new Date(jobData.createdAt).toLocaleDateString()}</p>
+                    </div>
+                  <div className="service-1">
+                    <h6>File Upload</h6>
+                    {jobData.images && jobData.images.length > 0 ? (
+                      jobData.images.map((imgUrl, index) => (
+                        <img
+                          key={index}
+                          src={imgUrl}
+                          alt={`Uploaded File ${index + 1}`}
+                          style={{
+                            maxWidth: "100%",
+                            height: "auto",
+                            borderRadius: "8px",
+                            marginBottom: "10px",
+                          }}
+                        />
+                      ))
+                    ) : (
+                      <p>No file uploaded.</p>
+                    )}
+
+                    <div className="service-1">
+                      <h6>Description</h6>
+                      <p>{jobData.description}</p>
+                    </div>
+
+                  </div>
                 </div>
                 {/* <div className="left-body-2">
                     <h4>Additional Details</h4>
@@ -698,33 +712,40 @@ useEffect(() => {
           </div>
         </div>
       </div>
-      {completePop ? (<>
-        <div className="dropdown-container">
-                      <div className="propose-div">
-                        <div className="propose-header">
-                          <h4>Confirm Job Completion</h4>
-                          <Icon
-                            onClick={handleCompleteDrop}
-                            className="icon"
-                            width="16px"
-                            height="16px"
-                            icon="prime:times"
-                            style={{ color: "#667085" }}
-                          />
-                        </div>
-                        <div className="propose-body">
-                          <p>Are you sure you want to confirm that this job as been fully completed and that 
-                            the client is satisfied?</p>
-                          <h4>NB: Please note that this action is not reversible!</h4>
-                          <div className="btns">
-                              <button  onClick={handleCompleteDrop} className="cancel-btn">Cancel</button>
-                              <button className="confirm-btn">Confirm</button>
-
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-      </>): ""}
+      {completePop ? (
+        <>
+          <div className="dropdown-container">
+            <div className="propose-div">
+              <div className="propose-header">
+                <h4>Confirm Job Completion</h4>
+                <Icon
+                  onClick={handleCompleteDrop}
+                  className="icon"
+                  width="16px"
+                  height="16px"
+                  icon="prime:times"
+                  style={{ color: "#667085" }}
+                />
+              </div>
+              <div className="propose-body">
+                <p>
+                  Are you sure you want to confirm that this job as been fully
+                  completed and that the client is satisfied?
+                </p>
+                <h4>NB: Please note that this action is not reversible!</h4>
+                <div className="btns">
+                  <button onClick={handleCompleteDrop} className="cancel-btn">
+                    Cancel
+                  </button>
+                  <button className="confirm-btn">Confirm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
     </DetailRap>
   );
 };

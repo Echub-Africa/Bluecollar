@@ -515,6 +515,27 @@ const handleCompleteDrop = () => {
                    {jobData.description || "No description provided."}
                   </p>
                 </div>
+                 <div className="left-body-inner">
+                   <h4>File Upload</h4>
+                    {jobData.images && jobData.images.length > 0 ? (
+                      jobData.images.map((imgUrl, index) => (
+                        <img
+                          key={index}
+                          src={imgUrl}
+                          alt={`Uploaded File ${index + 1}`}
+                          style={{
+                            maxWidth: "100%",
+                            height: "auto",
+                            borderRadius: "8px",
+                            marginBottom: "10px",
+                          }}
+                        />
+                      ))
+                    ) : (
+                      <p>No file uploaded.</p>
+                    )}
+
+                </div>
                 <div className="left-body-inner">
                   <h4>Job Timeline (Start)</h4>
                   <p>{new Date(jobData.timeline?.start).toLocaleDateString()}</p>
