@@ -1,8 +1,7 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 
 const RequestRap = styled.div`
   padding-top: 50px;
@@ -282,94 +281,76 @@ const RequestRap = styled.div`
 `;
 
 const ClientInvoice = () => {
-  const request = [
-    {
-      id: 1,
-      reqId: "REQ-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "24 Jan, 2024 - 5:30PM",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      reqId: "REQ-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "24 Jan, 2024 - 5:30PM",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      reqId: "REQ-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "24 Jan, 2024 - 5:30PM",
-      status: "Paid",
-    },
-    {
-      id: 4,
-      reqId: "REQ-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "24 Jan, 2024 - 5:30PM",
-      status: "Paid",
-    },
-    {
-      id: 5,
-      reqId: "REQ-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "24 Jan, 2024 - 5:30PM",
-      status: "Paid",
-    },
-    {
-      id: 6,
-      reqId: "REQ-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "24 Jan, 2024 - 5:30PM",
-      status: "Paid",
-    },
-    {
-      id: 7,
-      reqId: "REQ-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "24 Jan, 2024 - 5:30PM",
-      status: "Pending",
-    },
-  ];
-  const navigate = useNavigate();
+   const navigate = useNavigate();
+  const [invoices, setInvoices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [detailDrop, setDetailDrop] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
+const [selectedInvoice, setSelectedInvoice] = useState(null);
+
          useEffect(() => {
       const token = localStorage.getItem("companyToken");
       if (!token) {
         navigate("/companyAuth/login");
       }
     }, [navigate]);
-  const [dropdown, setDropdown] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);
-  const [detailDrop, setDetailDrop] = useState(false);
-  const [invoiceId, setInoviceId] = useState(null);
+
   // Toggle dropdown
-  const toggleDropdown = (id) => {
-    setOpenDropdown(openDropdown === id ? null : id);
-  };
-  const handleGoToDetail = (id) => {
-   setInoviceId(id);
-   setDetailDrop(!detailDrop);
-  };
+const handleGoToDetail = (id) => {
+  const found = invoices.find((inv) => inv._id === id);
+  setSelectedInvoice(found);
+  setDetailDrop(true);
+};
 
   const handleDropdown = () => {
     setDropdown(!dropdown);
   };
+
+    // Fetch invoices using native fetch
+  useEffect(() => {
+    const token = localStorage.getItem("companyToken");
+
+    const fetchInvoices = async () => {
+      try {
+        const response = await fetch("https://blucolar-be.onrender.com/api/client/invoices", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+        setInvoices(data || []);
+      } catch (error) {
+        console.error("Failed to fetch invoices:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInvoices();
+  }, []);
+
+    const {
+    quantity,
+    unitPrice,
+  } = selectedInvoice || {};
+
+const t = 1000;
+
+  const total = unitPrice * quantity;
+  const tax = t;
+  const grandTotal = total + tax;
+
+
+   const [searchTerm, setSearchTerm] = useState("");
+
+   const filteredJobs = invoices?.filter((item) =>
+  item?.invoiceId?.toLowerCase().includes(searchTerm.toLowerCase())
+);
+  
   return (
     <RequestRap>
       <div className="containary">
@@ -380,15 +361,20 @@ const ClientInvoice = () => {
           </div>
           <div className="request-2">
             <div className="search-div">
-              <input type="text" placeholder="Enter invoice iID..." />
-              <Icon
-                className="search-icon"
-                width="16px"
-                height="16px"
-                icon="material-symbols:search-rounded"
-                style={{ color: "#667085" }}
-              />
-            </div>
+                  <input
+                    type="text"
+                    placeholder="Enter Invoice ID..."
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                  />
+                  <Icon
+                    className="search-icon"
+                    width="16px"
+                    height="16px"
+                    icon="material-symbols:search-rounded"
+                    style={{ color: "#667085" }}
+                  />
+                </div>
             <div className="filter-div">
               <p>Status All</p>
               <Icon
@@ -399,6 +385,7 @@ const ClientInvoice = () => {
               />
             </div>
           </div>
+        
           <div className="table-container">
             <div className="new-table-scroll">
               <div className="table-div-con">
@@ -407,77 +394,56 @@ const ClientInvoice = () => {
                     <tr>
                       <th>S/N</th>
                       <th>INVOICE ID</th>
-                      <th>CUSTOMER</th>
-                      <th> PROJECT</th>
-                      <th> AMOUNT</th>
-                      <th> DATE</th>
+                      <th>CLIENT</th>
+                      <th>PROJECT TITLE</th>
+                      <th>AMOUNT</th>
+                      <th>DATE</th>
                       <th>STATUS</th>
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {request?.length > 0 ? (
-                      request.map((items, index) => (
-                        <tr
-                          key={items?.id}
-                          style={{ cursor: "pointer" }}
-                          onClick={() => handleGoToDetail(items?.id)}
-                        >
-                          <td>{index + 1}</td>
-                          <td>{items?.reqId}</td>
-                          <td>{items?.name}</td>
-                          <td>{items?.project}</td>
-                          <td>{items?.budject}</td>
-                          <td>{items?.date}</td>
-                          <td>
-                            <div
-                              style={{
-                                background:
-                                  items.status === "Pending"
-                                    ? "#FBF1E7"
-                                    : "#D8F4E8",
-                                color:
-                                  items.status === "Pending"
-                                    ? "#FF8C1A"
-                                    : "#027A48",
-                                borderRadius: "100px",
-                                padding: "5px 12px",
-                                width: "fit-content",
-                              }}
-                            >
-                              {items?.status}
-                            </div>
-                          </td>
-                          <td>
-                            <div style={{ position: "relative" }}>
-                              <span
-                                style={{ cursor: "pointer" }}
-                                onClick={() => toggleDropdown(items.id)}
-                              >
-                                ...
-                              </span>
+       <tbody>
+  {loading ? (
+    <tr>
+      <td colSpan="7">Loading...</td>
+    </tr>
+  ) : filteredJobs.length > 0 ? (
+    filteredJobs.map((item, index) => (
+<tr
+  key={item?._id}
+  style={{ cursor: "pointer" }}
+  onClick={() => handleGoToDetail(item?._id)}
+>
 
-                              {/* Dropdown Menu */}
-                              {openDropdown === items.id && (
-                                <div className="table-side-drop">
-                                  <p>Open</p>
-                                  <p>Approve</p>
-                                  <p>Delete</p>
-                                </div>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="10" className="no-case">
-                          <img src="/images/mask_img.png" alt="" />
-                          <h3>No Request.</h3>
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
+        <td>{index + 1}</td>
+        <td>{item.invoiceId}</td>
+        <td>{item.clientEmail}</td>
+        <td>{item.project?.projectType || "N/A"}</td>
+        <td>₦{(item.unitPrice * item.quantity).toLocaleString()}</td>
+        <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+        <td>
+          <span
+            style={{
+              background: item.status === "pending" ? "#FBF1E7" : "#D8F4E8",
+              color: item.status === "pending" ? "#FF8C1A" : "#027A48",
+              borderRadius: "100px",
+              padding: "5px 12px",
+              fontSize: "13px",
+              textTransform: "capitalize"
+            }}
+          >
+            {item.status}
+          </span>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="7">No invoices found.</td>
+    </tr>
+  )}
+</tbody>
+
                 </table>
               </div>
             </div>
@@ -526,7 +492,7 @@ const ClientInvoice = () => {
       ) : (
         ""
       )}
-      {detailDrop ? (
+      {detailDrop && selectedInvoice ? (
         <>
           <div className="dropdown-container">
                 <div className="all-invoice">
@@ -543,36 +509,47 @@ const ClientInvoice = () => {
                     />
                   </div>
                   <div className="invoice-body">
-                    
+                     <div className="detail-1">
+              <p>Status:</p>
+              <span>{selectedInvoice?.status || "N/A"}</span>
+            </div>
                     <div className="detail-2">
-                      <h3>INV256 - 87-560</h3>
+                      <h3>{selectedInvoice?.invoiceId}</h3>
                       <img src="/images/sign-blue.png" alt="" />
                     </div>
                     <div className="detail-3">
                       <div className="detail-3-sub">
                         <h6>Due date</h6>
-                        <p>24 January, 2024</p>
+                        <p>  {new Date(selectedInvoice?.dueDate).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}</p>
                       </div>
                       <div className="detail-3-sub">
                         <h6>Project</h6>
-                        <p>Construction Development</p>
+                        <p>{selectedInvoice?.project?.projectType || "N/A"}</p>
                       </div>
-                      <div className="detail-3-sub">
-                        <h6>Client</h6>
-                        <p>Michael Solomon</p>
+                       <div className="detail-3-sub">
+                        <h6>Project Description</h6>
+                        <p>{selectedInvoice?.project?.description || "N/A"}</p>
                       </div>
-                      <div className="detail-3-sub">
+                      <div
+                       className="detail-3-sub">
                         <h6>Billed to</h6>
-                        <p>John Smith</p>
-                        <p>company@yahoo.com</p>
+                        <p>{selectedInvoice?.clientEmail || "N/A"}</p>
                       </div>
                       <div className="detail-3-sub">
                         <h6>Currency</h6>
                         <p>Naira (NGN)</p>
                       </div>
                       <div className="detail-3-sub">
-                        <h6>Date</h6>
-                        <p>20 January, 2024</p>
+                        <h6>Date Created</h6>
+                        <p>{new Date(selectedInvoice?.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}</p>
                       </div>
                     </div>
                     <div>
@@ -587,25 +564,25 @@ const ClientInvoice = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="table-bottom-line">
-                              <td className="table-bottom-line">
-                                Part payment for project
-                              </td>
-                              <td className="table-bottom-line">1</td>
-                              <td className="table-bottom-line">₦500,000</td>
-                              <td className="table-bottom-line">₦500,000</td>
-                            </tr>
+                    <tr className="table-bottom-line">
+                      <td className="table-bottom-line">
+                        {selectedInvoice?.description || "N/A"}
+                      </td>
+                      <td className="table-bottom-line">{selectedInvoice?.quantity || "N/A"}</td>
+                      <td className="table-bottom-line">{selectedInvoice?.unitPrice || "N/A"}</td>
+                      <td className="table-bottom-line">₦{total || "N/A"}</td>
+                    </tr>
                             <tr>
                               <td></td>
                               <td></td>
                               <td className="table-color">Sub-total</td>
-                              <td>₦500,000</td>
+                               <td>₦{total || "N/A"}</td>
                             </tr>
                             <tr>
                               <td></td>
                               <td></td>
                               <td className="table-color">Tax</td>
-                              <td>₦80,000</td>
+                              <td>₦{t}</td>
                             </tr>
                             <tr>
                               <td className="table-bottom-line"></td>
@@ -619,7 +596,7 @@ const ClientInvoice = () => {
                               <td className="table-bottom-line"></td>
                               <td className="table-bottom-line"></td>
                               <td className="table-bottom-line">Total</td>
-                              <td className="table-bottom-line">₦580,000</td>
+                              <td className="table-bottom-line">₦{grandTotal || "N/A"}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -634,7 +611,8 @@ const ClientInvoice = () => {
                 </div>
               </div>
         </>
-      ): ""}
+      ): null}
+
     </RequestRap>
   );
 };

@@ -579,16 +579,25 @@ const AdminJobDetail = () => {
                     <p>{job.address}</p>
                   </div>
                   <div className="service-1">
-                    <h6>File Upload</h6>
-                                          {job.document ? (
-  <img
-    src={`https://blucolar-be.onrender.com/${job.document}`}
-    alt="Uploaded File"
-    style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }}
-  />
-) : (
-  <p>No file uploaded.</p>
-)}
+                     <h6>File Upload</h6>
+                    {job.images && job.images.length > 0 ? (
+                      job.images.map((imgUrl, index) => (
+                        <img
+                          key={index}
+                          src={imgUrl}
+                          alt={`Uploaded File ${index + 1}`}
+                          style={{
+                            maxWidth: "100%",
+                            height: "auto",
+                            borderRadius: "8px",
+                            marginBottom: "10px",
+                          }}
+                        />
+                      ))
+                    ) : (
+                      <p>No file uploaded.</p>
+                    )}
+
                   </div>
                 </div>
                 <div className="left-body-2">

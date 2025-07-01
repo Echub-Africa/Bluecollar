@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const UploadWrapper = styled.div`
@@ -137,7 +137,7 @@ const HomeRap = styled.div`
     line-height: 18px;
     max-width: 129px;
   }
-    @media screen and (max-width: 767px) {
+        @media screen and (max-width: 767px) {
     .new-dash-2-card h4{
    font-size: 17px;
 }
@@ -149,7 +149,7 @@ const HomeRap = styled.div`
     line-height: 17px;
     max-width: 184px;
   }
-            @media screen and (max-width: 767px) {
+                @media screen and (max-width: 767px) {
     .new-dash-2-card p{
    font-size: 15px;
 }
@@ -162,14 +162,9 @@ const HomeRap = styled.div`
     border: 1px solid #1018281a;
     color: #101828;
     font-size: 12px;
-    cursor: pointer;
     font-weight: 500;
   }
-     .new-dash-2-card button:hover {
-     background:rgb(157, 204, 251);
-     color: black;
-  }
-  @media screen and (max-width: 767px) {
+      @media screen and (max-width: 767px) {
     .new-dash-2-card button{
    font-size: 15px;
    padding: 10px 10px;
@@ -186,11 +181,11 @@ const HomeRap = styled.div`
     flex-direction: column;
     gap: 20px;
   }
-    @media screen and (max-width: 767px) {
+  @media screen and (max-width: 767px) {
     .new-dash-2-card {
-    width: 100%;
-}
-}
+      width: 100%;
+    }
+  }
   .new-dash-3-left h3 {
     color: #ffffff;
     font-size: 20px;
@@ -219,6 +214,43 @@ const HomeRap = styled.div`
     height: 100%;
     padding-top: 60px;
   }
+  .image-preview-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    width: 240px;
+  }
+
+  .image-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .image-preview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+
+  .image-preview-container button {
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    margin-top: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    width: 70px;
+    height: 30px;
+  }
+
   .the-image-2 {
     height: 161px;
     width: 127px;
@@ -241,9 +273,10 @@ const HomeRap = styled.div`
     gap: 20px;
     justify-content: space-between;
   }
-    @media screen and (max-width: 767px) {
-    .new-dash-2 { 
+  @media screen and (max-width: 767px) {
+    .new-dash-2 {
       flex-direction: column;
+      gap: 10px;
       align-items: center;
     }
   }
@@ -502,7 +535,7 @@ const HomeRap = styled.div`
   .dropdown-show-body textarea {
     height: 84px;
   }
-  .dropdown-show-body button {
+  .dropdown-show-body .winch {
     background: #0067d0 !important;
     width: 358px;
     height: 48px;
@@ -569,23 +602,81 @@ const HomeRap = styled.div`
       flex-wrap: wrap;
     }
   }
+    .success-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.success-modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.success-modal-content h3 {
+  margin-top: 1rem;
+  color: #10B981;
+}
+
+.success-modal-content p {
+  margin: 0.5rem 0 1.5rem;
+  color: #4B5563;
+}
+
+.close-btn {
+  background-color: #0067D0;
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
 `;
 
-
 const ClientHome = () => {
-   const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [formData, setFormData] = useState({
+    projectType: "",
+    address: "",
+    description: "",
+    timeline: {
+      start: "",
+      end: "",
+    },
+    budget: "",
+    images: [], // ✅ array of File objects
+  });
+
   const [fileName, setFileName] = useState("");
   const [fileNameSecond, setFileNameSecond] = useState("");
-  const fileInputRef = useRef();
-  const [showAll, setShowAll] = useState(false);
   const [quickShow, setQuickShow] = useState(false);
   const [projectShow, setProjectShow] = useState(false);
   const [consultationShow, setConsultationShow] = useState(false);
+  const [selectedTimelineSecond, setSelectedTimelineSecond] =
+    useState("Select timeline");
+  const [selectedTimelineThird, setSelectedTimelineThird] =
+    useState("Select timeline");
   const [timelineShow, setTimelineShow] = useState(false);
-  const [selectedTimeline, setSelectedTimeline] = useState("Select timeline");
-  const [selectedTimelineSecond, setSelectedTimelineSecond] = useState("Select timeline");
-  const [selectedTimelineThird, setSelectedTimelineThird] = useState("Select timeline");
-  
+
+  const fileInputRef = useRef(null);
+  const secondFileInputRef = useRef(null);
+
          useEffect(() => {
       const token = localStorage.getItem("companyToken");
       if (!token) {
@@ -593,59 +684,135 @@ const ClientHome = () => {
       }
     }, [navigate]);
 
-  const handleQuickShow = () => {
-    setQuickShow(!quickShow);
-  };
-  const handleProjectShow = () => {
-    setProjectShow(!projectShow);
-  };
-  const handleConsultationShow = () => {
-    setConsultationShow(!consultationShow);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleTimelineShow = () => {
-    setTimelineShow((prev) => !prev);
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const token = localStorage.getItem("companyToken");
+  if (!token) {
+    alert("User  not authenticated. Please log in.");
+    return;
+  }
+
+  const form = new FormData();
+  form.append("projectType", formData.projectType);
+  form.append("description", formData.description);
+  form.append("address", formData.address);
+form.append("timeline", JSON.stringify(formData.timeline));
+  form.append("budget", formData.budget);
+
+formData.images.forEach((file, index) => {
+  form.append("images", file); // Not images[index]
+});
+
+
+  try {
+    const response = await fetch(
+      "https://blucolar-be.onrender.com/api/client/project/create",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: form,
+      }
+    );
+
+    const result = await response.json();
+
+    if (response.ok) {
+      console.log("✅ Success:", result);
+
+      // Reset form
+      setFormData({
+        projectType: "",
+        description: "",
+        address: "",
+        timeline: { start: "", end: "" },
+        budget: "",
+        images: [],
+      });
+
+      // Close dropdown and show success modal
+      setQuickShow(false);
+      setShowSuccessModal(true);
+      setErrorMessage(""); // Clear previous error
+    } else {
+      setErrorMessage(
+        "Submission failed: " + (result.message || "Unknown error.")
+      );
+      console.error("❌ Error:", result.message);
+    }
+  } catch (error) {
+    setErrorMessage("Network error. Please try again.");
+    console.error("❌ Network error:", error);
+  }
+};
+
+
+  const handleQuickShow = () => setQuickShow(!quickShow);
+  const handleProjectShow = () => setProjectShow(!projectShow);
+  const handleConsultationShow = () => setConsultationShow(!consultationShow);
+  const handleTimelineShow = () => setTimelineShow((prev) => !prev);
 
   const handleTimelineSelect = (value) => {
-    setSelectedTimeline(value);
+    setFormData((prev) => ({ ...prev, jobTimeline: value }));
     setTimelineShow(false);
   };
+
   const handleTimelineSelectSecond = (value) => {
     setSelectedTimelineSecond(value);
     setTimelineShow(false);
   };
+
   const handleTimelineSelectThird = (value) => {
-    setSelectedTimelineThird(value);
+    setSelectedTimelineSecond(value);
     setTimelineShow(false);
   };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      setFileName(file.name);
-      console.log("Dropped file:", file);
-    }
-  };
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setFileName(file.name);
-      console.log("Selected file:", file);
-    }
-  };
-  const handleFileChangeSecond = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFileNameSecond(file.name);
-      console.log("Selected file:", file);
+      setFormData((prev) => ({ ...prev, file }));
     }
   };
 
-  const handleDragOver = (e) => e.preventDefault();
+  const handleFileChangeSecond = (e) => {
+    const files = Array.from(e.target.files);
+    const urls = files.map((file) => URL.createObjectURL(file));
+
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
+    }));
+
+    setPreviewUrls((prev) => [...prev, ...urls]);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files).filter((file) =>
+      file.type.startsWith("image/")
+    );
+    const urls = files.map((file) => URL.createObjectURL(file));
+
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
+    }));
+    setPreviewUrls((prev) => [...prev, ...urls]);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
   const triggerFileInput = () => fileInputRef.current.click();
+  const triggerFileInputSecond = () => secondFileInputRef.current.click();
 
 const companyName = localStorage.getItem("companyfirstName");
 const companyNamee = localStorage.getItem("companylastName") ;
@@ -653,15 +820,72 @@ const Email = localStorage.getItem("companyEmail") ;
 const role = localStorage.getItem("companyRole") ;
 const type = localStorage.getItem("companyType") ;
 
+  const [startDropdown, setstartDropdown] = useState(false);
+  const [finishTimeDropdown, setFinishTimeDropdown] = useState(false);
+
+  const handlestartSelect = (value) => {
+    setFormData((prev) => ({ ...prev, start: value }));
+    setstartDropdown(false);
+  };
+
+  const handleFinishTimeSelect = (value) => {
+    setFormData((prev) => ({ ...prev, finishTime: value }));
+    setFinishTimeDropdown(false);
+  };
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [previewUrls, setPreviewUrls] = useState([]);
+  const handleRemoveImage = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+    setPreviewUrls((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const [data, setData] = useState([]);
+  const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
+  const token = localStorage.getItem("companyToken");
+
+  const yourToken = token; // Replace with your actual token
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${yourToken}`, // Include your token here
+            "Content-Type": "application/json",
+          },
+          // Include credentials for CORS
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <HomeRap>
       <div className="containary all-dash">
         <div className="dash-left">
           <div className="dash-1">
             <div className="dash-1-sub-1">
-              <h5>{new Date().toLocaleDateString("en-NG", { weekday: "long", month: "long", day: "numeric" })}</h5>
+              <h5>
+                {new Date().toLocaleDateString("en-NG", {
+                  weekday: "long",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </h5>
               <h3>
-                Hello {companyNamee}, <br /> Welcome back.
+                Hi {companyName}, <br /> Welcome back.
               </h3>
             </div>
             <div className="dash-1-sub-2">
@@ -670,12 +894,12 @@ const type = localStorage.getItem("companyType") ;
                 <h4>₦0.00</h4>
               </div>
               <div className="inner-dash-1">
-                <p>Open Jobs</p>
-                <h4>0</h4>
+                <p>Jobs in progress</p>
+                <h4>{data.openJobs || 0}</h4>
               </div>
               <div className="inner-dash-1 no-border">
                 <p>Completed Jobs</p>
-                <h4>0</h4>
+                <h4>{data.completedJobs || 0}</h4>
               </div>
             </div>
           </div>
@@ -686,7 +910,7 @@ const type = localStorage.getItem("companyType") ;
               <p>
                 Electrical, plumbing, carpentry, painting, general handyman.
               </p>
-              <button>Request Job</button>
+              <button>Requst</button>
             </div>
             <div onClick={handleProjectShow} className="new-dash-2-card">
               <img src="/images/dash-10.png" alt="" />
@@ -695,7 +919,7 @@ const type = localStorage.getItem("companyType") ;
                 Corporates, developers, construction firms, and planning major
                 projects.
               </p>
-              <button>Request Job</button>
+              <button>Request</button>
             </div>
             <div onClick={handleConsultationShow} className="new-dash-2-card">
               <img src="/images/dash-10.png" alt="" />
@@ -703,7 +927,7 @@ const type = localStorage.getItem("companyType") ;
               <p>
                 Electrical, plumbing, carpentry, painting, general handyman.
               </p>
-              <button>Request Job</button>
+              <button>Request</button>
             </div>
           </div>
           <div className="new-dash-3">
@@ -721,7 +945,9 @@ const type = localStorage.getItem("companyType") ;
           <div className="dash-3">
             <img src="/images/img-10.png" alt="" />
             <div className="info">
-              <h4>{companyName} {companyNamee} </h4>
+              <h4>
+                {companyName} {companyNamee}
+              </h4>
               <p>{Email}</p>
             </div>
             <div className="verify">
@@ -732,26 +958,26 @@ const type = localStorage.getItem("companyType") ;
           </div>
           <div className="dash-4">
             <div className="dash-4-header">
-                    <h4>Profile</h4>
-                </div>
-                <div className="dash-4-body">
-                    <div className="dash-4-inner">
-                        <h6>Availability Badge:</h6>
-                        <p>Available</p>
-                    </div>
-                    <div className="dash-4-inner">
-                        <h6>Email Address:</h6>
-                        <p>{Email}</p>
-                    </div>
-                    {/* <div className="dash-4-inner">
+              <h4>Profile</h4>
+            </div>
+            <div className="dash-4-body">
+              <div className="dash-4-inner">
+                <h6>Availability Badge:</h6>
+                <p>Available</p>
+              </div>
+              <div className="dash-4-inner">
+                <h6>Email Address:</h6>
+                <p>{Email}</p>
+              </div>
+              {/* <div className="dash-4-inner">
                         <h6>Phone Number:</h6>
                         <p>08066091125</p>
-                    </div> */}
-                    <div className="dash-4-inner">
-                        <h6>Role:</h6>
-                        <p>{role}</p>
                     </div>
-                </div>
+                    <div className="dash-4-inner">
+                        <h6>Industry:</h6>
+                        <p>Electrical</p>
+                    </div> */}
+            </div>
           </div>
         </div>
       </div>
@@ -769,108 +995,161 @@ const type = localStorage.getItem("companyType") ;
                 style={{ color: "#667085" }}
               />
             </div>
-            <div className="dropdown-show-body">
-              <div className="category-div-sub">
-                <label>Service Type</label>
-                <select>
-                  <option className="select-blur" value="">
-                    Select
-                  </option>
-                  <option value="Plumbing">Electrical</option>
-                  <option value="Carpentry">Carpentry</option>
-                  <option value="Painting">Painting</option>
-                  <option value="General Handyman">General Handyman</option>
-                </select>
-              </div>
-              <div className="category-div-sub">
-                <label>Urgency Type</label>
-                <select>
-                  <option className="select-blur" value="">
-                    Select
-                  </option>
-                  <option value="Plumbing">Emergency</option>
-                  <option value="Carpentry">Immediately</option>
-                  <option value="Painting">Later</option>
-                </select>
-              </div>
-              <div className="category-div-sub">
-                <label>
-                  Location
-                  <span>Saved address</span>
-                </label>
-                <input type="text" placeholder="Enter address" />
-              </div>
-              <div className="category-div-sub">
-                <label>Additional details</label>
-                <textarea type="text" placeholder="Enter address"></textarea>
-              </div>
-              <div className="category-div-sub">
-                <label>File upload</label>
-                <UploadWrapper
-                  onDrop={handleDrop}
-                  onDragOver={handleDragOver}
-                  onClick={triggerFileInput}
-                >
-                  <HiddenInput
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                  />
-                  <img src="/images/file-icon.png" alt="" />
-                  <Text>
-                    Click to upload <SubText>or drag and drop</SubText>
-                  </Text>
-                  {fileName && <FileName>Uploaded: {fileName}</FileName>}
-                </UploadWrapper>
-              </div>
-              <div className="category-div-sub">
-                <label>Job Timeline</label>
-                <div style={{ position: "relative" }}>
-                  <div onClick={handleTimelineShow} className="timeline-div">
-                    <p>{selectedTimeline}</p>
-                    <Icon
-                className="icon"
-                width="18px"
-                height="18px"
-                icon="simple-line-icons:calender"
-                style={{ color: "#667085" }}
-              />
-                  </div>
-                  {timelineShow && (
-                    <div className="timeline-show-dropdown">
-                      {["1 hour", "1 day", "7 days", "14 days", "1 month"].map(
-                        (item) => (
-                          <p
-                            key={item}
-                            onClick={() => handleTimelineSelect(item)}
-                          >
-                            {item}
-                          </p>
-                        )
-                      )}
-                    </div>
-                  )}
+            <form onSubmit={handleSubmit}>
+              <div className="dropdown-show-body">
+                <div className="category-div-sub">
+                  <label>Service Type</label>
+                  <select
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Carpentry">Carpentry</option>
+                    <option value="Painting">Painting</option>
+                    <option value="General Handyman">General Handyman</option>
+                  </select>
                 </div>
-              </div>
 
-              <div className="category-div-sub">
-                <label>Budget</label>
-                <input type="text" placeholder="0.00" />
-              </div>
+                <div className="category-div-sub">
+                  <label>
+                    Location <span>Saved address</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    placeholder="Enter address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                  />
+                </div>
 
-              <button>Create request</button>
-            </div>
+                <div className="category-div-sub">
+                  <label>Additional details</label>
+                  <textarea
+                    name="description"
+                    placeholder="Enter additional details"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  ></textarea>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>images upload</label>
+                  <UploadWrapper
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onClick={triggerFileInput}
+                  >
+                    <HiddenInput
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChangeSecond}
+                      accept="image/*"
+                      multiple
+                    />
+                    <img src="/images/file-icon.png" alt="" />
+                    <Text>
+                      Click to upload <SubText>or drag and drop</SubText>
+                    </Text>
+                  </UploadWrapper>
+
+                  {previewUrls.map((url, index) => (
+                    <div key={index} className="image-preview-container">
+                      <img
+                        src={url}
+                        alt={`Preview ${index}`}
+                        className="image-preview"
+                      />
+                      <button onClick={() => handleRemoveImage(index)}>
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Start Date</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.timeline.start}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          timeline: {
+                            ...prev.timeline,
+                            start: e.target.value,
+                          },
+                        }))
+                      }
+                      className="timeline-date-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Finish Date</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.timeline.end}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          timeline: {
+                            ...prev.timeline,
+                            end: e.target.value,
+                          },
+                        }))
+                      }
+                      className="timeline-date-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Budget</label>
+                  <input
+                    type="text"
+                    name="budget"
+                    placeholder="0.00"
+                    value={formData.budget}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {errorMessage && (
+                  <div style={{ color: "red", marginBottom: "1rem" }}>
+                    {errorMessage}
+                  </div>
+                )}
+                <button className="winch" type="submit">
+                  Create request
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       ) : (
         ""
       )}
 
+      {showSuccessModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Request Created Successfully!</h3>
+            <p>Your maintenance request has been submitted.</p>
+            <button onClick={() => setShowSuccessModal(false)}>Close</button>
+          </div>
+        </div>
+      )}
+
       {projectShow ? (
         <div className="dropdown-container">
           <div className="dropdown-show">
             <div className="dropdown-show-header">
-              <h4>Project</h4>
+              <h4>Projects</h4>
               <Icon
                 onClick={handleProjectShow}
                 className="icon"
@@ -880,98 +1159,168 @@ const type = localStorage.getItem("companyType") ;
                 style={{ color: "#667085" }}
               />
             </div>
-            <div className="dropdown-show-body">
-              <div className="category-div-sub">
-                <label>Project type selection</label>
-                <select>
-                  <option className="select-blur" value="">
-                    Select
-                  </option>
-                  <option value="Plumbing">Electrical</option>
-                  <option value="Carpentry">Carpentry</option>
-                  <option value="Painting">Painting</option>
-                  <option value="General Handyman">General Handyman</option>
-                </select>
-              </div>
-              <div className="category-div-sub">
-              <label>Description</label>
-              <textarea
-                type="text"
-                placeholder="Enter project details"
-              ></textarea>
-            </div>
-            <div className="category-div-sub">
-              <label>
-                Location
-                <span>Saved address</span>
-              </label>
-              <input type="text" placeholder="Enter address" />
-            </div>
-            <div className="category-div-sub">
-              <label>Project Timeline</label>
-              <div style={{ position: "relative" }}>
-                <div onClick={handleTimelineShow} className="timeline-div">
-                  <p>{selectedTimelineSecond}</p>
-                  <Icon
-                className="icon"
-                width="18px"
-                height="18px"
-                icon="simple-line-icons:calender"
-                style={{ color: "#667085" }}
-              />
+            <form onSubmit={handleSubmit}>
+              <div className="dropdown-show-body">
+                <div className="category-div-sub">
+                  <label>Service Type</label>
+                  <select
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Carpentry">Carpentry</option>
+                    <option value="Painting">Painting</option>
+                    <option value="General Handyman">General Handyman</option>
+                  </select>
                 </div>
-                {timelineShow && (
-                  <div className="timeline-show-dropdown">
-                    {["1 hour", "1 day", "7 days", "14 days", "1 month"].map(
-                      (item) => (
-                        <p
-                          key={item}
-                          onClick={() => handleTimelineSelectSecond(item)}
-                        >
-                          {item}
-                        </p>
-                      )
-                    )}
+
+                <div className="category-div-sub">
+                  <label>
+                    Location <span>Saved address</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    placeholder="Enter address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Additional details</label>
+                  <textarea
+                    name="description"
+                    placeholder="Enter additional details"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  ></textarea>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>images upload</label>
+                  <UploadWrapper
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onClick={triggerFileInput}
+                  >
+                    <HiddenInput
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChangeSecond}
+                      accept="image/*"
+                      multiple
+                    />
+                    <img src="/images/file-icon.png" alt="" />
+                    <Text>
+                      Click to upload <SubText>or drag and drop</SubText>
+                    </Text>
+                  </UploadWrapper>
+
+                  {previewUrls.map((url, index) => (
+                    <div key={index} className="image-preview-container">
+                      <img
+                        src={url}
+                        alt={`Preview ${index}`}
+                        className="image-preview"
+                      />
+                      <button onClick={() => handleRemoveImage(index)}>
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Start Date</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.timeline.start}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          timeline: {
+                            ...prev.timeline,
+                            start: e.target.value,
+                          },
+                        }))
+                      }
+                      className="timeline-date-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Finish Date</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.timeline.end}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          timeline: {
+                            ...prev.timeline,
+                            end: e.target.value,
+                          },
+                        }))
+                      }
+                      className="timeline-date-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Budget</label>
+                  <input
+                    type="text"
+                    name="budget"
+                    placeholder="0.00"
+                    value={formData.budget}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {errorMessage && (
+                  <div style={{ color: "red", marginBottom: "1rem" }}>
+                    {errorMessage}
                   </div>
                 )}
+                {showSuccessModal && (
+  <div className="success-modal">
+    <div className="success-modal-content">
+      <Icon
+        icon="mdi:check-circle-outline"
+        width="32"
+        height="32"
+        style={{ color: "#10B981" }}
+      />
+      <h3>Project Created Successfully!</h3>
+      <p>Your project has been submitted. Await Admin verification once approved the work would comence.</p>
+      <button
+        className="close-btn"
+        onClick={() => setShowSuccessModal(false)}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
+
+                <button className="winch" type="submit">
+                  Create request
+                </button>
               </div>
-            </div>
-
-            <div className="category-div-sub">
-              <label>Document upload</label>
-              <UploadWrapper
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                onClick={triggerFileInput}
-              >
-                <HiddenInput
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleFileChangeSecond}
-                />
-                <img src="/images/file-icon.png" alt="" />
-                <Text>
-                  Click to upload <SubText>or drag and drop</SubText>
-                </Text>
-                {fileName && <FileName>Uploaded: {fileNameSecond}</FileName>}
-              </UploadWrapper>
-            </div>
-            <div className="category-div-sub">
-              <label>Budget</label>
-              <input type="text" placeholder="0.00" />
-            </div>
-            <button>Create request</button>
-            </div>
-           
-
+            </form>
           </div>
         </div>
       ) : (
         ""
       )}
 
-
-       {consultationShow ? (
+      {consultationShow ? (
         <div className="dropdown-container">
           <div className="dropdown-show">
             <div className="dropdown-show-header">
@@ -985,68 +1334,140 @@ const type = localStorage.getItem("companyType") ;
                 style={{ color: "#667085" }}
               />
             </div>
-            <div className="dropdown-show-body">
-              <div className="category-div-sub">
-                <label>Consultation type </label>
-                <select>
-                  <option className="select-blur" value="">
-                    Select
-                  </option>
-                  <option value="Plumbing">Electrical</option>
-                  <option value="Carpentry">Carpentry</option>
-                  <option value="Painting">Painting</option>
-                  <option value="General Handyman">General Handyman</option>
-                </select>
-              </div>
-              <div className="category-div-sub">
-              <label>Description</label>
-              <textarea
-                type="text"
-                placeholder="Enter project details"
-              ></textarea>
-            </div>
-            <div className="category-div-sub">
-              <label>
-                Consultation Method
-              </label>
-              <input type="text" placeholder="Enter address" />
-            </div>
-            <div className="category-div-sub">
-              <label>Availability Selection</label>
-              <div style={{ position: "relative" }}>
-                <div onClick={handleTimelineShow} className="timeline-div">
-                  <p>{selectedTimelineThird}</p>
-                  <Icon
-                className="icon"
-                width="18px"
-                height="18px"
-                icon="simple-line-icons:calender"
-                style={{ color: "#667085" }}
-              />
+            <form onSubmit={handleSubmit}>
+              <div className="dropdown-show-body">
+                <div className="category-div-sub">
+                  <label>Service Type</label>
+                  <select
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Carpentry">Carpentry</option>
+                    <option value="Painting">Painting</option>
+                    <option value="General Handyman">General Handyman</option>
+                  </select>
                 </div>
-                {timelineShow && (
-                  <div className="timeline-show-dropdown">
-                    {["1 hour", "1 day", "7 days", "14 days", "1 month"].map(
-                      (item) => (
-                        <p
-                          key={item}
-                          onClick={() => handleTimelineSelectThird(item)}
-                        >
-                          {item}
-                        </p>
-                      )
-                    )}
+
+                <div className="category-div-sub">
+                  <label>
+                    Location <span>Saved address</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    placeholder="Enter address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Additional details</label>
+                  <textarea
+                    name="description"
+                    placeholder="Enter additional details"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  ></textarea>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>images upload</label>
+                  <UploadWrapper
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onClick={triggerFileInput}
+                  >
+                    <HiddenInput
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChangeSecond}
+                      accept="image/*"
+                      multiple
+                    />
+                    <img src="/images/file-icon.png" alt="" />
+                    <Text>
+                      Click to upload <SubText>or drag and drop</SubText>
+                    </Text>
+                  </UploadWrapper>
+
+                  {previewUrls.map((url, index) => (
+                    <div key={index} className="image-preview-container">
+                      <img
+                        src={url}
+                        alt={`Preview ${index}`}
+                        className="image-preview"
+                      />
+                      <button onClick={() => handleRemoveImage(index)}>
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Start Date</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.timeline.start}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          timeline: {
+                            ...prev.timeline,
+                            start: e.target.value,
+                          },
+                        }))
+                      }
+                      className="timeline-date-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Finish Date</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.timeline.end}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          timeline: {
+                            ...prev.timeline,
+                            end: e.target.value,
+                          },
+                        }))
+                      }
+                      className="timeline-date-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Budget</label>
+                  <input
+                    type="text"
+                    name="budget"
+                    placeholder="0.00"
+                    value={formData.budget}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {errorMessage && (
+                  <div style={{ color: "red", marginBottom: "1rem" }}>
+                    {errorMessage}
                   </div>
                 )}
+                <button className="winch" type="submit">
+                  Create request
+                </button>
               </div>
-            </div>
-
-           
-          
-            <button>Create request</button>
-            </div>
-           
-
+            </form>
           </div>
         </div>
       ) : (

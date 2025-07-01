@@ -1,8 +1,7 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useEffect} from "react";
 
 const RequestRap = styled.div`
   padding-top: 50px;
@@ -142,98 +141,75 @@ const RequestRap = styled.div`
 `;
 
 const ClientJobs = () => {
-  const request = [
-    {
-      id: 1,
-      reqId: "JOB-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "4 Weeks",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      reqId: "JOB-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "4 Weeks",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      reqId: "JOB-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "4 Weeks",
-      status: "Completed",
-    },
-    {
-      id: 4,
-      reqId: "JOB-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "4 Weeks",
-      status: "Completed",
-    },
-    {
-      id: 5,
-      reqId: "JOB-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "4 Weeks",
-      status: "Completed",
-    },
-    {
-      id: 6,
-      reqId: "JOB-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "4 Weeks",
-      status: "Completed",
-    },
-    {
-      id: 7,
-      reqId: "JOB-789500",
-      name: "Micheal Soyombo",
-      project: "Construction Dev.",
-      budject: "₦500,000.00",
-      date: "4 Weeks",
-      status: "Pending",
-    },
-  ];
   const navigate = useNavigate();
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [dropdown, setDropdown] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
+
          useEffect(() => {
       const token = localStorage.getItem("companyToken");
       if (!token) {
         navigate("/companyAuth/login");
       }
     }, [navigate]);
-  const [dropdown, setDropdown] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);
+
 
   // Toggle dropdown
   const toggleDropdown = (id) => {
     setOpenDropdown(openDropdown === id ? null : id);
   };
   const handleGoToDetail = (id) => {
-    navigate(`/client/jobs/details/${id}`);
+    navigate(`/company/jobs/details/${id}`);
   };
 
   const handleDropdown = () => {
     setDropdown(!dropdown);
   };
+
+  const fetchProjects = async () => {
+    const token = localStorage.getItem("companyToken");
+    try {
+      const response = await fetch(
+        "https://blucolar-be.onrender.com/api/client/project/my/projects",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // Add token if necessary:
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setRequests(data?.projects || []); // Adjust this depending on the API's structure
+    } catch (err) {
+      setError("Failed to fetch project data.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+const companyName = localStorage.getItem("companyfirstName");
+const companyNamee = localStorage.getItem("companylastName") ;
+
   return (
     <RequestRap>
       <div className="containary">
         <div className="request">
           <div className="request-1">
-            <h2>Jobs </h2>
+            <h2>Projects</h2>
           </div>
           <div className="request-2">
             <div className="search-div">
@@ -246,15 +222,7 @@ const ClientJobs = () => {
                 style={{ color: "#667085" }}
               />
             </div>
-            <div className="filter-div">
-              <p>Status All</p>
-              <Icon
-                width="16px"
-                height="16px"
-                icon="ep:arrow-down-bold"
-                style={{ color: "#667085" }}
-              />
-            </div>
+          
           </div>
           <div className="table-container">
             <div className="new-table-scroll">
@@ -263,59 +231,87 @@ const ClientJobs = () => {
                   <thead>
                     <tr>
                       <th>S/N</th>
+
                       <th>JOB ID</th>
-                      <th>CLIENT</th>
-                      <th> PROJECT</th>
-                      <th> AMOUNT</th>
-                      <th> TIMELINE</th>
+                      <th>PROJECT TITLE</th>
+                      <th>AMOUNT</th>
+                      <th>TIMELINE (Start)</th>
+                      <th>TIMELINE (End)</th>
                       <th>STATUS</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {request?.length > 0 ? (
-                      request.map((items, index) => (
+                    {loading ? (
+                      <tr>
+                        <td colSpan="10">Loading projects...</td>
+                      </tr>
+                    ) : error ? (
+                      <tr>
+                        <td colSpan="10">{error}</td>
+                      </tr>
+                    ) : requests?.length > 0 ? (
+                      requests.map((item, index) => (
                         <tr
-                          key={items?.id}
+                          key={item._id}
                           style={{ cursor: "pointer" }}
-                          onClick={() => handleGoToDetail(items?.id)}
+                          onClick={() => handleGoToDetail(item._id)}
                         >
                           <td>{index + 1}</td>
-                          <td>{items?.reqId}</td>
-                          <td>{items?.name}</td>
-                          <td>{items?.project}</td>
-                          <td>{items?.budject}</td>
-                          <td>{items?.date}</td>
+                          <td>{item.jobId}</td>
+                          <td>{item.projectType || "Untitled Project"}</td>
+                          <td>{item.budget || "₦0.00"}</td>
+                          <td>
+                            {item.timeline?.start
+                              ? new Date(item.timeline.start)
+                                  .toISOString()
+                                  .slice(0, 10)
+                              : "N/A"}
+                          </td>
+                          <td>
+                            {item.timeline?.end
+                              ? new Date(item.timeline.end)
+                                  .toISOString()
+                                  .slice(0, 10)
+                              : "N/A"}
+                          </td>
+
                           <td>
                             <div
                               style={{
                                 background:
-                                  items.status === "Pending"
-                                    ? "#FBF1E7"
-                                    : "#D8F4E8",
+                                  item.status === "pending"
+                                    ? "grey"
+                                    : item.status === "approved"
+                                    ? "green"
+                                    : item.status === "rejected"
+                                    ? "red"
+                                    : "#E0E0E0", // fallback
                                 color:
-                                  items.status === "Pending"
-                                    ? "#FF8C1A"
-                                    : "#027A48",
+                                  item.status === "pending"
+                                    ? "white"
+                                    : item.status === "approved"
+                                    ? "white"
+                                    : item.status === "rejected"
+                                    ? "white"
+                                    : "#333",
                                 borderRadius: "100px",
                                 padding: "5px 12px",
                                 width: "fit-content",
                               }}
                             >
-                              {items?.status}
+                              {item.status || "Unknown"}
                             </div>
                           </td>
                           <td>
                             <div style={{ position: "relative" }}>
                               <span
                                 style={{ cursor: "pointer" }}
-                                onClick={() => toggleDropdown(items.id)}
+                                onClick={() => toggleDropdown(item._id)}
                               >
                                 ...
                               </span>
-
-                              {/* Dropdown Menu */}
-                              {openDropdown === items.id && (
+                              {openDropdown === item._id && (
                                 <div className="table-side-drop">
                                   <p>Open</p>
                                   <p>Approve</p>
@@ -330,7 +326,7 @@ const ClientJobs = () => {
                       <tr>
                         <td colSpan="10" className="no-case">
                           <img src="/images/mask_img.png" alt="" />
-                          <h3>No Request.</h3>
+                          <h3>No Projects Found.</h3>
                         </td>
                       </tr>
                     )}
@@ -341,7 +337,6 @@ const ClientJobs = () => {
           </div>
         </div>
       </div>
-     
     </RequestRap>
   );
 };

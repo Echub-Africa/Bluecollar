@@ -702,8 +702,7 @@ const handleSubmit = async (e) => {
   form.append("projectType", formData.projectType);
   form.append("description", formData.description);
   form.append("address", formData.address);
-  form.append("timeline[start]", formData.timeline.start);
-  form.append("timeline[end]", formData.timeline.end);
+form.append("timeline", JSON.stringify(formData.timeline));
   form.append("budget", formData.budget);
 
 formData.images.forEach((file, index) => {
