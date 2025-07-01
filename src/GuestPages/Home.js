@@ -104,7 +104,7 @@ const HomeRap = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-top: -120px;
+    margin-top: -190px;
   }
   @media screen and (max-width: 767px) {
     .home-sub-1 {
@@ -678,10 +678,10 @@ const Home = () => {
             We provide professional & expert services for ongoing maintenance,
             workforce support, and large-scale projects.
           </p>
-          {/* <div className="home-1-btn">
-            <Link className="hire">Home Owner</Link>
-            <Link className="become">Company</Link>
-          </div> */}
+          <div className="home-1-btn">
+            <Link to="/artisanAuth/signUp" className="hire">Sign up</Link>
+            <Link to="/artisanAuth/login" className="become">Sign in</Link>
+          </div>
         </div>
         <div>
           <img src="/images/image-1.png" alt="" />

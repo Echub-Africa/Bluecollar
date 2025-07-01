@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const UploadWrapper = styled.div`
@@ -137,6 +137,11 @@ const HomeRap = styled.div`
     line-height: 18px;
     max-width: 129px;
   }
+        @media screen and (max-width: 767px) {
+    .new-dash-2-card h4{
+   font-size: 17px;
+}
+}
   .new-dash-2-card p {
     color: #667085;
     font-size: 12px;
@@ -144,6 +149,11 @@ const HomeRap = styled.div`
     line-height: 17px;
     max-width: 184px;
   }
+                @media screen and (max-width: 767px) {
+    .new-dash-2-card p{
+   font-size: 15px;
+}
+}
   .new-dash-2-card button {
     background: transparent;
     width: 90px;
@@ -154,6 +164,13 @@ const HomeRap = styled.div`
     font-size: 12px;
     font-weight: 500;
   }
+      @media screen and (max-width: 767px) {
+    .new-dash-2-card button{
+   font-size: 15px;
+   padding: 10px 10px;
+   width: max-content;
+}
+}
   .new-dash-2-card {
     border: 1px solid #1018281a;
     background: #ffffff;
@@ -163,6 +180,11 @@ const HomeRap = styled.div`
     cursor: pointer;
     flex-direction: column;
     gap: 20px;
+  }
+  @media screen and (max-width: 767px) {
+    .new-dash-2-card {
+      width: 100%;
+    }
   }
   .new-dash-3-left h3 {
     color: #ffffff;
@@ -192,42 +214,42 @@ const HomeRap = styled.div`
     height: 100%;
     padding-top: 60px;
   }
-.image-preview-container {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-  width: 240px;
-}
+  .image-preview-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    width: 240px;
+  }
 
-.image-item {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  .image-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-.image-preview {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-}
+  .image-preview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
 
-.image-preview-container button {
-  background-color: #ff4d4f;
-  color: white;
-  border: none;
-  padding: 4px 8px;
-  margin-top: 5px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  width: 70px;
-  height: 30px;
-}
+  .image-preview-container button {
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    margin-top: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    width: 70px;
+    height: 30px;
+  }
 
   .the-image-2 {
     height: 161px;
@@ -250,6 +272,13 @@ const HomeRap = styled.div`
     display: flex;
     gap: 20px;
     justify-content: space-between;
+  }
+  @media screen and (max-width: 767px) {
+    .new-dash-2 {
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
   }
   .sub-dash-2 p {
     color: #667085;
@@ -573,16 +602,57 @@ const HomeRap = styled.div`
       flex-wrap: wrap;
     }
   }
+    .success-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.success-modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.success-modal-content h3 {
+  margin-top: 1rem;
+  color: #10B981;
+}
+
+.success-modal-content p {
+  margin: 0.5rem 0 1.5rem;
+  color: #4B5563;
+}
+
+.close-btn {
+  background-color: #0067D0;
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
 
 `;
 
 const ClientHome = () => {
   const navigate = useNavigate();
-    const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState({
-   projectType: "",
+    projectType: "",
     address: "",
     description: "",
     timeline: {
@@ -590,8 +660,7 @@ const ClientHome = () => {
       end: "",
     },
     budget: "",
-   document: []// ✅ array of File objects
-
+    images: [], // ✅ array of File objects
   });
 
   const [fileName, setFileName] = useState("");
@@ -599,8 +668,10 @@ const ClientHome = () => {
   const [quickShow, setQuickShow] = useState(false);
   const [projectShow, setProjectShow] = useState(false);
   const [consultationShow, setConsultationShow] = useState(false);
-  const [selectedTimelineSecond, setSelectedTimelineSecond] = useState("Select timeline");
-  const [selectedTimelineThird, setSelectedTimelineThird] = useState("Select timeline");
+  const [selectedTimelineSecond, setSelectedTimelineSecond] =
+    useState("Select timeline");
+  const [selectedTimelineThird, setSelectedTimelineThird] =
+    useState("Select timeline");
   const [timelineShow, setTimelineShow] = useState(false);
 
   const fileInputRef = useRef(null);
@@ -623,7 +694,7 @@ const handleSubmit = async (e) => {
 
   const token = localStorage.getItem("home-ownerToken");
   if (!token) {
-    alert("User not authenticated. Please log in.");
+    alert("User  not authenticated. Please log in.");
     return;
   }
 
@@ -635,19 +706,22 @@ const handleSubmit = async (e) => {
   form.append("timeline[end]", formData.timeline.end);
   form.append("budget", formData.budget);
 
-formData.document.forEach((file, index) => {
-  form.append(`document[${index}]`, file);
+formData.images.forEach((file, index) => {
+  form.append("images", file); // Not images[index]
 });
 
 
   try {
-    const response = await fetch("https://blucolar-be.onrender.com/api/client/project/create", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: form,
-    });
+    const response = await fetch(
+      "https://blucolar-be.onrender.com/api/client/project/create",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: form,
+      }
+    );
 
     const result = await response.json();
 
@@ -661,7 +735,7 @@ formData.document.forEach((file, index) => {
         address: "",
         timeline: { start: "", end: "" },
         budget: "",
-        document: []
+        images: [],
       });
 
       // Close dropdown and show success modal
@@ -669,7 +743,9 @@ formData.document.forEach((file, index) => {
       setShowSuccessModal(true);
       setErrorMessage(""); // Clear previous error
     } else {
-      setErrorMessage("Submission failed: " + (result.message || "Unknown error."));
+      setErrorMessage(
+        "Submission failed: " + (result.message || "Unknown error.")
+      );
       console.error("❌ Error:", result.message);
     }
   } catch (error) {
@@ -677,8 +753,6 @@ formData.document.forEach((file, index) => {
     console.error("❌ Network error:", error);
   }
 };
-
-
 
 
   const handleQuickShow = () => setQuickShow(!quickShow);
@@ -696,7 +770,7 @@ formData.document.forEach((file, index) => {
     setTimelineShow(false);
   };
 
-    const handleTimelineSelectThird = (value) => {
+  const handleTimelineSelectThird = (value) => {
     setSelectedTimelineSecond(value);
     setTimelineShow(false);
   };
@@ -708,36 +782,35 @@ formData.document.forEach((file, index) => {
     }
   };
 
-const handleFileChangeSecond = (e) => {
-  const files = Array.from(e.target.files);
-  const urls = files.map((file) => URL.createObjectURL(file));
+  const handleFileChangeSecond = (e) => {
+    const files = Array.from(e.target.files);
+    const urls = files.map((file) => URL.createObjectURL(file));
 
-  setFormData((prev) => ({
-    ...prev,
-    document: [...prev.document, ...files],
-  }));
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
+    }));
 
-  setPreviewUrls((prev) => [...prev, ...urls]);
-};
+    setPreviewUrls((prev) => [...prev, ...urls]);
+  };
 
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files).filter((file) =>
+      file.type.startsWith("image/")
+    );
+    const urls = files.map((file) => URL.createObjectURL(file));
 
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
+    }));
+    setPreviewUrls((prev) => [...prev, ...urls]);
+  };
 
-const handleDrop = (e) => {
-  e.preventDefault();
-  const files = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith("image/"));
-  const urls = files.map((file) => URL.createObjectURL(file));
-
-  setFormData((prev) => ({
-    ...prev,
-    document: [...prev.document, ...files],
-  }));
-  setPreviewUrls((prev) => [...prev, ...urls]);
-};
-
-
- const handleDragOver = (e) => {
-  e.preventDefault();
-};
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
 
   const triggerFileInput = () => fileInputRef.current.click();
   const triggerFileInputSecond = () => secondFileInputRef.current.click();
@@ -747,57 +820,55 @@ const handleDrop = (e) => {
   const Email = localStorage.getItem("home-ownerEmail");
 
   const [startDropdown, setstartDropdown] = useState(false);
-const [finishTimeDropdown, setFinishTimeDropdown] = useState(false);
+  const [finishTimeDropdown, setFinishTimeDropdown] = useState(false);
 
-const handlestartSelect = (value) => {
-  setFormData((prev) => ({ ...prev, start: value }));
-  setstartDropdown(false);
-};
+  const handlestartSelect = (value) => {
+    setFormData((prev) => ({ ...prev, start: value }));
+    setstartDropdown(false);
+  };
 
-const handleFinishTimeSelect = (value) => {
-  setFormData((prev) => ({ ...prev, finishTime: value }));
-  setFinishTimeDropdown(false);
-};
+  const handleFinishTimeSelect = (value) => {
+    setFormData((prev) => ({ ...prev, finishTime: value }));
+    setFinishTimeDropdown(false);
+  };
 
-const [showSuccessModal, setShowSuccessModal] = useState(false);
-const [previewUrls, setPreviewUrls] = useState([]);
-const handleRemoveImage = (index) => {
-  setFormData((prev) => ({
-    ...prev,
-    document: prev.document.filter((_, i) => i !== index),
-  }));
-  setPreviewUrls((prev) => prev.filter((_, i) => i !== index));
-};
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [previewUrls, setPreviewUrls] = useState([]);
+  const handleRemoveImage = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+    setPreviewUrls((prev) => prev.filter((_, i) => i !== index));
+  };
 
-const [data, setData] = useState([]);
-const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
- const token = localStorage.getItem("home-ownerToken");
+  const [data, setData] = useState([]);
+  const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
+  const token = localStorage.getItem("home-ownerToken");
 
   const yourToken = token; // Replace with your actual token
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(url, {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Authorization': `Bearer ${yourToken}`, // Include your token here
-            'Content-Type': 'application/json',
+            Authorization: `Bearer ${yourToken}`, // Include your token here
+            "Content-Type": "application/json",
           },
-     // Include credentials for CORS
+          // Include credentials for CORS
         });
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const result = await response.json();
         setData(result);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, []);
-
-
 
   return (
     <HomeRap>
@@ -805,7 +876,13 @@ const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
         <div className="dash-left">
           <div className="dash-1">
             <div className="dash-1-sub-1">
-              <h5>{new Date().toLocaleDateString("en-NG", { weekday: "long", month: "long", day: "numeric" })}</h5>
+              <h5>
+                {new Date().toLocaleDateString("en-NG", {
+                  weekday: "long",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </h5>
               <h3>
                 Hi {lastName}, <br /> Welcome back.
               </h3>
@@ -821,7 +898,7 @@ const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
               </div>
               <div className="inner-dash-1 no-border">
                 <p>Completed Jobs</p>
-                <h4>{data.completedJobs}</h4>
+                <h4>{data.completedJobs || 0}</h4>
               </div>
             </div>
           </div>
@@ -867,7 +944,9 @@ const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
           <div className="dash-3">
             <img src="/images/img-10.png" alt="" />
             <div className="info">
-              <h4>{firstName} {lastName}</h4>
+              <h4>
+                {firstName} {lastName}
+              </h4>
               <p>{Email}</p>
             </div>
             <div className="verify">
@@ -878,18 +957,18 @@ const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
           </div>
           <div className="dash-4">
             <div className="dash-4-header">
-                    <h4>Profile</h4>
-                </div>
-                <div className="dash-4-body">
-                    <div className="dash-4-inner">
-                        <h6>Availability Badge:</h6>
-                        <p>Available</p>
-                    </div>
-                    <div className="dash-4-inner">
-                        <h6>Email Address:</h6>
-                        <p>{Email}</p>
-                    </div>
-                    {/* <div className="dash-4-inner">
+              <h4>Profile</h4>
+            </div>
+            <div className="dash-4-body">
+              <div className="dash-4-inner">
+                <h6>Availability Badge:</h6>
+                <p>Available</p>
+              </div>
+              <div className="dash-4-inner">
+                <h6>Email Address:</h6>
+                <p>{Email}</p>
+              </div>
+              {/* <div className="dash-4-inner">
                         <h6>Phone Number:</h6>
                         <p>08066091125</p>
                     </div>
@@ -897,7 +976,7 @@ const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
                         <h6>Industry:</h6>
                         <p>Electrical</p>
                     </div> */}
-                </div>
+            </div>
           </div>
         </div>
       </div>
@@ -915,132 +994,140 @@ const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
                 style={{ color: "#667085" }}
               />
             </div>
-          <form onSubmit={handleSubmit}>
-      <div className="dropdown-show-body">
-        <div className="category-div-sub">
-          <label>Service Type</label>
-          <select name="projectType" value={formData.projectType} onChange={handleInputChange}>
-            <option value="">Select</option>
-            <option value="Electrical">Electrical</option>
-            <option value="Carpentry">Carpentry</option>
-            <option value="Painting">Painting</option>
-            <option value="General Handyman">General Handyman</option>
-          </select>
-        </div>
+            <form onSubmit={handleSubmit}>
+              <div className="dropdown-show-body">
+                <div className="category-div-sub">
+                  <label>Service Type</label>
+                  <select
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Carpentry">Carpentry</option>
+                    <option value="Painting">Painting</option>
+                    <option value="General Handyman">General Handyman</option>
+                  </select>
+                </div>
 
-        <div className="category-div-sub">
-          <label>
-            Location <span>Saved address</span>
-          </label>
-          <input
-            type="text"
-            name="address"
-            placeholder="Enter address"
-            value={formData.address}
-            onChange={handleInputChange}
-          />
-        </div>
+                <div className="category-div-sub">
+                  <label>
+                    Location <span>Saved address</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    placeholder="Enter address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                  />
+                </div>
 
-        <div className="category-div-sub">
-          <label>Additional details</label>
-          <textarea
-            name="description"
-            placeholder="Enter additional details"
-            value={formData.description}
-            onChange={handleInputChange}
-          ></textarea>
-        </div>
+                <div className="category-div-sub">
+                  <label>Additional details</label>
+                  <textarea
+                    name="description"
+                    placeholder="Enter additional details"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  ></textarea>
+                </div>
 
-<div className="category-div-sub">
-  <label>Document upload</label>
-  <UploadWrapper
-    onDrop={handleDrop}
-    onDragOver={handleDragOver}
-    onClick={triggerFileInput}
-  >
-    <HiddenInput
-      type="file"
-      ref={fileInputRef}
-      onChange={handleFileChangeSecond}
-      accept="image/*"
-      multiple
-    />
-    <img src="/images/file-icon.png" alt="" />
-    <Text>
-      Click to upload <SubText>or drag and drop</SubText>
-    </Text>
-  </UploadWrapper>
+                <div className="category-div-sub">
+                  <label>images upload</label>
+                  <UploadWrapper
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onClick={triggerFileInput}
+                  >
+                    <HiddenInput
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChangeSecond}
+                      accept="image/*"
+                      multiple
+                    />
+                    <img src="/images/file-icon.png" alt="" />
+                    <Text>
+                      Click to upload <SubText>or drag and drop</SubText>
+                    </Text>
+                  </UploadWrapper>
 
-{previewUrls.map((url, index) => (
-  <div key={index} className="image-preview-container">
-    <img src={url} alt={`Preview ${index}`} className="image-preview" />
-    <button onClick={() => handleRemoveImage(index)}>Remove</button>
-  </div>
-))}
+                  {previewUrls.map((url, index) => (
+                    <div key={index} className="image-preview-container">
+                      <img
+                        src={url}
+                        alt={`Preview ${index}`}
+                        className="image-preview"
+                      />
+                      <button onClick={() => handleRemoveImage(index)}>
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
 
-</div>
+                <div className="category-div-sub">
+                  <label>Start Date</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.timeline.start}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          timeline: {
+                            ...prev.timeline,
+                            start: e.target.value,
+                          },
+                        }))
+                      }
+                      className="timeline-date-input"
+                    />
+                  </div>
+                </div>
 
+                <div className="category-div-sub">
+                  <label>Finish Date</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.timeline.end}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          timeline: {
+                            ...prev.timeline,
+                            end: e.target.value,
+                          },
+                        }))
+                      }
+                      className="timeline-date-input"
+                    />
+                  </div>
+                </div>
 
-<div className="category-div-sub">
-  <label>Start Date</label>
-  <div style={{ position: "relative" }}>
-    <input
-      type="date"
-      value={formData.timeline.start}
-      onChange={(e) =>
-        setFormData((prev) => ({
-          ...prev,
-          timeline: {
-            ...prev.timeline,
-            start: e.target.value,
-          },
-        }))
-      }
-      className="timeline-date-input"
-    />
-  </div>
-</div>
-
-<div className="category-div-sub">
-  <label>Finish Date</label>
-  <div style={{ position: "relative" }}>
-    <input
-      type="date"
-      value={formData.timeline.end}
-      onChange={(e) =>
-        setFormData((prev) => ({
-          ...prev,
-          timeline: {
-            ...prev.timeline,
-            end: e.target.value,
-          },
-        }))
-      }
-      className="timeline-date-input"
-    />
-  </div>
-</div>
-
-
-
-        <div className="category-div-sub">
-          <label>Budget</label>
-          <input
-            type="text"
-            name="budget"
-            placeholder="0.00"
-            value={formData.budget}
-            onChange={handleInputChange}
-          />
-        </div>
-  {errorMessage && (
-            <div style={{ color: "red", marginBottom: "1rem" }}>
-              {errorMessage}
-            </div>
-          )}
-        <button className="winch" type="submit">Create request</button>
-      </div>
-    </form>
+                <div className="category-div-sub">
+                  <label>Budget</label>
+                  <input
+                    type="text"
+                    name="budget"
+                    placeholder="0.00"
+                    value={formData.budget}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {errorMessage && (
+                  <div style={{ color: "red", marginBottom: "1rem" }}>
+                    {errorMessage}
+                  </div>
+                )}
+                <button className="winch" type="submit">
+                  Create request
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       ) : (
@@ -1048,18 +1135,17 @@ const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
       )}
 
       {showSuccessModal && (
-  <div className="modal-overlay">
-    <div className="modal-content">
-      <h3>Request Created Successfully!</h3>
-      <p>Your maintenance request has been submitted.</p>
-      <button onClick={() => setShowSuccessModal(false)}>Close</button>
-    </div>
-  </div>
-)}
-
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Request Created Successfully!</h3>
+            <p>Your maintenance request has been submitted.</p>
+            <button onClick={() => setShowSuccessModal(false)}>Close</button>
+          </div>
+        </div>
+      )}
 
       {projectShow ? (
-         <div className="dropdown-container">
+        <div className="dropdown-container">
           <div className="dropdown-show">
             <div className="dropdown-show-header">
               <h4>Projects</h4>
@@ -1072,140 +1158,168 @@ const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
                 style={{ color: "#667085" }}
               />
             </div>
-          <form onSubmit={handleSubmit}>
-      <div className="dropdown-show-body">
-        <div className="category-div-sub">
-          <label>Service Type</label>
-          <select name="projectType" value={formData.projectType} onChange={handleInputChange}>
-            <option value="">Select</option>
-            <option value="Electrical">Electrical</option>
-            <option value="Carpentry">Carpentry</option>
-            <option value="Painting">Painting</option>
-            <option value="General Handyman">General Handyman</option>
-          </select>
-        </div>
+            <form onSubmit={handleSubmit}>
+              <div className="dropdown-show-body">
+                <div className="category-div-sub">
+                  <label>Service Type</label>
+                  <select
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Carpentry">Carpentry</option>
+                    <option value="Painting">Painting</option>
+                    <option value="General Handyman">General Handyman</option>
+                  </select>
+                </div>
 
-        <div className="category-div-sub">
-          <label>
-            Location <span>Saved address</span>
-          </label>
-          <input
-            type="text"
-            name="address"
-            placeholder="Enter address"
-            value={formData.address}
-            onChange={handleInputChange}
-          />
-        </div>
+                <div className="category-div-sub">
+                  <label>
+                    Location <span>Saved address</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    placeholder="Enter address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                  />
+                </div>
 
-        <div className="category-div-sub">
-          <label>Additional details</label>
-          <textarea
-            name="description"
-            placeholder="Enter additional details"
-            value={formData.description}
-            onChange={handleInputChange}
-          ></textarea>
-        </div>
+                <div className="category-div-sub">
+                  <label>Additional details</label>
+                  <textarea
+                    name="description"
+                    placeholder="Enter additional details"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  ></textarea>
+                </div>
 
-<div className="category-div-sub">
-  <label>Document upload</label>
-  <UploadWrapper
-    onDrop={handleDrop}
-    onDragOver={handleDragOver}
-    onClick={triggerFileInput}
-  >
-    <HiddenInput
-      type="file"
-      ref={fileInputRef}
-      onChange={handleFileChangeSecond}
-      accept="image/*"
-      multiple
-    />
-    <img src="/images/file-icon.png" alt="" />
-    <Text>
-      Click to upload <SubText>or drag and drop</SubText>
-    </Text>
-  </UploadWrapper>
+                <div className="category-div-sub">
+                  <label>images upload</label>
+                  <UploadWrapper
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onClick={triggerFileInput}
+                  >
+                    <HiddenInput
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChangeSecond}
+                      accept="image/*"
+                      multiple
+                    />
+                    <img src="/images/file-icon.png" alt="" />
+                    <Text>
+                      Click to upload <SubText>or drag and drop</SubText>
+                    </Text>
+                  </UploadWrapper>
 
-{previewUrls.map((url, index) => (
-  <div key={index} className="image-preview-container">
-    <img src={url} alt={`Preview ${index}`} className="image-preview" />
-    <button onClick={() => handleRemoveImage(index)}>Remove</button>
+                  {previewUrls.map((url, index) => (
+                    <div key={index} className="image-preview-container">
+                      <img
+                        src={url}
+                        alt={`Preview ${index}`}
+                        className="image-preview"
+                      />
+                      <button onClick={() => handleRemoveImage(index)}>
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Start Date</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.timeline.start}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          timeline: {
+                            ...prev.timeline,
+                            start: e.target.value,
+                          },
+                        }))
+                      }
+                      className="timeline-date-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Finish Date</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.timeline.end}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          timeline: {
+                            ...prev.timeline,
+                            end: e.target.value,
+                          },
+                        }))
+                      }
+                      className="timeline-date-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Budget</label>
+                  <input
+                    type="text"
+                    name="budget"
+                    placeholder="0.00"
+                    value={formData.budget}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {errorMessage && (
+                  <div style={{ color: "red", marginBottom: "1rem" }}>
+                    {errorMessage}
+                  </div>
+                )}
+                {showSuccessModal && (
+  <div className="success-modal">
+    <div className="success-modal-content">
+      <Icon
+        icon="mdi:check-circle-outline"
+        width="32"
+        height="32"
+        style={{ color: "#10B981" }}
+      />
+      <h3>Project Created Successfully!</h3>
+      <p>Your project has been submitted. Await Admin verification once approved the work would comence.</p>
+      <button
+        className="close-btn"
+        onClick={() => setShowSuccessModal(false)}
+      >
+        Close
+      </button>
+    </div>
   </div>
-))}
+)}
 
-</div>
-
-
-<div className="category-div-sub">
-  <label>Start Date</label>
-  <div style={{ position: "relative" }}>
-    <input
-      type="date"
-      value={formData.timeline.start}
-      onChange={(e) =>
-        setFormData((prev) => ({
-          ...prev,
-          timeline: {
-            ...prev.timeline,
-            start: e.target.value,
-          },
-        }))
-      }
-      className="timeline-date-input"
-    />
-  </div>
-</div>
-
-<div className="category-div-sub">
-  <label>Finish Date</label>
-  <div style={{ position: "relative" }}>
-    <input
-      type="date"
-      value={formData.timeline.end}
-      onChange={(e) =>
-        setFormData((prev) => ({
-          ...prev,
-          timeline: {
-            ...prev.timeline,
-            end: e.target.value,
-          },
-        }))
-      }
-      className="timeline-date-input"
-    />
-  </div>
-</div>
-
-
-
-        <div className="category-div-sub">
-          <label>Budget</label>
-          <input
-            type="text"
-            name="budget"
-            placeholder="0.00"
-            value={formData.budget}
-            onChange={handleInputChange}
-          />
-        </div>
-  {errorMessage && (
-            <div style={{ color: "red", marginBottom: "1rem" }}>
-              {errorMessage}
-            </div>
-          )}
-        <button className="winch" type="submit">Create request</button>
-      </div>
-    </form>
+                <button className="winch" type="submit">
+                  Create request
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-       ) : (
+      ) : (
         ""
       )}
 
-
-       {consultationShow ? (
+      {consultationShow ? (
         <div className="dropdown-container">
           <div className="dropdown-show">
             <div className="dropdown-show-header">
@@ -1219,132 +1333,140 @@ const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
                 style={{ color: "#667085" }}
               />
             </div>
-          <form onSubmit={handleSubmit}>
-      <div className="dropdown-show-body">
-        <div className="category-div-sub">
-          <label>Service Type</label>
-          <select name="projectType" value={formData.projectType} onChange={handleInputChange}>
-            <option value="">Select</option>
-            <option value="Electrical">Electrical</option>
-            <option value="Carpentry">Carpentry</option>
-            <option value="Painting">Painting</option>
-            <option value="General Handyman">General Handyman</option>
-          </select>
-        </div>
+            <form onSubmit={handleSubmit}>
+              <div className="dropdown-show-body">
+                <div className="category-div-sub">
+                  <label>Service Type</label>
+                  <select
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Carpentry">Carpentry</option>
+                    <option value="Painting">Painting</option>
+                    <option value="General Handyman">General Handyman</option>
+                  </select>
+                </div>
 
-        <div className="category-div-sub">
-          <label>
-            Location <span>Saved address</span>
-          </label>
-          <input
-            type="text"
-            name="address"
-            placeholder="Enter address"
-            value={formData.address}
-            onChange={handleInputChange}
-          />
-        </div>
+                <div className="category-div-sub">
+                  <label>
+                    Location <span>Saved address</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    placeholder="Enter address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                  />
+                </div>
 
-        <div className="category-div-sub">
-          <label>Additional details</label>
-          <textarea
-            name="description"
-            placeholder="Enter additional details"
-            value={formData.description}
-            onChange={handleInputChange}
-          ></textarea>
-        </div>
+                <div className="category-div-sub">
+                  <label>Additional details</label>
+                  <textarea
+                    name="description"
+                    placeholder="Enter additional details"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  ></textarea>
+                </div>
 
-<div className="category-div-sub">
-  <label>Document upload</label>
-  <UploadWrapper
-    onDrop={handleDrop}
-    onDragOver={handleDragOver}
-    onClick={triggerFileInput}
-  >
-    <HiddenInput
-      type="file"
-      ref={fileInputRef}
-      onChange={handleFileChangeSecond}
-      accept="image/*"
-      multiple
-    />
-    <img src="/images/file-icon.png" alt="" />
-    <Text>
-      Click to upload <SubText>or drag and drop</SubText>
-    </Text>
-  </UploadWrapper>
+                <div className="category-div-sub">
+                  <label>images upload</label>
+                  <UploadWrapper
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onClick={triggerFileInput}
+                  >
+                    <HiddenInput
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChangeSecond}
+                      accept="image/*"
+                      multiple
+                    />
+                    <img src="/images/file-icon.png" alt="" />
+                    <Text>
+                      Click to upload <SubText>or drag and drop</SubText>
+                    </Text>
+                  </UploadWrapper>
 
-{previewUrls.map((url, index) => (
-  <div key={index} className="image-preview-container">
-    <img src={url} alt={`Preview ${index}`} className="image-preview" />
-    <button onClick={() => handleRemoveImage(index)}>Remove</button>
-  </div>
-))}
+                  {previewUrls.map((url, index) => (
+                    <div key={index} className="image-preview-container">
+                      <img
+                        src={url}
+                        alt={`Preview ${index}`}
+                        className="image-preview"
+                      />
+                      <button onClick={() => handleRemoveImage(index)}>
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
 
-</div>
+                <div className="category-div-sub">
+                  <label>Start Date</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.timeline.start}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          timeline: {
+                            ...prev.timeline,
+                            start: e.target.value,
+                          },
+                        }))
+                      }
+                      className="timeline-date-input"
+                    />
+                  </div>
+                </div>
 
+                <div className="category-div-sub">
+                  <label>Finish Date</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.timeline.end}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          timeline: {
+                            ...prev.timeline,
+                            end: e.target.value,
+                          },
+                        }))
+                      }
+                      className="timeline-date-input"
+                    />
+                  </div>
+                </div>
 
-<div className="category-div-sub">
-  <label>Start Date</label>
-  <div style={{ position: "relative" }}>
-    <input
-      type="date"
-      value={formData.timeline.start}
-      onChange={(e) =>
-        setFormData((prev) => ({
-          ...prev,
-          timeline: {
-            ...prev.timeline,
-            start: e.target.value,
-          },
-        }))
-      }
-      className="timeline-date-input"
-    />
-  </div>
-</div>
-
-<div className="category-div-sub">
-  <label>Finish Date</label>
-  <div style={{ position: "relative" }}>
-    <input
-      type="date"
-      value={formData.timeline.end}
-      onChange={(e) =>
-        setFormData((prev) => ({
-          ...prev,
-          timeline: {
-            ...prev.timeline,
-            end: e.target.value,
-          },
-        }))
-      }
-      className="timeline-date-input"
-    />
-  </div>
-</div>
-
-
-
-        <div className="category-div-sub">
-          <label>Budget</label>
-          <input
-            type="text"
-            name="budget"
-            placeholder="0.00"
-            value={formData.budget}
-            onChange={handleInputChange}
-          />
-        </div>
-  {errorMessage && (
-            <div style={{ color: "red", marginBottom: "1rem" }}>
-              {errorMessage}
-            </div>
-          )}
-        <button className="winch" type="submit">Create request</button>
-      </div>
-    </form>
+                <div className="category-div-sub">
+                  <label>Budget</label>
+                  <input
+                    type="text"
+                    name="budget"
+                    placeholder="0.00"
+                    value={formData.budget}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {errorMessage && (
+                  <div style={{ color: "red", marginBottom: "1rem" }}>
+                    {errorMessage}
+                  </div>
+                )}
+                <button className="winch" type="submit">
+                  Create request
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       ) : (

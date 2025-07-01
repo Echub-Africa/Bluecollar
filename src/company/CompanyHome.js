@@ -137,7 +137,7 @@ const HomeRap = styled.div`
     line-height: 18px;
     max-width: 129px;
   }
-        @media screen and (max-width: 767px) {
+    @media screen and (max-width: 767px) {
     .new-dash-2-card h4{
    font-size: 17px;
 }
