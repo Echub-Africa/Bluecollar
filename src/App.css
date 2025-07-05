@@ -9,11 +9,29 @@ html, body {
   padding: 0;
   overflow-x: hidden; 
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 20px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 20px;
+  width: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 .App {
   font-family: 'Inter', 'Roboto';
 }
 .blue-nav {
-  background: #101828;
+  background-color: #101828;
+  z-index: 999;
 
 }
 .white-nav {
@@ -38,7 +56,9 @@ html, body {
 }
 .white-nav .all-nav {
   background: #ffffff;
-
+}
+.blue-nav .all-nav {
+  background: #101828;
 }
 .blue-nav .icon {
   color: #ffffff;

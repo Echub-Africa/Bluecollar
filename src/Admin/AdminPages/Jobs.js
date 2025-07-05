@@ -284,6 +284,7 @@ const handleSubmit = async (e) => {
                 amount: job.budget || "N/A",
                 jobId: job.jobId || "N/A",
                 status: job.status || "Pending",
+                projectOrigin: job.projectOrigin || "Unknown",
               },
             ])
           ).values()
@@ -425,6 +426,7 @@ const filteredJobs = recentJobs?.filter((item) =>
                       <th> PROJECT</th>
                       <th> AMOUNT</th>
                       <th>CLIENT EMAIL</th>
+                       <th>PROJECT ORIGIN</th>
                       <th>STATUS</th>
                       <th></th>
                     </tr>
@@ -444,6 +446,7 @@ const filteredJobs = recentJobs?.filter((item) =>
 
                           <td>{items?.amount}</td>
                           <td>{items?.clientmail}</td>
+                          <td>{items?.projectOrigin}</td>
                           <td>
                             <div
                               style={{

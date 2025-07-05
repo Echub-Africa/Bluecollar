@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-import { Icon } from "@iconify/react"
+import { Icon } from "@iconify/react";
 
 const NavRap = styled.div`
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
 
- background-position: top;
-position: sticky;
-top: 0px;
-z-index: 9999;
-height: 100px;
+  background-position: top;
+  position: sticky;
+  top: 0px;
+  z-index: 9999;
+  height: 100px;
   .nav-link {
     text-decoration: none;
     font-size: 16px;
@@ -20,7 +20,6 @@ height: 100px;
   }
   .nav-link.active {
     font-weight: 500;
-
   }
   .navbar {
     display: flex;
@@ -30,15 +29,15 @@ height: 100px;
   .nav-mobile {
     display: none;
   }
-nav {
+  nav {
     display: flex;
     align-items: center;
-    justify-content: space-between; 
-   width: 100%;
-   padding: 0px ;
-}
-.all-nav {
-    border: 1px solid #FFFFFF1A;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0px;
+  }
+  .all-nav {
+    border: 1px solid #ffffff1a;
     border-radius: 100px;
     display: flex;
     align-items: center;
@@ -47,9 +46,11 @@ nav {
     padding: 0px 20px;
     width: 70%;
     margin: auto;
-}
-.contact-us {
-    background: #0067D0;
+    position: fixed;
+    margin-left: 14%;
+  }
+  .contact-us {
+    background: #0067d0;
     width: 152px;
     height: 44px;
     border-radius: 100px;
@@ -60,7 +61,7 @@ nav {
     font-size: 16px;
     font-weight: 600;
     text-decoration: none;
-}
+  }
 
   @media (max-width: 992px) {
     .navbar {
@@ -100,53 +101,66 @@ nav {
   }
   @media (max-width: 550px) {
     .all-nav {
-        width: 100%;
-        border: none;
+      width: 100%;
+      border: none;
+      marign-left: -1%;
+    }
+    @media screen and (max-width: 767px) {
+      .all-nav {
+        margin-left: 0%;
+        width: 90%
+      }
     }
   }
 `;
 
 const Navbar = () => {
-    const [clicked, setClicked] = useState(false);
-    const [activeLink, setActiveLink] = useState("home");
-  
-    const handleClick = () => {
-      setClicked(!clicked);
-    };
-  
-    const handleLinkClick = (link) => {
-      setActiveLink(link);
-    };
-    const {pathname} = useLocation()
-    useEffect(() => {
-      setClicked(false); 
-    }, [pathname]);
+  const [clicked, setClicked] = useState(false);
+  const [activeLink, setActiveLink] = useState("home");
+
+  const handleClick = () => {
+    setClicked(!clicked);
+  };
+
+  const handleLinkClick = (link) => {
+    setActiveLink(link);
+  };
+  const { pathname } = useLocation();
+  useEffect(() => {
+    setClicked(false);
+  }, [pathname]);
   return (
-    <NavRap  className={pathname !== "/" ? "white-nav" : "blue-nav"}>
+    <NavRap className={pathname !== "/" ? "white-nav" : "blue-nav"}>
       <nav>
         {/* <p style={{
            color: "#101828"
  
         }}>.</p> */}
-      <div className="nav-mobile" onClick={handleClick}>
-              {clicked ? (
-                <Icon className="icon"
-                  width="30px"
-                  height="30px"
-                  icon="prime:times"
-                 
-                />
-              ) : (
-                <Icon className="icon"
-                  width="30px"
-                  height="30px"
-                  icon="mdi-light:menu"
-                 
-                />
-              )}
-            </div>
-            <div className="all-nav">
-         <Link to="/"> <img src={pathname != "/" ? "/images/logo-2.png" : "/images/logo.png"} alt="" /></Link>
+        <div className="nav-mobile" onClick={handleClick}>
+          {clicked ? (
+            <Icon
+              className="icon"
+              width="30px"
+              height="30px"
+              icon="prime:times"
+            />
+          ) : (
+            <Icon
+              className="icon"
+              width="30px"
+              height="30px"
+              icon="mdi-light:menu"
+            />
+          )}
+        </div>
+        <div className="all-nav">
+          <Link to="/">
+            {" "}
+            <img
+              src={pathname != "/" ? "/images/logo-2.png" : "/images/logo.png"}
+              alt=""
+            />
+          </Link>
 
           <div className={clicked ? "navbar active" : "navbar"} id="#navbar">
             <Link
@@ -158,14 +172,13 @@ const Navbar = () => {
             </Link>
             <Link
               className={`nav-link ${activeLink === "about" ? "active" : ""}`}
-              to="/company"
+              to="/about"
               onClick={() => handleLinkClick("about")}
             >
-              Company
+             About
             </Link>
-            
-              
-              <Link
+
+            <Link
               className={`nav-link ${activeLink === "blog" ? "active" : ""}`}
               to="/blog"
               onClick={() => handleLinkClick("blog")}
@@ -179,16 +192,13 @@ const Navbar = () => {
             >
               Contact
             </Link>
-       
           </div>
           <div className="contact-search">
-        
-          <Link to="/artisanAuth/signUp" className="contact-us">
-           Create account
-          </Link>
+            <Link to="/artisanAuth/signUp" className="contact-us">
+              Create account
+            </Link>
           </div>
-          </div>
-       
+        </div>
       </nav>
     </NavRap>
   );

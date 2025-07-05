@@ -44,6 +44,7 @@ const faqs = [
 ];
 
 const HomeRap = styled.div`
+
   .small-top-div p {
     color: #ffffff;
     font-size: 14px;
@@ -71,6 +72,11 @@ const HomeRap = styled.div`
     max-width: 514px;
     font-size: 40px;
   }
+    @media screen and (max-width: 767px) {
+     .home-sub-1 h1 {
+     font-size: 24px;
+     }
+  }
   .home-sub-1 p {
     color: #a5acbb;
     font-size: 18px;
@@ -92,6 +98,13 @@ const HomeRap = styled.div`
     font-size: 16px;
     font-weight: 600;
   }
+
+  @media screen and (max-width: 767px) {
+  .hire,
+  .become  {
+  width: 46%;
+  }
+  }
   .become {
     background: transparent;
     border: 1px solid #ffffff26;
@@ -108,7 +121,7 @@ const HomeRap = styled.div`
   }
   @media screen and (max-width: 767px) {
     .home-sub-1 {
-      margin-top: -20px;
+      margin-top: -40px;
     }
   }
   .home-1 {
@@ -612,7 +625,8 @@ const HomeRap = styled.div`
       flex-wrap: wrap;
     }
     .home-sub-1 h1 {
-      font-size: 50px;
+      font-size: 30px;
+      line-height: 40px;
     }
     .sub-home-10 {
       width: 100%;
@@ -639,6 +653,8 @@ const HomeRap = styled.div`
     .disturb {
   width: 100%;
     }}
+
+    
 `;
 
 const Home = () => {
@@ -694,7 +710,7 @@ const Home = () => {
        <div className="home-6 containery">
         <div className="sub-home-6">
           <h3>1K+</h3>
-          <p>Top Rated, highly skilled technical talent poo</p>
+          <p>Top Rated, highly skilled technical talent pro</p>
         </div>
         <div className="sub-home-6">
           <h3>$10K</h3>

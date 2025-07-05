@@ -86,7 +86,7 @@ export default function Routess() {
                     element: <General />,
                     children:  [
                         {path: "/", element: <Home />},
-                        {path: "/company", element: <Company />},
+                        {path: "/about", element: <Company />},
                         {path: "/blog", element: <Blog />},
                         {path: "/blogDetails", element: <BlogDetail />},
                         {path: "/arin", element: <Arin />},

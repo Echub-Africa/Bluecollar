@@ -446,7 +446,7 @@ const ArtisanJobs = () => {
 }) || "N/A"}</h6> {/* Adjust based on your data structure */}
           <div className="inner-job">
             <p>Job ID: {job.jobId || job._id}</p> {/* Use jobId or _id */}
-            <span>{job.budget || "N/A"}</span> {/* Ensure budget exists */}
+            <span>₦{job.budget || "N/A"}</span> {/* Ensure budget exists */}
             <h6>{job.status || "N/A"}</h6> {/* Display project status */}
           </div>
         </div>

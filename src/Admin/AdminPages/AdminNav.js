@@ -363,7 +363,7 @@ const AdminDashboardNavbar = () => {
               >
                 User Manager
               </Link>
-              <Link
+              {/* <Link
                 className={`nav-link ${
                   activeLink === "notification" ? "active" : ""
                 }`}
@@ -371,7 +371,7 @@ const AdminDashboardNavbar = () => {
                 onClick={() => handleLinkClick("notification")}
               >
                Notifications
-              </Link>
+              </Link> */}
             </div>
             <div className="sub-nav-div-right">
               {/* <div className="all-notify">
