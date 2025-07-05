@@ -136,7 +136,8 @@ const Navbar = () => {
            color: "#101828"
  
         }}>.</p> */}
-        <div className="nav-mobile" onClick={handleClick}>
+    
+        <div className="all-nav">    <div className="nav-mobile" onClick={handleClick}>
           {clicked ? (
             <Icon
               className="icon"
@@ -153,7 +154,6 @@ const Navbar = () => {
             />
           )}
         </div>
-        <div className="all-nav">
           <Link to="/">
             {" "}
             <img
