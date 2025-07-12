@@ -823,9 +823,16 @@ const ClientHome = () => {
     }
   };
 
-  const handleQuickShow = () => setQuickShow(!quickShow);
-  const handleProjectShow = () => setProjectShow(!projectShow);
-  const handleConsultationShow = () => setConsultationShow(!consultationShow);
+  const handleQuickShow = () => {
+    setQuickShow(true); // Open modal
+  };
+  const handleProjectShow = () => {
+    setProjectShow(true); // Open modal
+  };
+  const handleConsultationShow = () => {
+    setConsultationShow(true); // Open modal
+  };
+
   const handleTimelineShow = () => setTimelineShow((prev) => !prev);
 
   const handleTimelineSelect = (value) => {
@@ -1056,7 +1063,7 @@ const ClientHome = () => {
             <div className="dropdown-show-header">
               <h4>Projects</h4>
               <Icon
-                onClick={handleProjectShow}
+                onClick={() => setQuickShow(false)}
                 className="icon"
                 width="18px"
                 height="18px"
@@ -1242,7 +1249,7 @@ const ClientHome = () => {
             <div className="dropdown-show-header">
               <h4>Projects</h4>
               <Icon
-                onClick={handleProjectShow}
+                onClick={() => setProjectShow(false)}
                 className="icon"
                 width="18px"
                 height="18px"
@@ -1414,7 +1421,7 @@ const ClientHome = () => {
               <div className="dropdown-show-header">
                 <h4>Projects</h4>
                 <Icon
-                  onClick={handleProjectShow}
+                onClick={() => setConsultationShow(false)}
                   className="icon"
                   width="18px"
                   height="18px"

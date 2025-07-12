@@ -1,9 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(16, 24, 40, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
+
+const ModalContent = styled.div`
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+`;
 
 const SignDetail = styled.div`
   .link h4 {
@@ -180,15 +202,12 @@ const SignDetail = styled.div`
   }
 `;
 
-
-
 const SignUpOwnerDetail = () => {
   const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState("personal");
   const [showCalendar, setShowCalendar] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
-  const [profession, setProfession] = useState("");
   const [showElectric, setShowElectric] = useState(false);
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
@@ -202,23 +221,7 @@ const SignUpOwnerDetail = () => {
     address: "",
     city: "",
     country: "",
-    ElectricalInfo: {
-      voltage: "",
-      color: "",
-      device: "",
-      naturalWire: "",
-      unit: "",
-      purpose: "",
-      parallel: "",
-      rcd: "",
-      liveWire: "",
-      tool: "",
-      firstStep: "",
-      current: "",
-      threePhase: "",
-      mainCause: "",
-      insulator: "",
-    },
+    ElectricalInfo: {}, // Initialize as an empty object
   });
 
   // Load countries on component mount
@@ -296,15 +299,12 @@ const SignUpOwnerDetail = () => {
     formData.city !== "" &&
     formData.country !== "";
 
-  const proValid = profession !== "";
-
   const handleDateChange = (date) => {
     setSelectedDate(date);
-setFormData({
-  ...formData,
-  dob: date.toISOString().split("T")[0], // Set dob in YYYY-MM-DD format
-});
-
+    setFormData({
+      ...formData,
+      dob: date.toISOString().split("T")[0], // Set dob in YYYY-MM-DD format
+    });
 
     setShowCalendar(false); // Close calendar on date selection
   };
@@ -331,76 +331,76 @@ setFormData({
     }
   };
 
-
   const handleSubmit = async () => {
-  const payload = {
-    firstName: formData.firstName,
-    lastName: formData.lastName,
-    email: formData.email,
-    phone: formData.phone.startsWith("+") ? formData.phone : `+234${formData.phone.slice(1)}`,
-    gender: formData.gender.toLowerCase(),
-    dob: formData.dob, // Ensure this is a valid date string like "1990-01-01"
-    address: formData.address,
-    city: formData.city, // This must be included in your form
-    country: formData.country,
-     ElectricalInfo: {
-      voltage: formData.ElectricalInfo.voltage,
-      color: formData.ElectricalInfo.color,
-      device: formData.ElectricalInfo.device,
-      naturalWire: formData.ElectricalInfo.naturalWire,
-      unit: formData.ElectricalInfo.unit,
-      purpose: formData.ElectricalInfo.purpose,
-      parallel: formData.ElectricalInfo.parallel,
-      rcd: formData.ElectricalInfo.rcd,
-      liveWire: formData.ElectricalInfo.liveWire,
-      tool: formData.ElectricalInfo.tool,
-      firstStep: formData.ElectricalInfo.firstStep,
-      current: formData.ElectricalInfo.current,
-      threePhase: formData.ElectricalInfo.threePhase,
-      mainCause: formData.ElectricalInfo.mainCause,
-      insulator: formData.ElectricalInfo.insulator,
-    },
-  };
-
-  console.log("🚀 Payload to backend:", payload);
-
-  
-  try {
-
-      const token = localStorage.getItem("artisanToken");
-    const res = await fetch("https://blucolar-be.onrender.com/api/users/onboarding", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+    const payload = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone.startsWith("+")
+        ? formData.phone
+        : `+234${formData.phone.slice(1)}`,
+      gender: formData.gender.toLowerCase(),
+      dob: formData.dob, // Ensure this is a valid date string like "1990-01-01"
+      address: formData.address,
+      city: formData.city, // This must be included in your form
+      country: formData.country,
+      ElectricalInfo: {
+        voltage: formData.ElectricalInfo.voltage,
+        color: formData.ElectricalInfo.color,
+        device: formData.ElectricalInfo.device,
+        naturalWire: formData.ElectricalInfo.naturalWire,
+        unit: formData.ElectricalInfo.unit,
+        purpose: formData.ElectricalInfo.purpose,
+        parallel: formData.ElectricalInfo.parallel,
+        rcd: formData.ElectricalInfo.rcd,
+        liveWire: formData.ElectricalInfo.liveWire,
+        tool: formData.ElectricalInfo.tool,
+        firstStep: formData.ElectricalInfo.firstStep,
+        current: formData.ElectricalInfo.current,
+        threePhase: formData.ElectricalInfo.threePhase,
+        mainCause: formData.ElectricalInfo.mainCause,
+        insulator: formData.ElectricalInfo.insulator,
       },
-      body: JSON.stringify(payload),
-    });
+    };
 
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message || "Signup failed");
+    console.log("🚀 Payload to backend:", payload);
+
+    try {
+      const token = localStorage.getItem("artisanToken");
+      const res = await fetch(
+        "https://blucolar-be.onrender.com/api/users/onboarding",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Signup failed");
+      }
+
+      const data = await res.json();
+      console.log("✅ Signup successful:", data);
+
+      // Store in localStorage
+      localStorage.setItem("artisanPhone", payload.phone);
+      localStorage.setItem("artisanGender", payload.gender);
+      localStorage.setItem("artisanDob", payload.dob);
+      localStorage.setItem("artisanAddress", payload.address);
+      localStorage.setItem("artisanCity", payload.city);
+      localStorage.setItem("artisanCountry", payload.country);
+
+      navigate("/artisanAuth/signUpArtisan/ConfirmEmail");
+    } catch (err) {
+      console.error("❌ Signup failed:", err);
+      setErrorMessage(err.message || "Signup failed. Please try again.");
     }
-
-    const data = await res.json();
-    console.log("✅ Signup successful:", data);
-
-    // Store in localStorage
-    localStorage.setItem("artisanPhone", payload.phone);
-    localStorage.setItem("artisanGender", payload.gender);
-    localStorage.setItem("artisanDob", payload.dob);
-    localStorage.setItem("artisanAddress", payload.address);
-    localStorage.setItem("artisanCity", payload.city);
-    localStorage.setItem("artisanCountry", payload.country);
-
-    navigate("/artisanAuth/signUpArtisan/ConfirmEmail");
-  } catch (err) {
-    console.error("❌ Signup failed:", err);
-    setErrorMessage(err.message || "Signup failed. Please try again.");
-  }
-};
-
-
+  };
 
   const handleClick = () => {
     setActiveLink("work");
@@ -413,10 +413,9 @@ setFormData({
     if (profession === "Electrical") {
       setShowElectric(true);
     }
-  }
+  };
 
-
-    useEffect(() => {
+  useEffect(() => {
     setFormData((prev) => ({
       ...prev,
       firstName: localStorage.getItem("artisanFirstName") || "",
@@ -424,6 +423,64 @@ setFormData({
       email: localStorage.getItem("artisanEmail") || "",
       phone: localStorage.getItem("phone") || "",
     }));
+  }, []);
+
+  const [professions, setProfessions] = useState([]);
+  const [profession, setProfession] = useState("");
+  const [proValid, setProValid] = useState(false);
+  const [questions, setQuestions] = useState([]);
+  const modalRef = useRef(null);
+  const [showQuestionsModal, setShowQuestionsModal] = useState(false);
+  const [selectedProfessionId, setSelectedProfessionId] = useState(""); // Declare selectedProfessionId state
+ 
+
+  useEffect(() => {
+    const fetchProfessions = async () => {
+      try {
+        const response = await fetch(
+          "https://blucolar-be.onrender.com/api/onboarding/profession"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch professions");
+        }
+        const data = await response.json();
+        setProfessions(data); // Set the fetched professions
+      } catch (error) {
+        console.error("Error fetching professions:", error);
+      }
+    };
+
+    fetchProfessions();
+  }, []);
+
+  const handleClickContinue = async () => {
+    if (proValid) {
+      try {
+        const response = await fetch(
+          `https://blucolar-be.onrender.com/api/onboarding/questions/${selectedProfessionId}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch questions");
+        }
+        const data = await response.json();
+        setQuestions(data);
+        setShowQuestionsModal(true); // Show the modal
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+      }
+    }
+  };
+
+  const handleClickOutside = (event) => {
+    if (modalRef.current && !modalRef.current.contains(event.target)) {
+      setShowQuestionsModal(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
@@ -510,12 +567,11 @@ setFormData({
                   <div className="all-calendar">
                     <div className="date-div-input">
                       {/* Display the selected date or "Date of Birth" */}
-               <p>
-  {formData.dob
-    ? new Date(formData.dob).toLocaleDateString()
-    : "Date of Birth"}
-</p>
-
+                      <p>
+                        {formData.dob
+                          ? new Date(formData.dob).toLocaleDateString()
+                          : "Date of Birth"}
+                      </p>
 
                       {/* Calendar Icon */}
                       <Icon
@@ -615,323 +671,100 @@ setFormData({
             <>
               <div>
                 <div className="work-1">
-                  <label>Select Profession </label>
+                  <label>Select Profession</label>
                   <select
-                    name="gender" // Matches the `gender` property in formData
-                    onChange={(e) => setProfession(e.target.value)}
+                    name="profession"
+                 onChange={(e) => {
+  const selectedProfession = professions.find(
+    (prof) => prof.name === e.target.value
+  );
+
+  const selectedId = selectedProfession ? selectedProfession._id : "";
+
+  setSelectedProfessionId(selectedId);
+  setProValid(e.target.value !== "");
+  setShowQuestionsModal(false); // hide previous questions immediately
+  setQuestions([]); // clear existing questions
+
+  // Simulate fetching profession-specific questions
+  if (selectedId) {
+    handleClickContinue(selectedId);
+  }
+}}
                     className="gender-select"
-                    value={profession}
                   >
                     <option className="select-head" value="" disabled>
                       Select
                     </option>
-                    <option value="Electrical">Electrical</option>
-                    <option value="Carpenters / Woodwork">
-                      Carpenters / Woodwork
-                    </option>
-                    <option value="Plumbers">Plumbers</option>
-
-                    <option value="Masons">Masons</option>
-                    <option value="HVAC Technicians">HVAC Technicians</option>
+                    {professions.map((prof) => (
+                      <option key={prof._id} value={prof.name}>
+                        {prof.name}
+                      </option>
+                    ))}
                   </select>
-                  {!showElectric ? (
-                    <button
-                     onClick={handleClickElectrical}
-                      disabled={!proValid}
-                      style={{
-                        backgroundColor: proValid ? "#0067D0" : "#abc7e3",
-                        cursor: !proValid ? "not-allowed" : "pointer",
-                      }}
-                    >
-                      Continue
-                    </button>
-                  ) : (
-                    ""
-                  )}
+                  <button
+                    onClick={handleClickContinue}
+                    disabled={!proValid}
+                    style={{
+                      backgroundColor: proValid ? "#0067D0" : "#abc7e3",
+                      cursor: !proValid ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    Continue
+                  </button>
                 </div>
-                {showElectric ? (
-                  <>
-                    <div className="all-electric">
-                      <div className="work-1">
-                        <label>
-                          What is the standard voltage for residential buildings
-                          in Nigeria?{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.voltage" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.voltage}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="120V">120V</option>
-                          <option value="220V">220V</option>
-                          <option value="440V">440V</option>
 
-                          <option value="110V">110V</option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          Which color is used for the earth wire in standard
-                          installations?{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.color" // Matches the `gender` property in formData
-                          onChange={handleChange}
-                          className="gender-select"
-                          value={formData.ElectricalInfo.color}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="White">White</option>
-                          <option value="Black">Black</option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          What device protects circuits from overload?{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.device" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.device}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="Capacitor">Capacitor</option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          True or False: The neutral wire carries current in a
-                          balanced circuit.{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.naturalWire" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.naturalWire}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="True">True</option>
-                          <option value="False">False</option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          What is the unit of electrical resistance?{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.unit" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.unit}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="Volt">Volt</option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          What is the purpose of a fuse in a circuit?{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.purpose" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.purpose}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="ElectrTo reduce voltageical">
-                            To reduce voltage
-                          </option>
-                          <option value="To increase voltage">
-                            To increase voltage
-                          </option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          True or False: Parallel circuits have the same voltage
-                          across all branches.{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.parallel" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.parallel}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="True">True</option>
-                          <option value="False">False</option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          What does an RCD (Residual Current Device) protect
-                          against?{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.rcd" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.rcd}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="OverVoltage">OverVoltage</option>
-                          <option value="LowVoltage">LowVoltage</option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          The live wire in standard installations is usually:{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.liveWire" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.liveWire}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="Blue">Blue</option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          Which of these tools is used to test voltage?{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.tool" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.tool}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="Screwdriver">Screwdriver</option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          What is the first step in electrical troubleshooting?{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.firstStep" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.firstStep}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="Check voltage with a meter">
-                            Check voltage with a meter
-                          </option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          True or False: Current is measured in watts.{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.current" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.current}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="True">True</option>
-                          <option value="False">False</option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          What does a three-phase power system consist of?{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.threePhase" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.threePhase}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="Four wires">Four wires</option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          What is the main cause of a short circuit?{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.mainCause" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.mainCause}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="Open connections">
-                            Open connections
-                          </option>
-                        </select>
-                      </div>
-                      <div className="work-1">
-                        <label>
-                          True or False: Insulators are materials that allow the
-                          flow of electricity.{" "}
-                        </label>
-                        <select
-                          name="ElectricalInfo.insulator" // Matches the `gender` property in formData
-                          className="gender-select"
-                          onChange={handleChange}
-                          value={formData.ElectricalInfo.insulator}
-                        >
-                          <option className="select-head" value="" disabled>
-                            Select
-                          </option>
-                          <option value="True">True</option>
-                          <option value="False">False</option>
-                        </select>
-                      </div>
-                      <button
-                        onClick={handleClickAgree}
-                        disabled={!elecValid}
-                        style={{
-                          backgroundColor: elecValid ? "#0067D0" : "#abc7e3",
-                          cursor: !elecValid ? "not-allowed" : "pointer",
-                        }}
-                      >
-                        Continue
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  ""
-                )}
+              {showQuestionsModal && (
+  <div className="all-electric">
+<h3>
+  Questions for {
+    professions.find((prof) => prof._id === selectedProfessionId)?.name || "Selected Profession"
+  }
+</h3>
+
+
+
+    {questions.length === 0 ? (
+      <p style={{ color: "#667085", fontSize: "14px", marginTop: "10px" }}>
+        No questions for this particular profession.
+      </p>
+    ) : (
+      <>
+        {questions.map((question, index) => (
+          <div key={index} className="work-1">
+            <label>{question.question}</label>
+            <select
+              name={`question-${index}`}
+              className="gender-select"
+              onChange={(e) => handleChange(e)}
+            >
+              <option className="select-head" value="" disabled>
+                Select
+              </option>
+              {question.options.map((option, idx) => (
+                <option key={idx} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+        ))}
+
+        <button
+          onClick={handleClickAgree}
+          disabled={!elecValid}
+          style={{
+            backgroundColor: elecValid ? "#0067D0" : "#abc7e3",
+            cursor: !elecValid ? "not-allowed" : "pointer",
+          }}
+        >
+          Continue
+        </button>
+      </>
+    )}
+  </div>
+)}
+
               </div>
             </>
           )}
@@ -958,8 +791,8 @@ setFormData({
                   onClick={handleSubmit}
                   disabled={!isValid}
                   style={{
-                   backgroundColor: isValid ? "#0067D0" : "#abc7e3",
-                   cursor: !isValid ? "not-allowed" : "pointer",
+                    backgroundColor: isValid ? "#0067D0" : "#abc7e3",
+                    cursor: !isValid ? "not-allowed" : "pointer",
                     background: "#0067D0",
                   }}
                 >

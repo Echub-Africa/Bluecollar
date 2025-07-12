@@ -948,16 +948,13 @@ const ClientHome = () => {
     };
     fetchData();
   }, []);
-
   const handleClickOutside = (event) => {
     const isOutsideModal = modalRef.current && !modalRef.current.contains(event.target);
     const isOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(event.target);
     if (isOutsideModal && isOutsideDropdown) {
-      setNotifyPop(false);
-      setOptionDrop(false);
-      setQuickShow(false); // Close quick modal
-      setProjectShow(false); // Close project modal
-      setConsultationShow(false); // Close consultation modal
+      setQuickShow(false);
+      setProjectShow(false);
+      setConsultationShow(false);
     }
   };
 
@@ -1261,7 +1258,7 @@ const ClientHome = () => {
             <div className="dropdown-show-header">
               <h4>Projects</h4>
               <Icon
-                onClick={() => setQuickShow(false)}
+                onClick={() => setProjectShow(false)}
                 className="icon"
                 width="18px"
                 height="18px"
@@ -1433,7 +1430,7 @@ const ClientHome = () => {
             <div className="dropdown-show-header">
               <h4>Projects</h4>
               <Icon
-                onClick={() => setQuickShow(false)}
+                onClick={() => setConsultationShow(false)}
                 className="icon"
                 width="18px"
                 height="18px"
