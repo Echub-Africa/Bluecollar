@@ -196,7 +196,7 @@ const ArtisanSignUp = () => {
             </button>
             <div className="sub-sign-3">
               <p>Already have an account?</p>
-              <Link to="/artisan/artisanLog" className="login-btn">
+              <Link to="/artisanAuth/artisanLog" className="login-btn">
                 Login
                 <Icon
                   className="icon"

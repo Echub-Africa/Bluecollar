@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -310,6 +310,25 @@ const ClientDashboardNavbar = () => {
   const [error, setError] = useState(null);
    const API_URL = "https://blucolar-be.onrender.com/api/notification/";
 
+   const modalRef = useRef(null);
+   const profileRef = useRef(null);
+   
+   const handleClickOutside = (event) => {
+     if (modalRef.current && !modalRef.current.contains(event.target)) {
+       setNotifyPop(false);
+     }
+     if (profileRef.current && !profileRef.current.contains(event.target)) {
+       setOptionDrop(false);
+     }
+   };
+   
+   useEffect(() => {
+     document.addEventListener('mousedown', handleClickOutside);
+     return () => {
+       document.removeEventListener('mousedown', handleClickOutside);
+     };
+   }, []);
+   
 
   const handleClick = () => {
     setClicked(!clicked);
@@ -512,7 +531,7 @@ useEffect(() => {
       </div>
 
 {notifyPop && (
-  <div className="notify">
+  <div ref={modalRef} className="notify">
     <div className="notify-header">
       <h4>Notifications</h4>
       <span className="notification-count">
@@ -573,7 +592,7 @@ useEffect(() => {
                 />
                 {optionDrop ? (
                   <>
-                    <div className="optionpop">
+                    <div ref={profileRef} className="optionpop">
                       <Link
                         onClick={handleOptionDrop}
                         to="/client/setting"

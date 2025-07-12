@@ -1195,8 +1195,8 @@ const Home = () => {
               our network of professionals and build a thriving career with us.
             </p>
             <div className="home-11-left-btn">
-              <Link to="/artisan/artisanreg" className="home-11-btn-1">Sign up</Link>
-              <Link to="/artisan/artisanLog" className="home-11-btn-2">Sign In</Link>
+              <Link to="/artisanAuth/artisanreg" className="home-11-btn-1">Sign up</Link>
+              <Link to="/artisanAuth/artisanLog" className="home-11-btn-2">Sign In</Link>
             </div>
           </div>
           <div>

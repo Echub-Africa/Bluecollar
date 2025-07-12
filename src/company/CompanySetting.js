@@ -383,6 +383,65 @@ const ClientSetting = () => {
   const handleDropdown = () => {
     setDropdown(!dropdown);
   };
+
+  
+  const [form, setForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const token = localStorage.getItem("companyToken"); // Replace with your actual token key
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    if (form.newPassword !== form.confirmPassword) {
+      setMessage("New passwords do not match");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await fetch(
+        "https://blucolar-be.onrender.com/api/users/change-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            currentPassword: form.currentPassword,
+            newPassword: form.newPassword,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to change password");
+      }
+
+      setMessage("Password updated successfully.");
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <SettingRap>
         <div className="containary">
@@ -474,30 +533,65 @@ const ClientSetting = () => {
 
             {activeLink==="security" && (
                 <>
-                <div className="security">
-                    <div className="security-head">
-                        <h4>Change Password</h4>
-                        <p>Secure your account with your preferred password.</p>
-                    </div>
-                    <div className="security-1">
-                        <div className="secure">
-                            <label>Current Password</label>
-                            <input type="text" placeholder="Enter Current Password" />
-                        </div>
-                        <div className="secure">
-                            <label>New Password</label>
-                            <input type="text" placeholder="Enter New Password" />
-                        </div>
-                        <div className="secure">
-                            <label>Confirm Password</label>
-                            <input type="text" placeholder="Confirm New Password" />
-                        </div>
-                    </div>
-                    <div className="security-2">
-                        <button className="cancel">Cancel</button>
-                        <button className="update">Update</button>
-                    </div>
-                </div>
+             <div className="security">
+      <div className="security-head">
+        <h4>Change Password</h4>
+        <p>Secure your account with your preferred password.</p>
+      </div>
+
+      <div className="security-1">
+        <div className="secure">
+          <label>Current Password</label>
+          <input
+            type="password"
+            name="currentPassword"
+            placeholder="Enter Current Password"
+            value={form.currentPassword}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="secure">
+          <label>New Password</label>
+          <input
+            type="password"
+            name="newPassword"
+            placeholder="Enter New Password"
+            value={form.newPassword}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="secure">
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm New Password"
+            value={form.confirmPassword}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
+
+      {message && (
+        <p style={{ color: message.includes("success") ? "green" : "red" }}>
+          {message}
+        </p>
+      )}
+
+      <div className="security-2">
+        <button
+          className="cancel"
+          onClick={() =>
+            setForm({ currentPassword: "", newPassword: "", confirmPassword: "" })
+          }
+        >
+          Cancel
+        </button>
+        <button className="update" onClick={handleSubmit} disabled={loading}>
+          {loading ? "Updating..." : "Update"}
+        </button>
+      </div>
+    </div>
                 </>
             )}
            

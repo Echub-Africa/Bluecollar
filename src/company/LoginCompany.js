@@ -296,7 +296,7 @@ const CompanyLogin = () => {
           </Link>
           <div className="sign-5">
             <p>Dont't have an account?</p>
-            <Link to="/artisanAuth/signUp" className="login-btn">
+            <Link to="/companyAuth/signUp" className="login-btn">
               Sign up
               <Icon
                 width="14px"
@@ -306,6 +306,21 @@ const CompanyLogin = () => {
               />
             </Link>
           </div>
+
+           <div className="sign-5">
+            <p>You forgot your password?</p>
+            <Link to="/companyAuth/forgotPassword" className="login-btn">
+              Reset it
+              <Icon
+                width="14px"
+                height="14px"
+                icon="formkit:arrowright"
+                style={{ color: "#0067D0" }} 
+              />
+            </Link>
+          </div>
+
+          <br />
         </div>
         <div className="down-sign">
           <p>

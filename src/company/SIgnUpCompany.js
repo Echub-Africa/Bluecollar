@@ -383,7 +383,7 @@ const SignUpCompany = () => {
           </div>
           <div className="sign-5">
             <p>Already have an account?</p>
-            <Link to="/artisanAuth/login" className="login-btn">
+            <Link to="/companyAuth/login" className="login-btn">
               Login
               <Icon
                 className="icon"

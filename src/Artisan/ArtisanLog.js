@@ -198,7 +198,7 @@ const ArtisanPreLogin = () => {
             </button>
             <div className="sub-sign-3">
               <p>Don't have an account?</p>
-              <Link to="/artisan/artisanreg" className="login-btn">
+              <Link to="/artisanAuth/artisanreg" className="login-btn">
                 Sign up
                 <Icon
                   className="icon"
@@ -209,6 +209,21 @@ const ArtisanPreLogin = () => {
                 />
               </Link>
             </div>
+<br />
+             <div className="sub-sign-3">
+              <p>You forgot your password?</p>
+              <Link to="/artisanAuth/forgotPassword" className="login-btn">
+                Reset it
+                <Icon
+                  className="icon"
+                  width="14px"
+                  height="14px"
+                  icon="formkit:arrowright"
+                  style={{ color: "#0067D0" }}
+                />
+              </Link>
+            </div>
+            <br />
           </div>
         </div>
         <div className="down-sign">

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, } from "react-router-dom";
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -8,10 +8,15 @@ import { Icon } from "@iconify/react";
 const NavRap = styled.div`
   .nav-link {
     text-decoration: none;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: #ffffff80;
   }
+    @media screen and (max-width: 767px) {
+    .nav-link {
+      font-size: 20px;
+}
+}
   .nav-link.active {
     color: #ffffff;
   }
@@ -20,6 +25,11 @@ const NavRap = styled.div`
     align-items: center;
     gap: 20px;
   }
+        @media screen and (max-width: 767px) {
+    .navbar {
+      margin-top: 40px;
+    }
+}
   .nav-mobile {
     display: none;
   }
@@ -37,6 +47,7 @@ const NavRap = styled.div`
     left: 0px;
     right: 0px;
   }
+    
   .all-nav {
     display: flex;
     align-items: center;
@@ -49,6 +60,11 @@ const NavRap = styled.div`
     position: relative;
     width: 225px;
   }
+    @media screen and (max-width: 767px) {
+    .search-div-input {
+      width: 100%;
+    }
+  }
   .search-div-input input {
     width: 225px;
     height: 32px;
@@ -56,6 +72,11 @@ const NavRap = styled.div`
     border: 1px solid #d9e4e924;
     background: #ffffff1f;
     padding-left: 30px;
+  }
+  @media screen and (max-width: 767px) {
+    .search-div-input input {
+      width: 100%;
+    }
   }
   .search-icon {
     position: absolute;
@@ -89,6 +110,13 @@ const NavRap = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
+  }
+    @media screen and (max-width: 767px) {
+    .sub-nav-div-right {
+      gap: 25px;
+      margin-left: 10px;
+      float: right;
+    }
   }
   .nav-div-right {
     display: flex;
@@ -226,6 +254,27 @@ const ArtisanDashboardNavbar = () => {
   const [activeLink, setActiveLink] = useState("home");
   const [optionDrop, setOptionDrop] = useState(false);
   const [notifyPop, setNotifyPop] = useState(false);
+const modalRef = useRef(null);
+const profileRef = useRef(null);
+
+const handleClickOutside = (event) => {
+  if (modalRef.current && !modalRef.current.contains(event.target)) {
+    setNotifyPop(false);
+  }
+  if (profileRef.current && !profileRef.current.contains(event.target)) {
+    setOptionDrop(false);
+  }
+};
+
+useEffect(() => {
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, []);
+
+
+
   const handleClick = () => {
     setClicked(!clicked);
   };
@@ -241,47 +290,49 @@ const ArtisanDashboardNavbar = () => {
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };
+
+
+
   const { pathname } = useLocation();
   useEffect(() => {
     setClicked(false);
   }, [pathname]);
 
   const handleLogout = () => {
-  // Clear localStorage
-  localStorage.removeItem("artisanToken");
-  localStorage.removeItem("artisanFirstName");
-  localStorage.removeItem("artisanLastName");
-  localStorage.removeItem("artisanEmail");
-  localStorage.removeItem("artisanType");
-  localStorage.removeItem("artisanRole");
-  localStorage.removeItem("artisanName");
+    // Clear localStorage
+    localStorage.removeItem("artisanToken");
+    localStorage.removeItem("artisanFirstName");
+    localStorage.removeItem("artisanLastName");
+    localStorage.removeItem("artisanEmail");
+    localStorage.removeItem("artisanType");
+    localStorage.removeItem("artisanRole");
+    localStorage.removeItem("artisanName");
 
-      localStorage.removeItem("home-ownerToken");
+    localStorage.removeItem("home-ownerToken");
     localStorage.removeItem("home-ownerFirstName");
     localStorage.removeItem("home-ownerLastName");
     localStorage.removeItem("home-ownerEmail");
     localStorage.removeItem("home-ownerType");
     localStorage.removeItem("home-ownerRole");
 
-        localStorage.removeItem("companyToken");
-  localStorage.removeItem("companyfirstName");
-  localStorage.removeItem("companylastName");
-  localStorage.removeItem("companyEmail");
-  localStorage.removeItem("companyName");
-  localStorage.removeItem("companyType");
-  localStorage.removeItem("companyRole");
+    localStorage.removeItem("companyToken");
+    localStorage.removeItem("companyfirstName");
+    localStorage.removeItem("companylastName");
+    localStorage.removeItem("companyEmail");
+    localStorage.removeItem("companyName");
+    localStorage.removeItem("companyType");
+    localStorage.removeItem("companyRole");
 
-      localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminToken");
     localStorage.removeItem("adminFirstName");
     localStorage.removeItem("adminLastName");
     localStorage.removeItem("adminEmail");
     localStorage.removeItem("adminType");
     localStorage.removeItem("adminRole");
- 
 
-  // Redirect to login page
-  navigate("/"); // Or your landing page route
-};
+    // Redirect to login page
+    navigate("/"); // Or your landing page route
+  };
   return (
     <NavRap>
       <nav className="containary">
@@ -352,12 +403,12 @@ const ArtisanDashboardNavbar = () => {
             </div>
             <div className="sub-nav-div-right">
               <div className="all-notify">
-                <div onClick={handleNotifyPop}  className="notification-div">
+                <div  onClick={handleNotifyPop} className="notification-div">
                   <img src="/images/icon-16.png" alt="" />
                 </div>
                 {notifyPop ? (
                   <>
-                    <div className="notify">
+                    <div ref={modalRef} className="notify">
                       <div className="notify-header">
                         <h4>Notification</h4>
                       </div>
@@ -371,9 +422,9 @@ const ArtisanDashboardNavbar = () => {
                   ""
                 )}
               </div>
-              <div className="notification-div">
+              {/* <div className="notification-div">
                 <img src="/images/icon-17.png" alt="" />
-              </div>
+              </div> */}
               <img src="/images/img-9.png" alt="" />
               <div style={{ position: "relative" }}>
                 <Icon
@@ -385,8 +436,12 @@ const ArtisanDashboardNavbar = () => {
                 />
                 {optionDrop ? (
                   <>
-                    <div className="optionpop">
-                      <Link onClick={handleOptionDrop} to="/artisan/settings" className="optionpop-btn">
+                    <div ref={profileRef} className="optionpop">
+                      <Link
+                        onClick={handleOptionDrop}
+                        to="/artisan/settings"
+                        className="optionpop-btn"
+                      >
                         <img src="/images/icon-24.png" alt="" />
                         Setting
                       </Link>

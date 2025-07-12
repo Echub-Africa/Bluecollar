@@ -361,7 +361,7 @@ const SignUpClient = () => {
           </div>
           <div className="sign-5">
             <p>Already have an account?</p>
-            <Link to="/artisanAuth/login" className="login-btn">
+            <Link to="/clientAuth/login" className="login-btn">
               Login
               <Icon
                 className="icon"
@@ -372,6 +372,19 @@ const SignUpClient = () => {
               />
             </Link>
           </div>
+          <div className="sign-5">
+            <p>You forgot your password?</p>
+            <Link to="/clientAuth/forgotPasswordd" className="login-btn">
+              Reset it
+              <Icon
+                width="14px"
+                height="14px"
+                icon="formkit:arrowright"
+                style={{ color: "#0067D0" }}
+              />
+            </Link>
+          </div>
+          <br />
         </div>
         <div className="down-sign">
           <p>

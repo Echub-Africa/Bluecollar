@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const UploadWrapper = styled.div`
   border: 1px solid #1018281a;
@@ -137,11 +137,11 @@ const HomeRap = styled.div`
     line-height: 18px;
     max-width: 129px;
   }
-        @media screen and (max-width: 767px) {
-    .new-dash-2-card h4{
-   font-size: 17px;
-}
-}
+  @media screen and (max-width: 767px) {
+    .new-dash-2-card h4 {
+      font-size: 17px;
+    }
+  }
   .new-dash-2-card p {
     color: #667085;
     font-size: 12px;
@@ -149,11 +149,11 @@ const HomeRap = styled.div`
     line-height: 17px;
     max-width: 184px;
   }
-                @media screen and (max-width: 767px) {
-    .new-dash-2-card p{
-   font-size: 15px;
-}
-}
+  @media screen and (max-width: 767px) {
+    .new-dash-2-card p {
+      font-size: 15px;
+    }
+  }
   .new-dash-2-card button {
     background: transparent;
     width: 90px;
@@ -164,13 +164,13 @@ const HomeRap = styled.div`
     font-size: 12px;
     font-weight: 500;
   }
-      @media screen and (max-width: 767px) {
-    .new-dash-2-card button{
-   font-size: 15px;
-   padding: 10px 10px;
-   width: max-content;
-}
-}
+  @media screen and (max-width: 767px) {
+    .new-dash-2-card button {
+      font-size: 15px;
+      padding: 10px 10px;
+      width: max-content;
+    }
+  }
   .new-dash-2-card {
     border: 1px solid #1018281a;
     background: #ffffff;
@@ -602,46 +602,116 @@ const HomeRap = styled.div`
       flex-wrap: wrap;
     }
   }
-    .success-modal {
+  .success-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+
+  .success-modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .success-modal-content h3 {
+    margin-top: 1rem;
+    color: #10b981;
+  }
+
+  .success-modal-content p {
+    margin: 0.5rem 0 1.5rem;
+    color: #4b5563;
+  }
+
+  .close-btn {
+    background-color: #0067d0;
+    color: white;
+    padding: 0.5rem 1.25rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  /* Modal Overlay */
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
+  right: 0;
+  bottom: 0;
+  background: rgba(16, 24, 40, 0.5); /* Dark translucent background */
+  backdrop-filter: blur(3px); /* Optional: blurred background */
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 999;
+  align-items: center;
+  z-index: 9999;
 }
 
-.success-modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  width: 90%;
+/* Modal Content */
+.modal-content {
+  background-color: #fff;
+  padding: 30px 25px;
+  border-radius: 12px;
   max-width: 400px;
+  width: 90%;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-.success-modal-content h3 {
-  margin-top: 1rem;
-  color: #10B981;
+.modal-content h3 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #101828;
 }
 
-.success-modal-content p {
-  margin: 0.5rem 0 1.5rem;
-  color: #4B5563;
+.modal-content p {
+  margin-bottom: 20px;
+  color: #667085;
+  font-size: 14px;
 }
+  .modal-content .modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;}
 
-.close-btn {
-  background-color: #0067D0;
-  color: white;
-  padding: 0.5rem 1.25rem;
+.modal-content .modal-actions button {
+  padding: 10px 20px;
+  background-color: #0067d0;
+  color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 14px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content .modal-actions button:hover {
+  background-color: #004ea3;
+}
+
+/* Optional: Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 
@@ -655,10 +725,8 @@ const ClientHome = () => {
     projectType: "",
     address: "",
     description: "",
-    timeline: {
-      start: "",
-      end: "",
-    },
+    start: "",
+    end: "",
     budget: "",
     images: [], // ✅ array of File objects
   });
@@ -677,82 +745,83 @@ const ClientHome = () => {
   const fileInputRef = useRef(null);
   const secondFileInputRef = useRef(null);
 
-         useEffect(() => {
-      const token = localStorage.getItem("companyToken");
-      if (!token) {
-        navigate("/companyAuth/login");
-      }
-    }, [navigate]);
+  useEffect(() => {
+    const token = localStorage.getItem("companyToken");
+    if (!token) {
+      navigate("/companyAuth/login");
+    }
+  }, [navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const token = localStorage.getItem("companyToken");
-  if (!token) {
-    alert("User  not authenticated. Please log in.");
-    return;
-  }
-
-  const form = new FormData();
-  form.append("projectType", formData.projectType);
-  form.append("description", formData.description);
-  form.append("address", formData.address);
-form.append("timeline", JSON.stringify(formData.timeline));
-  form.append("budget", formData.budget);
-
-formData.images.forEach((file, index) => {
-  form.append("images", file); // Not images[index]
-});
-
-
-  try {
-    const response = await fetch(
-      "https://blucolar-be.onrender.com/api/client/project/create",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: form,
-      }
-    );
-
-    const result = await response.json();
-
-    if (response.ok) {
-      console.log("✅ Success:", result);
-
-      // Reset form
-      setFormData({
-        projectType: "",
-        description: "",
-        address: "",
-        timeline: { start: "", end: "" },
-        budget: "",
-        images: [],
-      });
-
-      // Close dropdown and show success modal
-      setQuickShow(false);
-      setShowSuccessModal(true);
-      setErrorMessage(""); // Clear previous error
-    } else {
-      setErrorMessage(
-        "Submission failed: " + (result.message || "Unknown error.")
-      );
-      console.error("❌ Error:", result.message);
+    const token = localStorage.getItem("companyToken");
+    if (!token) {
+      alert("User  not authenticated. Please log in.");
+      return;
     }
-  } catch (error) {
-    setErrorMessage("Network error. Please try again.");
-    console.error("❌ Network error:", error);
-  }
-};
 
+    const form = new FormData();
+    form.append("projectType", formData.projectType);
+    form.append("description", formData.description);
+    form.append("address", formData.address);
+    form.append("start", formData.start);
+    form.append("end", formData.end);
+    form.append("budget", formData.budget);
+
+    formData.images.forEach((file, index) => {
+      form.append("images", file); // Not images[index]
+    });
+
+
+    try {
+      const response = await fetch(
+        "https://blucolar-be.onrender.com/api/client/project/create",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: form,
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log("✅ Success:", result);
+
+        // Reset form
+        setFormData({
+          projectType: "",
+          description: "",
+          address: "",
+          start: "",
+          end: "",
+          budget: "",
+          images: [],
+        });
+
+        // Close dropdown and show success modal
+        setQuickShow(false);
+        setShowSuccessModal(true);
+        setErrorMessage(""); // Clear previous error
+      } else {
+        setErrorMessage(
+          "Submission failed: " + (result.message || "Unknown error.")
+        );
+        console.error("❌ Error:", result.message);
+      }
+    } catch (error) {
+      setErrorMessage("Network error. Please try again.");
+      console.error("❌ Network error:", error);
+    }
+  };
 
   const handleQuickShow = () => setQuickShow(!quickShow);
   const handleProjectShow = () => setProjectShow(!projectShow);
@@ -814,11 +883,11 @@ formData.images.forEach((file, index) => {
   const triggerFileInput = () => fileInputRef.current.click();
   const triggerFileInputSecond = () => secondFileInputRef.current.click();
 
-const companyName = localStorage.getItem("companyfirstName");
-const companyNamee = localStorage.getItem("companylastName") ;
-const Email = localStorage.getItem("companyEmail") ;
-const role = localStorage.getItem("companyRole") ;
-const type = localStorage.getItem("companyType") ;
+  const companyName = localStorage.getItem("companyfirstName");
+  const companyNamee = localStorage.getItem("companylastName");
+  const Email = localStorage.getItem("companyEmail");
+  const role = localStorage.getItem("companyRole");
+  const type = localStorage.getItem("companyType");
 
   const [startDropdown, setstartDropdown] = useState(false);
   const [finishTimeDropdown, setFinishTimeDropdown] = useState(false);
@@ -981,13 +1050,13 @@ const type = localStorage.getItem("companyType") ;
           </div>
         </div>
       </div>
-      {quickShow ? (
-        <div className="dropdown-container">
+     {quickShow ? (
+          <div className="dropdown-container">
           <div className="dropdown-show">
             <div className="dropdown-show-header">
-              <h4>Quick fixes & maintenance</h4>
+              <h4>Projects</h4>
               <Icon
-                onClick={handleQuickShow}
+                onClick={handleProjectShow}
                 className="icon"
                 width="18px"
                 height="18px"
@@ -1074,14 +1143,11 @@ const type = localStorage.getItem("companyType") ;
                   <div style={{ position: "relative" }}>
                     <input
                       type="date"
-                      value={formData.timeline.start}
+                      value={formData.start}
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
-                          timeline: {
-                            ...prev.timeline,
-                            start: e.target.value,
-                          },
+                          start: e.target.value,
                         }))
                       }
                       className="timeline-date-input"
@@ -1094,14 +1160,11 @@ const type = localStorage.getItem("companyType") ;
                   <div style={{ position: "relative" }}>
                     <input
                       type="date"
-                      value={formData.timeline.end}
+                      value={formData.end || ""}
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
-                          timeline: {
-                            ...prev.timeline,
-                            end: e.target.value,
-                          },
+                          end: e.target.value,
                         }))
                       }
                       className="timeline-date-input"
@@ -1124,6 +1187,30 @@ const type = localStorage.getItem("companyType") ;
                     {errorMessage}
                   </div>
                 )}
+                {showSuccessModal && (
+                  <div className="success-modal">
+                    <div className="success-modal-content">
+                      <Icon
+                        icon="mdi:check-circle-outline"
+                        width="32"
+                        height="32"
+                        style={{ color: "#10B981" }}
+                      />
+                      <h3>Project Created Successfully!</h3>
+                      <p>
+                        Your project has been submitted. Await Admin
+                        verification once approved the work would comence.
+                      </p>
+                      <button
+                        className="close-btn"
+                        onClick={() => setShowSuccessModal(false)}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <button className="winch" type="submit">
                   Create request
                 </button>
@@ -1140,12 +1227,16 @@ const type = localStorage.getItem("companyType") ;
           <div className="modal-content">
             <h3>Request Created Successfully!</h3>
             <p>Your maintenance request has been submitted.</p>
-            <button onClick={() => setShowSuccessModal(false)}>Close</button>
+            <div className="modal-actions">
+              <button onClick={() => setShowSuccessModal(false)}>Close</button>
+           <Link to="/company/jobs"> <button>Visit Jobs</button></Link>
+           
+          </div>
           </div>
         </div>
       )}
 
-      {projectShow ? (
+    {projectShow ? (
         <div className="dropdown-container">
           <div className="dropdown-show">
             <div className="dropdown-show-header">
@@ -1238,14 +1329,11 @@ const type = localStorage.getItem("companyType") ;
                   <div style={{ position: "relative" }}>
                     <input
                       type="date"
-                      value={formData.timeline.start}
+                      value={formData.start}
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
-                          timeline: {
-                            ...prev.timeline,
-                            start: e.target.value,
-                          },
+                          start: e.target.value,
                         }))
                       }
                       className="timeline-date-input"
@@ -1258,14 +1346,11 @@ const type = localStorage.getItem("companyType") ;
                   <div style={{ position: "relative" }}>
                     <input
                       type="date"
-                      value={formData.timeline.end}
+                      value={formData.end || ""}
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
-                          timeline: {
-                            ...prev.timeline,
-                            end: e.target.value,
-                          },
+                          end: e.target.value,
                         }))
                       }
                       className="timeline-date-input"
@@ -1289,25 +1374,28 @@ const type = localStorage.getItem("companyType") ;
                   </div>
                 )}
                 {showSuccessModal && (
-  <div className="success-modal">
-    <div className="success-modal-content">
-      <Icon
-        icon="mdi:check-circle-outline"
-        width="32"
-        height="32"
-        style={{ color: "#10B981" }}
-      />
-      <h3>Project Created Successfully!</h3>
-      <p>Your project has been submitted. Await Admin verification once approved the work would comence.</p>
-      <button
-        className="close-btn"
-        onClick={() => setShowSuccessModal(false)}
-      >
-        Close
-      </button>
-    </div>
-  </div>
-)}
+                  <div className="success-modal">
+                    <div className="success-modal-content">
+                      <Icon
+                        icon="mdi:check-circle-outline"
+                        width="32"
+                        height="32"
+                        style={{ color: "#10B981" }}
+                      />
+                      <h3>Project Created Successfully!</h3>
+                      <p>
+                        Your project has been submitted. Await Admin
+                        verification once approved the work would comence.
+                      </p>
+                      <button
+                        className="close-btn"
+                        onClick={() => setShowSuccessModal(false)}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 <button className="winch" type="submit">
                   Create request
@@ -1321,158 +1409,176 @@ const type = localStorage.getItem("companyType") ;
       )}
 
       {consultationShow ? (
-        <div className="dropdown-container">
-          <div className="dropdown-show">
-            <div className="dropdown-show-header">
-              <h4>Consultation & Advisory Services</h4>
-              <Icon
-                onClick={handleConsultationShow}
-                className="icon"
-                width="18px"
-                height="18px"
-                icon="humbleicons:times"
-                style={{ color: "#667085" }}
-              />
-            </div>
-            <form onSubmit={handleSubmit}>
-              <div className="dropdown-show-body">
-                <div className="category-div-sub">
-                  <label>Service Type</label>
-                  <select
-                    name="projectType"
-                    value={formData.projectType}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Select</option>
-                    <option value="Electrical">Electrical</option>
-                    <option value="Carpentry">Carpentry</option>
-                    <option value="Painting">Painting</option>
-                    <option value="General Handyman">General Handyman</option>
-                  </select>
-                </div>
-
-                <div className="category-div-sub">
-                  <label>
-                    Location <span>Saved address</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    placeholder="Enter address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                  />
-                </div>
-
-                <div className="category-div-sub">
-                  <label>Additional details</label>
-                  <textarea
-                    name="description"
-                    placeholder="Enter additional details"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                  ></textarea>
-                </div>
-
-                <div className="category-div-sub">
-                  <label>images upload</label>
-                  <UploadWrapper
-                    onDrop={handleDrop}
-                    onDragOver={handleDragOver}
-                    onClick={triggerFileInput}
-                  >
-                    <HiddenInput
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileChangeSecond}
-                      accept="image/*"
-                      multiple
-                    />
-                    <img src="/images/file-icon.png" alt="" />
-                    <Text>
-                      Click to upload <SubText>or drag and drop</SubText>
-                    </Text>
-                  </UploadWrapper>
-
-                  {previewUrls.map((url, index) => (
-                    <div key={index} className="image-preview-container">
-                      <img
-                        src={url}
-                        alt={`Preview ${index}`}
-                        className="image-preview"
-                      />
-                      <button onClick={() => handleRemoveImage(index)}>
-                        Remove
-                      </button>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="category-div-sub">
-                  <label>Start Date</label>
-                  <div style={{ position: "relative" }}>
-                    <input
-                      type="date"
-                      value={formData.timeline.start}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          timeline: {
-                            ...prev.timeline,
-                            start: e.target.value,
-                          },
-                        }))
-                      }
-                      className="timeline-date-input"
-                    />
-                  </div>
-                </div>
-
-                <div className="category-div-sub">
-                  <label>Finish Date</label>
-                  <div style={{ position: "relative" }}>
-                    <input
-                      type="date"
-                      value={formData.timeline.end}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          timeline: {
-                            ...prev.timeline,
-                            end: e.target.value,
-                          },
-                        }))
-                      }
-                      className="timeline-date-input"
-                    />
-                  </div>
-                </div>
-
-                <div className="category-div-sub">
-                  <label>Budget</label>
-                  <input
-                    type="text"
-                    name="budget"
-                    placeholder="0.00"
-                    value={formData.budget}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                {errorMessage && (
-                  <div style={{ color: "red", marginBottom: "1rem" }}>
-                    {errorMessage}
-                  </div>
-                )}
-                <button className="winch" type="submit">
-                  Create request
-                </button>
+           <div className="dropdown-container">
+            <div className="dropdown-show">
+              <div className="dropdown-show-header">
+                <h4>Projects</h4>
+                <Icon
+                  onClick={handleProjectShow}
+                  className="icon"
+                  width="18px"
+                  height="18px"
+                  icon="humbleicons:times"
+                  style={{ color: "#667085" }}
+                />
               </div>
-            </form>
+              <form onSubmit={handleSubmit}>
+                <div className="dropdown-show-body">
+                  <div className="category-div-sub">
+                    <label>Service Type</label>
+                    <select
+                      name="projectType"
+                      value={formData.projectType}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select</option>
+                      <option value="Electrical">Electrical</option>
+                      <option value="Carpentry">Carpentry</option>
+                      <option value="Painting">Painting</option>
+                      <option value="General Handyman">General Handyman</option>
+                    </select>
+                  </div>
+  
+                  <div className="category-div-sub">
+                    <label>
+                      Location <span>Saved address</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="address"
+                      placeholder="Enter address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+  
+                  <div className="category-div-sub">
+                    <label>Additional details</label>
+                    <textarea
+                      name="description"
+                      placeholder="Enter additional details"
+                      value={formData.description}
+                      onChange={handleInputChange}
+                    ></textarea>
+                  </div>
+  
+                  <div className="category-div-sub">
+                    <label>images upload</label>
+                    <UploadWrapper
+                      onDrop={handleDrop}
+                      onDragOver={handleDragOver}
+                      onClick={triggerFileInput}
+                    >
+                      <HiddenInput
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChangeSecond}
+                        accept="image/*"
+                        multiple
+                      />
+                      <img src="/images/file-icon.png" alt="" />
+                      <Text>
+                        Click to upload <SubText>or drag and drop</SubText>
+                      </Text>
+                    </UploadWrapper>
+  
+                    {previewUrls.map((url, index) => (
+                      <div key={index} className="image-preview-container">
+                        <img
+                          src={url}
+                          alt={`Preview ${index}`}
+                          className="image-preview"
+                        />
+                        <button onClick={() => handleRemoveImage(index)}>
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+  
+                  <div className="category-div-sub">
+                    <label>Start Date</label>
+                    <div style={{ position: "relative" }}>
+                      <input
+                        type="date"
+                        value={formData.start}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            start: e.target.value,
+                          }))
+                        }
+                        className="timeline-date-input"
+                      />
+                    </div>
+                  </div>
+  
+                  <div className="category-div-sub">
+                    <label>Finish Date</label>
+                    <div style={{ position: "relative" }}>
+                      <input
+                        type="date"
+                        value={formData.end || ""}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            end: e.target.value,
+                          }))
+                        }
+                        className="timeline-date-input"
+                      />
+                    </div>
+                  </div>
+  
+                  <div className="category-div-sub">
+                    <label>Budget</label>
+                    <input
+                      type="text"
+                      name="budget"
+                      placeholder="0.00"
+                      value={formData.budget}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  {errorMessage && (
+                    <div style={{ color: "red", marginBottom: "1rem" }}>
+                      {errorMessage}
+                    </div>
+                  )}
+                  {showSuccessModal && (
+                    <div className="success-modal">
+                      <div className="success-modal-content">
+                        <Icon
+                          icon="mdi:check-circle-outline"
+                          width="32"
+                          height="32"
+                          style={{ color: "#10B981" }}
+                        />
+                        <h3>Project Created Successfully!</h3>
+                        <p>
+                          Your project has been submitted. Await Admin
+                          verification once approved the work would comence.
+                        </p>
+                        <button
+                          className="close-btn"
+                          onClick={() => setShowSuccessModal(false)}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  )}
+  
+                  <button className="winch" type="submit">
+                    Create request
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
+        ) : (
+          ""
+        )}
     </HomeRap>
   );
 };
