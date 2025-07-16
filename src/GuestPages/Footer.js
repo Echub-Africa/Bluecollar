@@ -131,12 +131,14 @@ const FooterRap = styled.div`
 `;
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
     <FooterRap>
       <div className="footer-upper containery">
         <div className="footer-1">
           <h2>Subscribe to our newsletter</h2>
-          <p>Trusted by over 30,000 worldwide customers.</p>
+          <p>Trusted by many others like you.</p>
         </div>
         <div className="footer-2">
           <input type="text" placeholder="Enter email address" />
@@ -215,7 +217,7 @@ const Footer = () => {
                 <Link className="links">Cookie Policy</Link>
             </div>
         </div>
-        <p className="last-footer">Copyright © 2025 Bluecollar. All Rights Reserved</p>
+        <p className="last-footer">Copyright © {currentYear} Echub Africa. All Rights Reserved</p>
       </div>
     </FooterRap>
   );

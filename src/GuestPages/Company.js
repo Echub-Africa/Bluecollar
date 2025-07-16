@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Marquee from "react-fast-marquee";
 
 const CompanyRap = styled.div`
   background: #f2f2f2;
@@ -12,6 +13,12 @@ const CompanyRap = styled.div`
     font-weight: 600;
     max-width: 629px;
     text-align: center;
+  }
+      .sub-home-22 {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    height: 60px
   }
   .company-1 p {
     color: #666d7b;
@@ -192,15 +199,32 @@ const CompanyRap = styled.div`
 const Company = () => {
   return (
     <CompanyRap>
-      <div className="company-1 containery">
-        <h1>Powering a new generation of businesses across Africa</h1>
+      <div className="company-3 containery">
+        <h2>Powering a New Generation of Technical Service Across Africa  <h3 style={{fontSize: "20px", lineHeight: "25px", marginTop: "10px"}}>At ECHub we're not just fixing things - we're fixing how things are done.</h3></h2>
+
+      
+  <div className="company-3-right">
         <p>
-          Lorem ipsum dolor sit amet consectetur. Odio cursus adipiscing
-          venenatis nunc ultrices feugiat augue ultrices. Eget vulputate vitae
-          sed cursus fermentum. Sit a eu eget pulvinar sit libero. Dignissim
-          netus justo eget aliquet vitae. Id diam tincidunt convallis auctor
-          facilisis hac tempus sociis.
+         ECHub is Africa's fast growing tech-enabled blue-collar service company that offers end-to-end 
+         maintenance, repair, installation, and construction services - tailored for individuals, businesses, and real estate
+         stakeholders. We're building a smarter and more professional alternative to the artisan chaos millions face every day.
         </p>
+        <p>Where most platforms connect youwith artisans, we take full ownership of the service process - from booking
+          to execution. Our in-house workforce is certified, background-checked, trained, and constantly supported by our operations and technology teams to deliveredsafety, speed, and transparency.
+        </p>
+        <p>We currently serve:
+          <br />
+          <ul>
+            <li><b>Facility manager</b> tired of escalations and substandard repairs</li>
+            <li><b>Homeowners & landords</b>  who want quick, trustworthy service</li>
+            <li><b>SMEs & developers</b>  looking for installation & finishing partners</li>
+          <li><b>Corporates</b>  who need routine maintenance without overhead stress</li>
+          </ul>
+        </p>
+        <p>With over 250+ jobs compleded, 150+ trchnicians trained, over 1000 talent pool and a growing footprint across Lagos, ECHub is setting thet standard for professional,
+          modern, and efficient technical services across Nigeria - and soon, Africa.
+        </p>
+        </div>
       </div>
       <div className="company-2 containery">
         <img  className="image-size image-size-1" src="/images/image-7.png" alt="" />
@@ -208,27 +232,33 @@ const Company = () => {
       </div>
       <div className="company-3 containery">
         <h2>
-          Constantly coming up with new ideas & working on improving artisans
+          Constantly coming up with new ideas & improving artisans
           services for Africa.
         </h2>
         <div className="company-3-right">
           <p>
-            Lorem ipsum dolor sit amet consectetur. Libero rutrum tristique ut
-            dolor nisl sit iaculis nam. Dictum nunc condimentum quis placerat
-            felis felis praesent rhoncus. Fusce velit eget cursus eu nunc
-            pellentesque. Morbi massa egestas sit dignissim ac mollis. Purus
-            blandit mauris imperdiet nulla sit lorem. Mauris elementum rhoncus
-            vitae nulla in iaculis libero ornare metus. Eget quis justo
-            vestibulum venenatis sagittis metus ut. Viverra enim malesuada ipsum
-            sit augue sed blandit. Volutpat morbi erat mi viverra tincidunt elit
-            eget sit augue.
+           ECHub is redefining the future of work in the artisan and technical sector.
           </p>
           <p>
-            Vel condimentum aenean libero eget massa in lectus eu quam. Morbi a
-            risus ac vulputate mi. Quis mauris id neque id lacus tortor id sit.
-            Sapien pellentesque sit odio nisl. Massa varius elementum a commodo
-            est neque nec. Suscipit ac senectus quis quis.
+          We believe blue-collar work deserves structire, and innovation. That's why we are building:
+          <ul>
+            <li><b>Job-tracking tech</b> that offers real-time updtes and customer visibility</li>
+            <li><b>Insuurance-backed services</b> for safety and peace of mind</li>
+            <li><b>before-and-after service audits</b> for quality assurance</li>
+            <li><b>Smart dashboard and monthly</b> report assurance</li>
+            <li><b>A workforce empowerment pipeline</b> with training, mentorship, and onboarding</li>
+          </ul>
           </p>
+          <p>We constantly observe user behaviour to identify gaps and create micro-innovations - like:
+            <ul>
+              <li>Flexi-time service add-ons</li>
+              <li>Emergency call features</li>
+              <li>Bundled services (e.g. generator servicing + fuel delivery)</li>
+              <li>In-app live chat for clients and operations</li>
+              <li>Shared dashboards between decision-makers and service users</li>
+            </ul>
+          </p>
+          <p>We're not just changing <b>how services are delivered, we're canging how artisans are seen, supported, and valued</b> in the economy</p>
         </div>
       </div>
       <div className="company-4 containery">
@@ -236,31 +266,27 @@ const Company = () => {
           <img src="/images/img-4.png" alt="" />
           <h4>Mission</h4>
           <p>
-            Our mission is to become a leading offshore services provider by
-            delivering innovative, high-quality services with integrity and
-            professionalism, prioritizing safety, security, and environmental
-            responsibility.
+           To transform technical service delivery in Africa by building a trusted, tech-enabled ecosystem that empowers professionals, satisfies customers,
+           and guarantees service quality
           </p>
         </div>
         <div className="sub-company-4">
           <img src="/images/img-5.png" alt="" />
           <h4>Vision</h4>
           <p>
-            Our vision is to maintain excellence and remain the foremost
-            offshore servicing company and the preferred partner of IOCs and
-            investors
+           To become Africa's most trusted brand for blue-collar services, restoring confidence in local expertise and setting new benchmarks for quality,
+           accountability, and profesionalism.
           </p>
         </div>
         <div className="sub-company-4">
           <img src="/images/img-6.png" alt="" />
           <h4>Core Values</h4>
           <div className="p-comp">
-            <p>S – Service Excellence</p>
-            <p>I – Integrity </p>
-            <p>Innovation </p>
-            <p>P – Professionalism</p>
-            <p>L – Leadership</p>
-            <p>E – Entrepreneurship</p>
+           <p><b>Accountability over excuses:</b> We don't blame. We own and solve.</p>
+           <p><b>Excellence in every detail:</b> From wire to water, we deliver quality that lasts.</p>
+           <p><b>Safety first, always:</b> For clients, workers, and property.</p>
+           <p><b>Human support, not just tech:</b> Real people. Real help. Every time.</p>
+           <p><b>Dignity of labour:</b> We empower skilled artisans to thrive in modern economy.</p>
           </div>
         </div>
       </div>
@@ -268,9 +294,11 @@ const Company = () => {
         <div className="company-5-upper">
           <h2>Meet the team behind the company</h2>
           <p>
-            Lorem ipsum dolor sit amet consectetur. Diam tellus nulla ridiculus
-            nulla faucibus a suspendisse quis quis. Ullamcorper.
-          </p>
+           ECHub is powered by a team of innovators, builders, and problem-solvers who deeply understand both the chaos of blue-collar services
+           in Africa and the power of structure and technology to fix it.
+          </p>Together,we bring over 10+ years of combined experience across construction, field operations, workforce development, product design,
+          logistics, and customer experience.
+          <p></p>
         </div>
         <div className="company-5-down">
           <img src="images/image-9.png" alt="" />
@@ -284,31 +312,33 @@ const Company = () => {
           Powering the homeowners, from next-gen startups to established
           companies.
         </p>
-        <div className="company-6-sub">
-          <img src="/images/lag.png" alt="" />
-          <img src="/images/lsetf.png" alt="" />
-          <img src="/images/inn.png" alt="" />
-          <img src="/images/m12.png" alt="" />
-        </div>
+<Marquee pauseOnHover={true} speed={30} direction="left">
+          <div className="sub-home-22">
+        <img src="/images/lag.png" alt="" />
+        <img src="/images/lsetf.png" alt="" />
+        <img src="/images/inn.png" alt="" />
+        <img src="/images/m12.png" alt="" />
+         </div>
+        </Marquee>
       </div>
       <div className="containery">
-        <div className="home-11">
-          <div className="home-11-left">
-            <h2>Build your carrier join the ECHub family today.</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur. Curabitur ac tortor in
-              mattis. Convallis imperdiet magna tincidunt in eleifend. Cras.
-            </p>
-            <div className="home-11-left-btn">
-              <Link className="home-11-btn-1">Sign up</Link>
-              <Link className="home-11-btn-2">Learn more</Link>
+          <div className="home-11">
+            <div className="home-11-left">
+              <h2>Build your career join the ECHub family today.</h2>
+              <p>
+                Are you a skilled artisan looking for growth opportunities? Join
+                our network of professionals and build a thriving career with us.
+              </p>
+              <div className="home-11-left-btn">
+                <Link to="/artisanAuth/artisanreg" className="home-11-btn-1">Sign up</Link>
+                <Link to="/artisanAuth/artisanLog" className="home-11-btn-2">Sign In</Link>
+              </div>
+            </div>
+            <div>
+              <img src="/images/image-6.png" alt="" />
             </div>
           </div>
-          <div>
-            <img src="/images/image-13.png" alt="" />
-          </div>
         </div>
-      </div>
     </CompanyRap>
   );
 };

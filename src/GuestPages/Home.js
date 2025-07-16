@@ -680,7 +680,7 @@ const Home = () => {
             <p>Led by a team of over a decade of experience, we are →</p>
           </div>
           <h1>
-            Powering Solutions in
+            Powering solutions in
             <Typewriter
               texts={["Repairs", "Maintenance", "Construction"]}
               styles={wahalaStyles} // Pass the styles array
@@ -710,15 +710,15 @@ const Home = () => {
        <div className="home-6 containery">
         <div className="sub-home-6">
           <h3>1K+</h3>
-          <p>Top Rated, highly skilled technical talent pro</p>
+          <p>Top Rated, highly skilled technical talent pool</p>
         </div>
         <div className="sub-home-6">
           <h3>$10K</h3>
-          <p>Cost savings per project handled by Bluecollar</p>
+          <p>Cost savings on projects handled by ECHub</p>
         </div>
         <div className="sub-home-6">
           <h3>86%</h3>
-          <p>Faster time to hire</p>
+          <p>Faster time to get profesionals for any phase of project</p>
         </div>
         <div className="sub-home-6">
           <h3>74%</h3>
@@ -731,7 +731,7 @@ const Home = () => {
             <img src="/images/image-2.png" alt="" />
             <div className="sub-home-3-sub">
               <h4>Facility Management</h4>
-              <p>We handle continuous maintenance for commercial properties.</p>
+              <p>We handle continuous maintenance for residential and commercial properties.</p>
             </div>
           </div>
           <div className="sub-home-3">
@@ -753,7 +753,7 @@ const Home = () => {
       </div>
       <div className="home-4 containery">
         <div className="sub-home-4">
-          <h2>Find skilled workers for your home or business</h2>
+          <h2>Beyond the satisfactory job, we also provide...</h2>
           <div className="sub-home-4-sub">
             <div className="inner-sub-home-4">
               <div className="job-div">
@@ -812,6 +812,21 @@ const Home = () => {
               </div>
               <p>We cover damages and ensure high service standards.</p>
             </div>
+
+               <div className="inner-sub-home-4">
+              <div className="job-div">
+                <div className="grean-mark">
+                  <Icon
+                    width="14px"
+                    height="14px"
+                    icon="fluent-mdl2:check-mark"
+                    style={{ color: "#ffffff" }}
+                  />
+                </div>
+                <p>Smart Homes & monitoring</p>
+              </div>
+              <p>We provide & install smart monitoring devices for residential and commercial use to make life muc more convenient.</p>
+            </div>
           </div>
         </div>
         <div>
@@ -863,7 +878,7 @@ const Home = () => {
           </div>
           <div className="sub-home-8">
             <img src="/images/icon-6.png" alt="" />
-            <p>Remodeling</p>
+            <p>Smart Homes</p>
           </div>
           <div className="sub-home-8">
             <img src="/images/icon-7.png" alt="" />
@@ -897,20 +912,20 @@ const Home = () => {
       </div>
       <div className="home-5 containery">
         <div className="upper-home-5">
-          <h2>Enjoy the Bluecollar experience</h2>
+          <h2>Enjoy the ECHub experience</h2>
           <p>
-            We simplify the hiring process, offer on-the-job insurance and give
-            the Laborhack Guarantee to ensure our clients' peace of mind.
+At ECHub, we believe no one deserves to see "shege" from technicians/artisans, and so we
+built our customer experience around the following.
           </p>
         </div>
         <div className="down-home-5">
           <div className="sub-home-5">
             <img src="/images/img-1.png" alt="" />
             <div className="sub-home-5-sub">
-              <h4>Hire trusted & vetted workers instantly</h4>
+              <h4>Peace of Mind, On Demand</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur. Scelerisque cursus in
-                nunc in mi eget. Condimentum dui laoreet tincidunt amet.
+Because one phone call shouldn't turn into 10, we provide certified, background-checked artisans backed by service gurantees and insurance
+- so you odn't need to supervise, call twice, or hope for quality.
               </p>
               <Link className="discover-more">
                 Discover More
@@ -926,10 +941,10 @@ const Home = () => {
           <div className="sub-home-5">
             <img src="/images/img-2.png" alt="" />
             <div className="sub-home-5-sub">
-              <h4>Save time through simplified hiring</h4>
+              <h4>Tech + Touch. Real Service, Real Time</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur. Scelerisque cursus in
-                nunc in mi eget. Condimentum dui laoreet tincidunt amet.
+You'l always know who's coming, whats happening, and when it's done. From live job tracking to photo updated and post-service
+audits. we fuse technology with human support so you're always in control even when you're away.
               </p>
               <Link className="discover-more">
                 Discover More
@@ -945,10 +960,10 @@ const Home = () => {
           <div className="sub-home-5">
             <img src="/images/img-3.png" alt="" />
             <div className="sub-home-5-sub">
-              <h4>Manage and reduce risk</h4>
+              <h4>No Excuses. Just Execution.</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur. Scelerisque cursus in
-                nunc in mi eget. Condimentum dui laoreet tincidunt amet.
+               We show up. We finish. We follow through. Unline broda Kamoru or unreliable vendors, we are acountable. Whether it's a scheduled audit, a last-minute repair,
+               or routine generator maintenence, we deliver, and we back it up with reports.
               </p>
               <Link className="discover-more">
                 Discover More
@@ -961,6 +976,26 @@ const Home = () => {
               </Link>
             </div>
           </div>
+   <div className="sub-home-5">
+            <img src="/images/img-2.png" alt="" />
+            <div className="sub-home-5-sub">
+              <h4>Total Property Wellness</h4>
+              <p>
+Not just repairs. We protect your assets. our plans cover more than fixes. We proactively monitor, inspect, and maintain your infrastructure
+so you avoid big surprises and costly damage. 
+              </p>
+              <Link className="discover-more">
+                Discover More
+                <Icon
+                  width="18px"
+                  height="18px"
+                  icon="formkit:arrowright"
+                  style={{ color: "#ffffff" }}
+                />
+              </Link>
+            </div>
+          </div>
+          
         </div>
       </div>
 
@@ -1189,7 +1224,7 @@ const Home = () => {
       <div className="containery">
         <div className="home-11">
           <div className="home-11-left">
-            <h2>Build your carrier join the ECHub family today.</h2>
+            <h2>Build your career join the ECHub family today.</h2>
             <p>
               Are you a skilled artisan looking for growth opportunities? Join
               our network of professionals and build a thriving career with us.
