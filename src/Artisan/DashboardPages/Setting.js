@@ -215,20 +215,51 @@ padding-bottom: 70px;
 
 const ArtisanSetting = () => {
     const navigate = useNavigate();
+      const [error, setError] = useState("");
+         const [user, setUser] = useState(null);
+      
       useEffect(() => {
         const token = localStorage.getItem("artisanToken");
         if (!token) {
           navigate("/artisanAuth/login/Artisan");
         }
       }, [navigate]);
+
+      useEffect(() => {
+      const fetchUserData = async () => {
+        const token = localStorage.getItem('artisanToken'); // Get token from localStorage
+  
+        if (!token) {
+          setError('No auth token found');
+          return;
+        }
+  
+        try {
+          const response = await fetch('https://blucolar-be.onrender.com/api/users/me', {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+  
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+  
+          const data = await response.json();
+          setUser(data.user);
+        } catch (err) {
+          setError(err.message);
+        }
+      };
+  
+      fetchUserData();
+    }, []);
       
   const [activeLink, setActiveLink] = useState("profile");
   const [formData, setFormData] = useState({
     firstName: "",
-    lastName: "",
-    phone: "090882973",
-    address: "74 Shitta Street Allen Avenu Ikeja Lagos",
-    email: "francis@gmail.com"
+    lastName: ""
   });
 
   
@@ -310,6 +341,17 @@ const ArtisanSetting = () => {
     }
   };
 
+  useEffect(() => {
+  if (user) {
+    setFormData({
+      address: user.address || "",
+      email: user.email || "",
+    });
+  }
+}, [user]);
+
+      
+
   return (
     <SettingRap>
         <div className="containary">
@@ -349,10 +391,7 @@ const ArtisanSetting = () => {
                     <label>Email Address</label>
                     <input type="text" value={formData.email} readOnly />
                   </div>
-                  <div className="inner-profile-1">
-                    <label>Phone Number</label>
-                    <input type="text" value={formData.phone}  readOnly/>
-                  </div>
+                 
                   <div className="inner-profile-1">
                     <label>Address</label>
                     <input style={{
@@ -361,8 +400,8 @@ const ArtisanSetting = () => {
                   </div>
                 </div>
                 <div className="profile-2">
-                  <img src="/images/img-12.png" alt="" />
-                  <button>Upload Photo</button>
+                  {/* <img src="/images/img-12.png" alt="" />
+                  <button>Upload Photo</button> */}
                   <div className="profile-info">
                     <div className="profile-info-div">
                       <p>Name:</p>
@@ -372,13 +411,13 @@ const ArtisanSetting = () => {
                       <p>Email Address:</p>
                       <h4>{Email}</h4>
                     </div>
-                    <div className="profile-info-div">
-                      <p>Phone Number:</p>
-                      <h4>07066091112</h4>
-                    </div>
+                   <div className="profile-info-div">
+                      <p>Phone:</p>
+                      <h4>{user?.phone || 'N/A'}</h4>
+                    </div>  
                     <div className="profile-info-div">
                       <p>Gender:</p>
-                      <h4>Male</h4>
+                      <h4>{user?.gender || 'N/A'}</h4>
                     </div>
                     <div className="profile-info-div">
                       <p>Industry:</p>
@@ -386,7 +425,20 @@ const ArtisanSetting = () => {
                     </div>
                     <div className="profile-info-div">
                       <p>Availability Badge:</p>
-                      <h4>Available</h4>
+                      <h4>{user?.status || 'N/A'}</h4>
+                    </div>
+                     <div className="profile-info-div">
+                      <p>Country:</p>
+                      <h4>{user?.country || 'N/A'}</h4>
+                    </div>
+                     <div className="profile-info-div">
+                      <p>City:</p>
+                      <h4>{user?.city || 'N/A'}</h4>
+                    </div>
+                     <div className="profile-info-div">
+                      <p>Date of birth:</p>
+                      <h4>{user && user.dob ? new Date(user.dob).toISOString().split("T")[0]
+ : 'N/A'}</h4>
                     </div>
                   </div>
                 </div>

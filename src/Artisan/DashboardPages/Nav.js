@@ -63,6 +63,7 @@ const NavRap = styled.div`
     @media screen and (max-width: 767px) {
     .search-div-input {
       width: 100%;
+        color: white;
     }
   }
   .search-div-input input {
@@ -72,7 +73,10 @@ const NavRap = styled.div`
     border: 1px solid #d9e4e924;
     background: #ffffff1f;
     padding-left: 30px;
+    color: white;
   }
+      .search-div-input input::placeholder {
+      color: white;}
   @media screen and (max-width: 767px) {
     .search-div-input input {
       width: 100%;

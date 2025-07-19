@@ -326,6 +326,8 @@ const ArtisanJobs = () => {
   const [inProgressCount, setInProgressCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
 
+           const [user, setUser] = useState(null);
+
   useEffect(() => {
     const token = localStorage.getItem("artisanToken");
     if (!token) {
@@ -386,6 +388,42 @@ const ArtisanJobs = () => {
     setInProgressCount(inProgress);
     setCompletedCount(completed);
   }, [jobs]);
+
+        const firstName = localStorage.getItem("artisanFirstName");
+  const lastName = localStorage.getItem("artisanLastName");
+  const Email = localStorage.getItem("artisanEmail");
+
+   useEffect(() => {
+        const fetchUserData = async () => {
+          const token = localStorage.getItem('artisanToken'); // Get token from localStorage
+    
+          if (!token) {
+            setError('No auth token found');
+            return;
+          }
+    
+          try {
+            const response = await fetch('https://blucolar-be.onrender.com/api/users/me', {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            });
+    
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            setUser(data.user);
+          } catch (err) {
+            setError(err.message);
+          }
+        };
+    
+        fetchUserData();
+      }, []);
+
 
   return (
     <JobRap>
@@ -464,7 +502,7 @@ const ArtisanJobs = () => {
           <div className="dash-3">
             <img src="/images/img-10.png" alt="" />
             <div className="info">
-              <h4>Ikechukwu Mmbadiwe</h4>
+              <h4>{firstName} {lastName}</h4>
               <p>Electrical Engineer</p>
             </div>
             <div className="verify">
@@ -480,19 +518,32 @@ const ArtisanJobs = () => {
             <div className="dash-4-body">
               <div className="dash-4-inner">
                 <h6>Availability Badge:</h6>
-                <p>Available</p>
+                <p>{user?.status || 'N/A'}</p>
               </div>
               <div className="dash-4-inner">
                 <h6>Email Address:</h6>
-                <p>Public</p>
+                <p>{Email}</p>
               </div>
               <div className="dash-4-inner">
                 <h6>Phone Number:</h6>
-                <p>08066091125</p>
+                <p>{user?.phone || 'N/A'}</p>
               </div>
               <div className="dash-4-inner">
-                <h6>Industry:</h6>
-                <p>Electrical</p>
+                <h6>Country:</h6>
+                <p>{user?.country || 'N/A'}</p>
+              </div>
+                <div className="dash-4-inner">
+                <h6>City:</h6>
+                <p>{user?.city || 'N/A'}</p>
+              </div>
+                <div className="dash-4-inner">
+                <h6>Gender</h6>
+                <p>{user?.gender || 'N/A'}</p>
+              </div>
+                  <div className="dash-4-inner">
+                <h6>Date of birth:</h6>
+                <p>{user && user.dob ? new Date(user.dob).toISOString().split("T")[0]
+ : 'N/A'}</p>
               </div>
             </div>
           </div>

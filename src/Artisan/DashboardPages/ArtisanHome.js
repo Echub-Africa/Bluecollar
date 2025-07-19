@@ -413,6 +413,11 @@ const ArisanHome = () => {
   const role = localStorage.getItem("artisanRole");
   const type = localStorage.getItem("artisanType");
 
+
+    const [user, setUser] = useState(null);
+
+
+
   const [showAll, setShowAll] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [visibleJobs, setVisibleJobs] = useState([]);
@@ -518,6 +523,39 @@ const ArisanHome = () => {
     fetchData();
   }, []);
 
+
+    useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('artisanToken'); // Get token from localStorage
+
+      if (!token) {
+        setError('No auth token found');
+        return;
+      }
+
+      try {
+        const response = await fetch('https://blucolar-be.onrender.com/api/users/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setUser(data.user);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+
   return (
     <HomeRap>
       <div className="containary all-dash">
@@ -550,12 +588,13 @@ const ArisanHome = () => {
               </div>
             </div>
           </div>
-          <Link to="/artisanAuth/signUpOwner">
-            {" "}
-            <div className="onboard">
-              <p>Complete Onboarding</p>
-            </div>
-          </Link>
+          {user && (!user.firstName || !user.lastName || !user.email || !user.address || !user.phone) && (
+  <Link to="/artisanAuth/signUpOwner">
+    <div className="onboard">
+      <p>Complete Onboarding</p>
+    </div>
+  </Link>
+)}
 
           <div
             style={{
@@ -628,8 +667,8 @@ const ArisanHome = () => {
             </div>
             <div className="dash-4-body">
               <div className="dash-4-inner">
-                <h6>Availability Badge:</h6>
-                <p>Available</p>
+                <h6>Availability badge:</h6>
+                <p>{user?.status || 'N/A'}</p>
               </div>
               <div className="dash-4-inner">
                 <h6>Email Address:</h6>
@@ -637,16 +676,29 @@ const ArisanHome = () => {
               </div>
               <div className="dash-4-inner">
                 <h6>Phone Number:</h6>
-                <p>08066091125</p>
+             <p>{user?.phone || 'N/A'}</p>
+              </div>
+               <div className="dash-4-inner">
+                <h6>Address:</h6>
+             <p>{user?.address || 'N/A'}</p>
+              </div>
+               <div className="dash-4-inner">
+                <h6>Country:</h6>
+             <p>{user?.country || 'N/A'}</p>
+              </div>
+                <div className="dash-4-inner">
+                <h6>State:</h6>
+             <p>{user?.city || 'N/A'}</p>
+              </div>
+               <div className="dash-4-inner">
+                <h6>Gender:</h6>
+             <p>{user?.gender || 'N/A'}</p>
               </div>
               <div className="dash-4-inner">
                 <h6>Industry:</h6>
                 <p>Electrical</p>
               </div>
-              <div className="dash-4-inner">
-                <h6>Role:</h6>
-                <p>{role}</p>
-              </div>
+             
               <div className="dash-4-inner">
                 <h6>Type:</h6>
                 <p>{type}</p>

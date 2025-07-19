@@ -345,8 +345,7 @@ const Arin = () => {
                         <div className="contact-o__wrap">
                             <div className="contact-o__icon"><Phone className="fas fa-phone-volume" /></div>
                             <span className="contact-o__info-text-1">LET'S HAVE A CALL</span>
-                            <span className="contact-o__info-text-2">(+0) 900 901 904</span>
-                            <span className="contact-o__info-text-2">(+0) 900 901 902</span>
+                            <span className="contact-o__info-text-2">(+234) 8166877099</span>
                         </div>
                     </div>
                 </div>
@@ -355,8 +354,8 @@ const Arin = () => {
                         <div className="contact-o__wrap">
                             <div className="contact-o__icon"><MapPin className="fas fa-map-marker-alt" /></div>
                             <span className="contact-o__info-text-1">OUR LOCATION</span>
-                            <span className="contact-o__info-text-2">4247 Ashford Drive VA-20006</span>
-                            <span className="contact-o__info-text-2">Virginia US</span>
+                            <span className="contact-o__info-text-2">68, Ibukuolu street, Akoka</span>
+                            <span className="contact-o__info-text-2">Lagos.</span>
                         </div>
                     </div>
                 </div>
@@ -365,8 +364,8 @@ const Arin = () => {
                         <div className="contact-o__wrap">
                             <div className="contact-o__icon"><Clock className="far fa-clock" /></div>
                             <span className="contact-o__info-text-1">WORK TIME</span>
-                            <span className="contact-o__info-text-2">5 Days a Week</span>
-                            <span className="contact-o__info-text-2">From 9 AM to 7 PM</span>
+                            <span className="contact-o__info-text-2">Monday to Saturday</span>
+                            <span className="contact-o__info-text-2">From 9 AM to 6 PM</span>
                         </div>
                     </div>
                 </div>
