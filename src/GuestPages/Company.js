@@ -135,6 +135,22 @@ const CompanyRap = styled.div`
     gap: 20px;
     flex-wrap: wrap;
   }
+.hove .hovebox {
+display: none;
+margin-top: -70px;
+background-color: #050f23ff;
+color: white;
+border-radius: 10px;
+z-index: 99px;
+position: absolute;
+width: 250px;
+padding: 5px;
+padding-left: 10px;
+margin-left: 10px;
+}
+.hove:hover .hovebox {
+display: block;
+}
   .company-5 {
     display: flex;
     flex-direction: column;
@@ -194,6 +210,8 @@ const CompanyRap = styled.div`
         width: 250px;
     }
   }
+
+
 `;
 
 const Company = () => {
@@ -296,15 +314,39 @@ const Company = () => {
           <p>
            ECHub is powered by a team of innovators, builders, and problem-solvers who deeply understand both the chaos of blue-collar services
            in Africa and the power of structure and technology to fix it.
-          </p>Together,we bring over 10+ years of combined experience across construction, field operations, workforce development, product design,
+          <br /><br />Together, we bring over 10+ years of combined experience across construction, field operations, workforce development, product design,
           logistics, and customer experience.
-          <p></p>
+          </p>
         </div>
         <div className="company-5-down">
+          <div className="hove">
           <img src="images/image-9.png" alt="" />
-          <img src="images/image-10.png" alt="" />
-          <img src="images/image-11.png" alt="" />
-          <img src="images/image-12.png" alt="" />
+          <div className="hovebox">
+            <h2>Frankline Ntah</h2>
+            <p>Director</p>
+          </div>
+          </div>
+          <div className="hove">
+          <img src="images/image-9.png" alt="" />
+          <div className="hovebox">
+            <h2>Frankline Ntah</h2>
+            <p>Director</p>
+          </div>
+          </div>
+           <div className="hove">
+          <img src="images/image-9.png" alt="" />
+          <div className="hovebox">
+            <h2>Frankline Ntah</h2>
+            <p>Director</p>
+          </div>
+          </div>
+          <div className="hove">
+          <img src="images/image-9.png" alt="" />
+          <div className="hovebox">
+            <h2>Frankline Ntah</h2>
+            <p>Director</p>
+          </div>
+          </div>
         </div>
       </div>
       <div className="company-6 containery">

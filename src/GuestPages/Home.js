@@ -1,9 +1,10 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Marquee from "react-fast-marquee";
 import Typewriter from "./Typwriter.jsx";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import was from "./whatsapp.png";
+import React, { useEffect, useState } from "react";
 
 const faqs = [
   {
@@ -42,6 +43,9 @@ const faqs = [
       "Yes, selected services come with warranties. Details are provided during booking.",
   },
 ];
+
+
+  
 
 const HomeRap = styled.div`
 
@@ -368,11 +372,26 @@ const HomeRap = styled.div`
     font-size: 60px;
     font-weight: 600;
   }
+    @media screen and (max-width: 767px) {
+    .sub-home-6 h3 {
+    font-size: 30px
+    }
+    }
   .sub-home-6 {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    border-radius: 20px;
+    border: 1px solid #616265ff;
+    box-shadow: 0px 4px 6px #a3a4a6ff;
+    padding: 20px;
   }
+        @media screen and (max-width: 767px) {
+    .sub-home-6 {
+    padding: 10px;
+    width: 150px;
+    }
+    }
   .home-6,
   .home-7 {
     display: flex;
@@ -653,7 +672,105 @@ const HomeRap = styled.div`
     .disturb {
   width: 100%;
     }}
+/* WhatsApp Button Styles */
+.whatsappp {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  top: 85%;
+  left: 90%;
+  position: fixed;
+  background-color: green;
+  z-index: 100;
+}
 
+.whatsappp img {
+  margin-left: 11px;
+  margin-top: 10px;
+}
+
+/* Notification Container Styles */
+.notification-container {
+  position: fixed;
+  left: 72%;
+  bottom: 35px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 99;
+  max-width: 300px;
+  animation: slideIn 0.5s ease-out;
+  height: 35px;
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notification-content p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #999;
+  margin-left: 15px;
+  padding: 5px;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Media Query for Mobile Devices */
+@media screen and (max-width: 767px) {
+  .whatsappp {
+    left: 80%;
+    top: 88%;
+  }
+  
+  .notification-container {
+    left: 25%;
+   top: 88%;
+    max-width: 250px;
+  }
+}
+
+.arrow-icon {
+  font-size: 20px;
+  margin: 0 8px;
+  color: #6333fb;
+  animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+}
     
 `;
 
@@ -671,8 +788,11 @@ const Home = () => {
     { color: "#994A12", textDecoration: "none" }, // RMB Wahala - Orange
   ];
 
+
   return (
     <HomeRap>
+
+
       <div className="home-1 containery">
         <div className="home-sub-1">
           <div className="small-top-div">
@@ -729,24 +849,26 @@ const Home = () => {
         <div className="home-3 ">
           <div className="sub-home-3">
             <img src="/images/image-2.png" alt="" />
-            <div className="sub-home-3-sub">
+            <Link to="/artisanAuth/signUp"><div className="sub-home-3-sub">
               <h4>Facility Management</h4>
-              <p>We handle continuous maintenance for residential and commercial properties.</p>
-            </div>
+              <p>We handle continuous maintenance for residential and 
+                commercial properties.</p>
+            </div></Link>
           </div>
           <div className="sub-home-3">
             <img src="/images/image-3.png" alt="" />
-            <div className="sub-home-3-sub">
+           <Link to="/artisanAuth/signUp"> <div className="sub-home-3-sub">
               <h4>Construction & Renovation</h4>
               <p>We provide End-to-end project execution.</p>
-            </div>
+            </div></Link> 
           </div>
           <div className="sub-home-3">
             <img src="/images/image-4.png" alt="" />
-            <div className="sub-home-3-sub">
+             <Link to="/artisanAuth/signUp"><div className="sub-home-3-sub">
               <h4>Workforce Outsourcing</h4>
-              <p>Need skilled hands for your project? We provide the best.</p>
-            </div>
+              <p>Need skilled hands for your project? We provide the 
+                best.</p>
+            </div></Link>
           </div>
         </div>
         <Link to="/artisanAuth/signUp" className="start-today">Start a Project Today</Link>
@@ -927,7 +1049,7 @@ built our customer experience around the following.
 Because one phone call shouldn't turn into 10, we provide certified, background-checked artisans backed by service gurantees and insurance
 - so you odn't need to supervise, call twice, or hope for quality.
               </p>
-              <Link className="discover-more">
+              <Link to="/artisanAuth/signUp" className="discover-more">
                 Discover More
                 <Icon
                   width="18px"
@@ -946,7 +1068,7 @@ Because one phone call shouldn't turn into 10, we provide certified, background-
 You'l always know who's coming, whats happening, and when it's done. From live job tracking to photo updated and post-service
 audits. we fuse technology with human support so you're always in control even when you're away.
               </p>
-              <Link className="discover-more">
+              <Link to="/artisanAuth/signUp" className="discover-more">
                 Discover More
                 <Icon
                   width="18px"
@@ -965,7 +1087,7 @@ audits. we fuse technology with human support so you're always in control even w
                We show up. We finish. We follow through. Unline broda Kamoru or unreliable vendors, we are acountable. Whether it's a scheduled audit, a last-minute repair,
                or routine generator maintenence, we deliver, and we back it up with reports.
               </p>
-              <Link className="discover-more">
+              <Link to="/artisanAuth/signUp" className="discover-more">
                 Discover More
                 <Icon
                   width="18px"
@@ -984,7 +1106,7 @@ audits. we fuse technology with human support so you're always in control even w
 Not just repairs. We protect your assets. our plans cover more than fixes. We proactively monitor, inspect, and maintain your infrastructure
 so you avoid big surprises and costly damage. 
               </p>
-              <Link className="discover-more">
+              <Link to="/artisanAuth/signUp" className="discover-more">
                 Discover More
                 <Icon
                   width="18px"
@@ -1240,6 +1362,13 @@ so you avoid big surprises and costly damage.
         </div>
       </div>
 
+   <div className="whatsapp">
+
+      <a href="https://wa.me/message/YZAHMMU7ALO5J1" className="whatsappp">
+        <img src={was} alt="WhatsApp" />
+      </a>
+
+    </div>
 
       
     </HomeRap>

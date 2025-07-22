@@ -158,10 +158,10 @@ const Footer = () => {
             </div>
             <div className="footer-3">
             <h6>Company</h6>
-            <Link className="links">About us</Link>
-            <Link className="links">Press</Link>
+            <Link to="/about" className="links">About us</Link>
+            <Link to="/arin" className="links">Contact</Link>
             <Link className="links">Careers</Link>
-            <Link className="links">Blog</Link>
+            <Link to="/blog" className="links">Blog</Link>
             <Link className="links">FAQs</Link>
             <Link className="links">Affiliates and partnerships</Link>
             <Link className="links">Help centre</Link>
@@ -171,7 +171,7 @@ const Footer = () => {
             <Link className="links">Terms of service</Link>
             <Link className="links">Privacy policy</Link>
             <Link className="links">Artisan terms of service</Link>
-            <Link className="links">Cokie policy</Link>
+            <Link className="links">Cookie policy</Link>
             <Link className="links">Others</Link>
             </div>
             <div className="footer-3">

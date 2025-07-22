@@ -350,11 +350,11 @@ const SignUpClient = () => {
             <div></div>
           </div>
           <div className="sign-4">
-            <Link className="sing-4-btn">
+            {/* <Link className="sing-4-btn">
               <img src="/images/apple.png" alt="" />
               Continue with Apple
-            </Link>
-            <Link className="sing-4-btn">
+            </Link> */}
+            <Link to="https://blucolar-be.onrender.com/api/auth/google" className="sing-4-btn">
               <img src="/images/google.png" alt="" />
               Continue with Google
             </Link>
