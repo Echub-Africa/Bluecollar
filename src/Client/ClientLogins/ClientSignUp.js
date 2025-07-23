@@ -354,7 +354,7 @@ const SignUpClient = () => {
               <img src="/images/apple.png" alt="" />
               Continue with Apple
             </Link> */}
-            <Link to="https://blucolar-be.onrender.com/api/auth/google" className="sing-4-btn">
+            <Link to="https://blucolar-be.onrender.com/api/auth/google/client" className="sing-4-btn">
               <img src="/images/google.png" alt="" />
               Continue with Google
             </Link>

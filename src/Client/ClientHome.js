@@ -959,6 +959,19 @@ const ClientHome = () => {
   };
 
 
+    useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const token = query.get("token");
+
+    if (token) {
+      // Save token to localStorage
+      localStorage.setItem("home-ownerToken", token);
+
+      // Remove token from URL for cleanliness
+      window.history.replaceState({}, document.title, "/client");
+    }
+  }, []);
+
   return (
     <HomeRap>
       <div className="containary all-dash">
