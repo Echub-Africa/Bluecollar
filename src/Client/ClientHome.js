@@ -713,6 +713,7 @@ const HomeRap = styled.div`
 const ClientHome = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+   const location = useLocation();
 
   const [formData, setFormData] = useState({
     projectType: "",
@@ -958,19 +959,23 @@ const ClientHome = () => {
     }
   };
 
-
-    useEffect(() => {
-    const query = new URLSearchParams(window.location.search);
+useEffect(() => {
+    const query = new URLSearchParams(location.search);
     const token = query.get("token");
 
     if (token) {
       // Save token to localStorage
       localStorage.setItem("home-ownerToken", token);
 
-      // Remove token from URL for cleanliness
+      // Clean the URL by removing query params
       window.history.replaceState({}, document.title, "/client");
+    } else {
+      const storedToken = localStorage.getItem("home-ownerToken");
+      if (!storedToken) {
+        navigate("/clientAuth/login"); // block if token is missing
+      }
     }
-  }, []);
+  }, [location, navigate]);
 
   return (
     <HomeRap>
