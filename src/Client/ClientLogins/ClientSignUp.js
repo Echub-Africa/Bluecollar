@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -163,6 +164,7 @@ const ArtisanRap = styled.div`
 
 const SignUpClient = () => {
   const navigate = useNavigate();
+    const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
@@ -228,6 +230,22 @@ const SignUpClient = () => {
       setErrorMessage(err.message || "Signup failed. Please try again.");
     }
   };
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const token = query.get("token");
+
+    if (token) {
+      localStorage.setItem("home-ownerToken", token);
+
+      // Optionally clean the URL
+      window.history.replaceState({}, document.title, "/client");
+
+      // Redirect to dashboard
+      navigate("/client");
+    }
+  }, [location, navigate]);
+
   return (
     <ArtisanRap>
       <div className="all-sign">
