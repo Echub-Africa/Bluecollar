@@ -232,20 +232,19 @@ const SignUpClient = () => {
     }
   };
 
-  useEffect(() => {
-    const query = new URLSearchParams(location.search);
-    const token = query.get("token");
+useEffect(() => {
+  const query = new URLSearchParams(location.search);
+  const token = query.get("token");
 
-    if (token) {
-      localStorage.setItem("home-ownerToken", token);
+  if (token) {
+    localStorage.setItem("home-ownerToken", token);
 
-      // Optionally clean the URL
-      window.history.replaceState({}, document.title, "/client");
-
-      // Redirect to dashboard
+    // Slight delay to let localStorage commit
+    setTimeout(() => {
       navigate("/client");
-    }
-  }, [location, navigate]);
+    }, 100); // 100ms is usually enough
+  }
+}, [location, navigate]);
 
   return (
     <ArtisanRap>

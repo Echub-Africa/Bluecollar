@@ -714,8 +714,12 @@ const HomeRap = styled.div`
 const ClientHome = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+   const [loading, setLoading] = useState(true);
    const location = useLocation();
+  const [timelineShow, setTimelineShow] = useState(false);
 
+  const fileInputRef = useRef(null);
+  const secondFileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     projectType: "",
     address: "",
@@ -733,7 +737,11 @@ const ClientHome = () => {
   const [consultationShow, setConsultationShow] = useState(false);
   const [notifyPop, setNotifyPop] = useState(false);
   const [optionDrop, setOptionDrop] = useState(false);
-
+  const [startDropdown, setstartDropdown] = useState(false);
+  const [finishTimeDropdown, setFinishTimeDropdown] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [previewUrls, setPreviewUrls] = useState([]);
+    const [data, setData] = useState([]);
    const modalRef = useRef(null);
   const dropdownRef = useRef(null);
 
@@ -743,22 +751,36 @@ const ClientHome = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+    const handleClickOutside = (event) => {
+    const isOutsideModal = modalRef.current && !modalRef.current.contains(event.target);
+    const isOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(event.target);
+    if (isOutsideModal && isOutsideDropdown) {
+      setQuickShow(false);
+      setProjectShow(false);
+      setConsultationShow(false);
+    }
+  };
+
 
   const [selectedTimelineSecond, setSelectedTimelineSecond] =
     useState("Select timeline");
   const [selectedTimelineThird, setSelectedTimelineThird] =
     useState("Select timeline");
-  const [timelineShow, setTimelineShow] = useState(false);
 
-  const fileInputRef = useRef(null);
-  const secondFileInputRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem("home-ownerToken");
+
     if (!token) {
       navigate("/clientAuth/login");
+    } else {
+      setLoading(false); // token exists
     }
   }, [navigate]);
+
+  if (loading) {
+    return <p>Loading dashboard...</p>;
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -900,9 +922,6 @@ const ClientHome = () => {
   const lastName = localStorage.getItem("home-ownerLastName");
   const Email = localStorage.getItem("home-ownerEmail");
 
-  const [startDropdown, setstartDropdown] = useState(false);
-  const [finishTimeDropdown, setFinishTimeDropdown] = useState(false);
-
   const handlestartSelect = (value) => {
     setFormData((prev) => ({ ...prev, start: value }));
     setstartDropdown(false);
@@ -913,8 +932,7 @@ const ClientHome = () => {
     setFinishTimeDropdown(false);
   };
 
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [previewUrls, setPreviewUrls] = useState([]);
+
   const handleRemoveImage = (index) => {
     setFormData((prev) => ({
       ...prev,
@@ -923,60 +941,46 @@ const ClientHome = () => {
     setPreviewUrls((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const [data, setData] = useState([]);
-  const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
-  const token = localStorage.getItem("home-ownerToken");
 
-  const yourToken = token; // Replace with your actual token
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${yourToken}`, // Include your token here
-            "Content-Type": "application/json",
-          },
-          // Include credentials for CORS
-        });
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+
+  // Replace with your actual token
+useEffect(() => {
+  const query = new URLSearchParams(location.search);
+  const tokenFromUrl = query.get("token");
+
+  if (tokenFromUrl) {
+    localStorage.setItem("home-ownerToken", tokenFromUrl);
+    window.history.replaceState({}, document.title, "/client");
+  }
+
+  const token = tokenFromUrl || localStorage.getItem("home-ownerToken");
+
+  if (!token) {
+    navigate("/clientAuth/login");
+    return;
+  }
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("https://blucolar-be.onrender.com/api/client/client-dashboard", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
-    };
-    fetchData();
-  }, []);
-  const handleClickOutside = (event) => {
-    const isOutsideModal = modalRef.current && !modalRef.current.contains(event.target);
-    const isOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(event.target);
-    if (isOutsideModal && isOutsideDropdown) {
-      setQuickShow(false);
-      setProjectShow(false);
-      setConsultationShow(false);
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
-useEffect(() => {
-    const query = new URLSearchParams(location.search);
-    const token = query.get("token");
-
-    if (token) {
-      // Save token to localStorage
-      localStorage.setItem("home-ownerToken", token);
-
-      // Clean the URL by removing query params
-      window.history.replaceState({}, document.title, "/client");
-    } else {
-      const storedToken = localStorage.getItem("home-ownerToken");
-      if (!storedToken) {
-        navigate("/clientAuth/login"); // block if token is missing
-      }
-    }
-  }, [location, navigate]);
+  fetchData();
+}, [location, navigate]);
 
   return (
     <HomeRap>
