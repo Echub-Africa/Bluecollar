@@ -773,11 +773,7 @@ const ClientHome = () => {
 
         if (!response.ok) {
           throw new Error("Unauthorized");
-        }  // ✅ Loading state UI
-  if (loading) {
-    return <p>Loading dashboard...</p>;
-  }
-
+        }
 
         const result = await response.json();
         setData(result);
@@ -810,7 +806,7 @@ const ClientHome = () => {
     };
   }, []);
 
-
+  
 
   const [selectedTimelineSecond, setSelectedTimelineSecond] =
     useState("Select timeline");
