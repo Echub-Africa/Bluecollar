@@ -741,53 +741,6 @@ const ClientHome = () => {
    const modalRef = useRef(null);
   const dropdownRef = useRef(null);
 
-
-  useEffect(() => {
-    const query = new URLSearchParams(location.search);
-    const tokenFromUrl = query.get("token");
-
-    if (tokenFromUrl) {
-      localStorage.setItem("home-ownerToken", tokenFromUrl);
-      window.history.replaceState({}, document.title, "/client");
-    }
-  }, [location]);
-
-  // ✅ Fetch dashboard data or redirect
-  useEffect(() => {
-    const token = localStorage.getItem("home-ownerToken");
-
-    if (!token) {
-      navigate("/clientAuth/login");
-      return;
-    }
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch("https://blucolar-be.onrender.com/api/client/client-dashboard", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Unauthorized");
-        }
-
-        const result = await response.json();
-        setData(result);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching dashboard:", error);
-        navigate("/clientAuth/login");
-      }
-    };
-
-    fetchData();
-  }, [navigate]);
-
-
     const handleClickOutside = (event) => {
     const isOutsideModal = modalRef.current && !modalRef.current.contains(event.target);
     const isOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(event.target);
@@ -798,15 +751,12 @@ const ClientHome = () => {
     }
   };
 
-
     useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  
 
   const [selectedTimelineSecond, setSelectedTimelineSecond] =
     useState("Select timeline");
@@ -824,6 +774,9 @@ const ClientHome = () => {
     }
   }, [navigate]);
 
+  // if (loading) {
+  //   return <p>Loading dashboard...</p>;
+  // }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -990,6 +943,52 @@ const ClientHome = () => {
 
   const [data, setData] = useState([]);
   const url = "https://blucolar-be.onrender.com/api/client/client-dashboard";
+  // Replace with your actual token
+  useEffect(() => {
+ const token = localStorage.getItem("home-ownerToken");
+
+  const yourToken = token;
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${yourToken}`, // Include your token here
+            "Content-Type": "application/json",
+          },
+          // Include credentials for CORS
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+
+useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const token = query.get("token");
+
+    if (token) {
+      // Save token to localStorage
+      localStorage.setItem("home-ownerToken", token);
+
+      // Clean the URL by removing query params
+      window.history.replaceState({}, document.title, "/client");
+    } else {
+      const storedToken = localStorage.getItem("home-ownerToken");
+      if (!storedToken) {
+        navigate("/clientAuth/login"); // block if token is missing
+      }
+    }
+  }, [location, navigate]);
 
   return (
     <HomeRap>
