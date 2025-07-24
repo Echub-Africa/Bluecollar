@@ -762,6 +762,18 @@ const ClientHome = () => {
     useState("Select timeline");
   const [selectedTimelineThird, setSelectedTimelineThird] =
     useState("Select timeline");
+    
+    useEffect(() => {
+  const query = new URLSearchParams(location.search);
+  const tokenFromUrl = query.get("token");
+
+  if (tokenFromUrl) {
+    localStorage.setItem("home-ownerToken", tokenFromUrl);
+    // Clean the URL so the token isn't visible anymore
+    window.history.replaceState({}, document.title, "/client");
+  }
+}, [location]);
+
 
 
   useEffect(() => {
@@ -972,23 +984,6 @@ const ClientHome = () => {
   }, []);
 
 
-useEffect(() => {
-    const query = new URLSearchParams(location.search);
-    const token = query.get("token");
-
-    if (token) {
-      // Save token to localStorage
-      localStorage.setItem("home-ownerToken", token);
-
-      // Clean the URL by removing query params
-      window.history.replaceState({}, document.title, "/client");
-    } else {
-      const storedToken = localStorage.getItem("home-ownerToken");
-      if (!storedToken) {
-        navigate("/clientAuth/login"); // block if token is missing
-      }
-    }
-  }, [location, navigate]);
 
   return (
     <HomeRap>
