@@ -942,18 +942,22 @@ const ClientHome = () => {
   };
 
 
-
-  // Replace with your actual token
+// Step 1: Save token from URL
 useEffect(() => {
   const query = new URLSearchParams(location.search);
   const tokenFromUrl = query.get("token");
 
   if (tokenFromUrl) {
     localStorage.setItem("home-ownerToken", tokenFromUrl);
+    // Remove token from URL for cleanliness
     window.history.replaceState({}, document.title, "/client");
   }
+}, [location]);
 
-  const token = tokenFromUrl || localStorage.getItem("home-ownerToken");
+
+// Step 2: Wait for token, then fetch data or redirect
+useEffect(() => {
+  const token = localStorage.getItem("home-ownerToken");
 
   if (!token) {
     navigate("/clientAuth/login");
@@ -969,18 +973,23 @@ useEffect(() => {
           "Content-Type": "application/json",
         },
       });
+
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error("Unauthorized");
       }
+
       const result = await response.json();
       setData(result);
+      setLoading(false); // set after successful fetch
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching dashboard:", error);
+      navigate("/clientAuth/login");
     }
   };
 
   fetchData();
-}, [location, navigate]);
+}, [navigate]);
+
 
   return (
     <HomeRap>
