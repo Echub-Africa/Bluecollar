@@ -301,22 +301,6 @@ const SignUpOwnerDetail = () => {
     fetchStates();
   }, [formData.country]);
 
-  const elecValid =
-    formData.ElectricalInfo.voltage !== "" &&
-    formData.ElectricalInfo.color !== "" &&
-    formData.ElectricalInfo.device !== "" &&
-    formData.ElectricalInfo.naturalWire !== "" &&
-    formData.ElectricalInfo.unit !== "" &&
-    formData.ElectricalInfo.purpose !== "" &&
-    formData.ElectricalInfo.parallel !== "" &&
-    formData.ElectricalInfo.rcd !== "" &&
-    formData.ElectricalInfo.liveWire !== "" &&
-    formData.ElectricalInfo.tool !== "" &&
-    formData.ElectricalInfo.firstStep !== "" &&
-    formData.ElectricalInfo.current !== "" &&
-    formData.ElectricalInfo.threePhase !== "" &&
-    formData.ElectricalInfo.mainCause !== "" &&
-    formData.ElectricalInfo.insulator !== "";
 
   const isValid =
     formData.firstName !== "" &&
@@ -782,11 +766,7 @@ const SignUpOwnerDetail = () => {
 
         <button
           onClick={handleClickAgree}
-          disabled={!elecValid}
-          style={{
-            backgroundColor: elecValid ? "#0067D0" : "#abc7e3",
-            cursor: !elecValid ? "not-allowed" : "pointer",
-          }}
+         
         >
           Continue
         </button>
