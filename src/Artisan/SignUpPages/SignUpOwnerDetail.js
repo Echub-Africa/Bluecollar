@@ -224,36 +224,6 @@ const SignUpOwnerDetail = () => {
     ElectricalInfo: {}, // Initialize as an empty object
   });
 
-      useEffect(() => {
-          const fetchUserDetails = async () => {
-            const token = localStorage.getItem("artisanToken");
-            if (!token) return;
-        
-            try {
-              const response = await fetch("https://blucolar-be.onrender.com/api/users/me", {
-                method: "GET",
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  "Content-Type": "application/json",
-                },
-              });
-        
-              const data = await response.json();
-              const user = data.user;
-        
-              setFormData({
-                firstName: user.firstName || "",
-                lastName: user.lastName || "",
-                email: user.email || "",
-              });
-            } catch (error) {
-              console.error("Failed to fetch user:", error);
-            }
-          };
-        
-          fetchUserDetails();
-        }, []);
-
   // Load countries on component mount
   useEffect(() => {
     const fetchCountries = async () => {
@@ -568,14 +538,14 @@ const SignUpOwnerDetail = () => {
                     value={formData.firstName}
                     placeholder="First Name"
                     onChange={handleChange}
-                  readOnly />
+                  />
                   <input
                     type="text"
                     name="lastName"
                     value={formData.lastName}
                     placeholder="Last Name"
                     onChange={handleChange}
-                  readOnly />
+                  />
                 </div>
                 <div className="person-input-div">
                   <input
@@ -584,7 +554,7 @@ const SignUpOwnerDetail = () => {
                     value={formData.email}
                     placeholder="Email Address"
                     onChange={handleChange}
-                  readOnly />
+                  />
                   <input
                     type="text"
                     name="phone"
