@@ -352,8 +352,7 @@ useEffect(() => {
   fetchUserDetails();
 }, []);
 
-
-      
+   
   const [activeLink, setActiveLink] = useState("profile");
 
  

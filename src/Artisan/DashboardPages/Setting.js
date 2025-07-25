@@ -268,36 +268,7 @@ const ArtisanSetting = () => {
         fetchUserDetails();
       }, []);
 
-      useEffect(() => {
-      const fetchUserData = async () => {
-        const token = localStorage.getItem('artisanToken'); // Get token from localStorage
-  
-        if (!token) {
-          setError('No auth token found');
-          return;
-        }
-  
-        try {
-          const response = await fetch('https://blucolar-be.onrender.com/api/users/me', {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            }
-          });
-  
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-  
-          const data = await response.json();
-          setUser(data.user);
-        } catch (err) {
-          setError(err.message);
-        }
-      };
-  
-      fetchUserData();
-    }, []);
+
       
   const [activeLink, setActiveLink] = useState("profile");
 
@@ -307,7 +278,13 @@ const ArtisanSetting = () => {
     setActiveLink(link);
   };
 
-   
+
+
+     const [form, setForm] = useState({
+       currentPassword: "",
+       newPassword: "",
+       confirmPassword: "",
+     });
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -361,15 +338,29 @@ const ArtisanSetting = () => {
     }
   };
 
-  useEffect(() => {
-  if (user) {
-    setFormData({
-      address: user.address || "",
-      email: user.email || "",
-    });
-  }
-}, [user]);
+useEffect(() => {
+  const fetchUser = async () => {
+    const token = localStorage.getItem("home-ownerToken");
+    if (!token) return;
 
+    try {
+      const response = await fetch("https://blucolar-be.onrender.com/api/users/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      setUser(data.user); // Save the user object (e.g., with lastName)
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
+
+  fetchUser();
+}, []);
       
 
   return (
@@ -387,6 +378,7 @@ const ArtisanSetting = () => {
             >
               Profile
             </Link>
+
             <Link
               className={`link ${activeLink === "security" ? "active" : ""}`}
               onClick={() => handleLinkClick("security")}
@@ -402,22 +394,24 @@ const ArtisanSetting = () => {
                     <label>First Name</label>
                     <input type="text" value={formData.firstName} readOnly />
                   </div>
-                      <div className="inner-profile-1">
+                    <div className="inner-profile-1">
                     <label>Last Name</label>
                     <input type="text" value={formData.lastName} readOnly />
                   </div>
-                  <div
-                   className="inner-profile-1">
+                  <div className="inner-profile-1">
                     <label>Email Address</label>
                     <input type="text" value={formData.email} readOnly />
                   </div>
-                 
-                  <div className="inner-profile-1">
+                  {/* <div className="inner-profile-1">
+                    <label>Phone Number</label>
+                    <input type="text" value={formData.phone}  readOnly/>
+                  </div> */}
+                  {/* <div className="inner-profile-1">
                     <label>Address</label>
                     <input style={{
                         height: "122px",
                         borderRadius: "15px"                    }} type="text" value={formData.address} readOnly/>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="profile-2">
                   {/* <img src="/images/img-12.png" alt="" />
@@ -441,7 +435,7 @@ const ArtisanSetting = () => {
                     </div>
                     <div className="profile-info-div">
                       <p>Industry:</p>
-                      <h4>{industry}</h4>
+                      {/* <h4>{industry}</h4> */}
                     </div>
                     <div className="profile-info-div">
                       <p>Availability Badge:</p>
