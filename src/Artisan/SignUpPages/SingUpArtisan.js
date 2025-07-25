@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -163,6 +164,7 @@ const ArtisanRap = styled.div`
 
 const SignUpArtisan = () => {
   const navigate = useNavigate();
+   const location = useLocation();
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -227,6 +229,20 @@ const SignUpArtisan = () => {
       setErrorMessage(err.message || "Signup failed. Please try again.");
     }
   };
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const token = query.get("token");
+  
+    if (token) {
+      localStorage.setItem("artisanToken", token);
+  
+      // Slight delay to let localStorage commit
+      setTimeout(() => {
+        navigate("/artisan");
+      }, 100); // 100ms is usually enough
+    }
+  }, [location, navigate]);
 
   return (
     <ArtisanRap>

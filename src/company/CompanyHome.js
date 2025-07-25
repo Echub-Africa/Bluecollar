@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const UploadWrapper = styled.div`
   border: 1px solid #1018281a;
@@ -720,7 +721,8 @@ const HomeRap = styled.div`
 const ClientHome = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [loading, setLoading] = useState(true);
+   const location = useLocation();
   const [formData, setFormData] = useState({
     projectType: "",
     address: "",
@@ -745,11 +747,24 @@ const ClientHome = () => {
   const fileInputRef = useRef(null);
   const secondFileInputRef = useRef(null);
 
+      useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const tokenFromUrl = query.get("token");
+  
+    if (tokenFromUrl) {
+      localStorage.setItem("companyToken", tokenFromUrl);
+      // Clean the URL so the token isn't visible anymore
+      window.history.replaceState({}, document.title, "/company");
+    }
+  }, [location]);
+
   useEffect(() => {
     const token = localStorage.getItem("companyToken");
     if (!token) {
       navigate("/companyAuth/login");
-    }
+    }else {
+          setLoading(false); // token exists
+        }
   }, [navigate]);
 
   const handleInputChange = (e) => {

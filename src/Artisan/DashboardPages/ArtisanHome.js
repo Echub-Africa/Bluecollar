@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const HomeRap = styled.div`
   padding-bottom: 50px;
@@ -400,10 +401,26 @@ const HomeRap = styled.div`
 
 const ArisanHome = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+   const location = useLocation();
+
+    useEffect(() => {
+  const query = new URLSearchParams(location.search);
+  const tokenFromUrl = query.get("token");
+
+  if (tokenFromUrl) {
+    localStorage.setItem("artisanToken", tokenFromUrl);
+    // Clean the URL so the token isn't visible anymore
+    window.history.replaceState({}, document.title, "/artisan");
+  }
+}, [location]);
+
   useEffect(() => {
     const token = localStorage.getItem("artisanToken");
     if (!token) {
       navigate("/artisanAuth/login/Artisan");
+    }else {
+      setLoading(false); // token exists
     }
   }, [navigate]);
 
