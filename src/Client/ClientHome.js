@@ -366,13 +366,14 @@ const HomeRap = styled.div`
   }
   .verify {
     background: #27a5491f;
-    width: 94px;
+    width: 115px;
     height: 28px;
     border-radius: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 5px;
+    padding: 5px;
   }
   .verify p {
     color: #27a549;
@@ -983,6 +984,36 @@ const ClientHome = () => {
     fetchData();
   }, []);
 
+    const [user, setUser] = useState(null); // Store user data
+
+
+useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem("home-ownerToken");
+
+      try {
+        const response = await fetch("https://blucolar-be.onrender.com/api/users/me", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        const data = await response.json();
+        setUser(data.user); // set only the user object
+      } catch (error) {
+        console.error("❌ Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
 
 
   return (
@@ -999,7 +1030,7 @@ const ClientHome = () => {
                 })}
               </h5>
               <h3>
-                Hi {lastName}, <br /> Welcome back.
+                Hi {user.lastName}, <br /> Welcome back.
               </h3>
             </div>
             <div className="dash-1-sub-2">
@@ -1060,9 +1091,9 @@ const ClientHome = () => {
             <img src="/images/img-10.png" alt="" />
             <div className="info">
               <h4>
-                {firstName} {lastName}
+                {user.lastName || "N/A"} {user.lastName || "N/A"}
               </h4>
-              <p>{Email}</p>
+              <p>{user.email || "N/A"}</p>
             </div>
             <div className="verify">
               <img src="/images/icon-18.png" alt="" />
@@ -1077,11 +1108,19 @@ const ClientHome = () => {
             <div className="dash-4-body">
               <div className="dash-4-inner">
                 <h6>Availability Badge:</h6>
-                <p>Available</p>
+                <p>{user.status || "N/A"}</p>
               </div>
               <div className="dash-4-inner">
                 <h6>Email Address:</h6>
-                <p>{Email}</p>
+                <p>{user.email || "N/A"}</p>
+              </div>
+                 <div className="dash-4-inner">
+                <h6>Role</h6>
+                <p>{user.role || "N/A"}</p>
+              </div>
+                 <div className="dash-4-inner">
+                <h6>Tpe</h6>
+                <p>{user.type || "N/A"}</p>
               </div>
               {/* <div className="dash-4-inner">
                         <h6>Phone Number:</h6>
