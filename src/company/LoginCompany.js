@@ -290,7 +290,7 @@ const CompanyLogin = () => {
             <p>or</p>
             <div className="line-div"></div>
           </div>
-          <Link className="google">
+          <Link to="https://blucolar-be.onrender.com/api/auth/google/company" className="google">
             <img src="/images/google.png" alt="" />
             Continue with Google
           </Link>
