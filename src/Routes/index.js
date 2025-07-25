@@ -55,7 +55,6 @@ import ClientMessage from "../Client/ClientMessages";
 import ClientConfirmEmail from "../Client/ClientLogins/ClientVerify";
 import ForgotPasswordd from "../Client/Forgotpasswordd.js";
 import ResetPasswordd from "../Client/ClientLogins/resetpasswordd.js";
-import OAuth from "../Client/ClientLogins/OAuthSuccess.js"
 
 
 import CompanySignDashboardLayout from "../Controller/companySignContoller.js";
@@ -185,7 +184,6 @@ export default function Routess() {
       children: [
         { path: "/client", element: <ClientHome /> },
         { path: "/client/jobs", element: <ClientJobs /> },
-        { path: "/client/oauth", element: <OAuth/> },
         { path: "/client/invoice", element: <ClientInvoice /> },
         { path: "/client/messages", element: <ClientMessage /> },
         { path: "/client/request", element: <ClientRequest /> },
