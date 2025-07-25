@@ -152,7 +152,7 @@ const SignDetail = styled.div`
     height: 45px;
     border-radius: 10px;
     border-style: none;
-    color: white;
+    color:  black;
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 15px;
@@ -741,6 +741,7 @@ useEffect(() => {
                   </select>
                   <button
                     onClick={handleClickContinue}
+                     className="why"
                     disabled={!proValid}
                     style={{
                       backgroundColor: proValid ? "#0067D0" : "#abc7e3",
@@ -789,6 +790,7 @@ useEffect(() => {
 
         <button
           onClick={handleClickAgree}
+           className="why"
           disabled={!elecValid}
           style={{
             backgroundColor: elecValid ? "#0067D0" : "#abc7e3",
@@ -827,6 +829,7 @@ useEffect(() => {
                 </label>
                 <button
                   onClick={handleSubmit}
+                   className="why"
                   disabled={!isValid}
                   style={{
                     backgroundColor: isValid ? "#0067D0" : "#abc7e3",
