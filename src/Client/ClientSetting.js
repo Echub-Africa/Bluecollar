@@ -298,88 +298,65 @@ padding-bottom: 70px;
 `;
 
 const ClientSetting = () => {
-    const users = [
-        {
-          id: 1,
-          email: "micheal@mail.com",
-          fullname: "Micheal Soyombo",
-          role: "Admin",
-          date: "24 Jan, 2024 5:30PM",
-          status: "Pending"
-        },
-        {
-          id: 2,
-          email: "micheal@mail.com",
-          fullname: "Micheal Soyombo",
-          role: "Admin",
-          date: "24 Jan, 2024 5:30PM",
-          status: "Pending"
-
-        },
-        {
-          id: 3,
-          email: "micheal@mail.com",
-          fullname: "Micheal Soyombo",
-          role: "Admin",
-          date: "24 Jan, 2024 5:30PM",
-          status: "Pending"
-
-        },
-        {
-          id: 4,
-          email: "micheal@mail.com",
-          fullname: "Micheal Soyombo",
-          role: "Admin",
-          date: "24 Jan, 2024 5:30PM",
-          status: "Active"
-
-        },
-        {
-          id: 5,
-          email: "micheal@mail.com",
-          fullname: "Micheal Soyombo",
-          role: "Admin",
-          date: "24 Jan, 2024 5:30PM",
-          status: "Active"
-
-        },
-        {
-          id: 6,
-          email: "micheal@mail.com",
-          fullname: "Micheal Soyombo",
-          role: "Admin",
-          date: "24 Jan, 2024 5:30PM",
-          status: "Active"
-
-        },
-        {
-          id: 7,
-          email: "micheal@mail.com",
-          fullname: "Micheal Soyombo",
-          role: "Admin",
-          date: "24 Jan, 2024 5:30PM",
-          status: "Active"
-
-        },
-      ];
-        const [dropdown, setDropdown] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
  const navigate = useNavigate();
-                  useEffect(() => {
+
+  useEffect(() => {
     const token = localStorage.getItem("home-ownerToken");
     if (!token) {
       navigate("/clientAuth/login");
     }
   }, [navigate]);
 
+        const [user, setUser] = useState(null);
+  
+  const [formData, setFormData] = useState({
+  firstName: "",
+  lastName: "",
+  email: "",
+  role: "",
+  type: "",
+  industry: ""
+});
+
+useEffect(() => {
+  const fetchUserDetails = async () => {
+    const token = localStorage.getItem("home-ownerToken");
+    if (!token) return;
+
+    try {
+      const response = await fetch("https://blucolar-be.onrender.com/api/users/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      const user = data.user;
+
+      setFormData({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        email: user.email || "",
+        role: user.role || "",
+        type: user.type || "",
+        industry: user.industry || ""
+      });
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
+    }
+  };
+
+  fetchUserDetails();
+}, []);
+
+
       
   const [activeLink, setActiveLink] = useState("profile");
- const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "090882973",
-    address: "74 Shitta Street Allen Avenu Ikeja Lagos",
-    email: "francis@gmail.com"
-  });
+
+ 
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
@@ -387,23 +364,6 @@ const ClientSetting = () => {
   const handleDropdown = () => {
     setDropdown(!dropdown);
   };
-
-        useEffect(() => {
-        setFormData((prev) => ({
-          ...prev,
-          firstName: localStorage.getItem("artisanFirstName") || "",
-          lastName: localStorage.getItem("artisanLastName") || "",
-        }));
-      }, []);
-
-
-  const firstName = localStorage.getItem("home-ownerFirstName");
-  const lastName = localStorage.getItem("home-ownerLastName");
-  const Email = localStorage.getItem("home-ownerEmail");
-  const role = localStorage.getItem("home-ownerRole");
-  const type = localStorage.getItem("home-ownerType");
-  const industry = localStorage.getItem("home-ownerIndustry");
-
 
 
   const [form, setForm] = useState({
@@ -463,6 +423,8 @@ const ClientSetting = () => {
       setLoading(false);
     }
   };
+
+
 
 
   return (
@@ -526,16 +488,16 @@ const ClientSetting = () => {
                   </div> */}
                 </div>
                 <div className="profile-2">
-                  <img src="/images/img-12.png" alt="" />
-                  <button>Upload Photo</button>
+                  {/* <img src="/images/img-12.png" alt="" />
+                  <button>Upload Photo</button> */}
                   <div className="profile-info">
                     <div className="profile-info-div">
                       <p>Name:</p>
-                      <h4>{firstName} {lastName}</h4>
+                      <h4>{user ? `${user.firstName}` : "Guest"} {user ? `${user.lastName}` : "Guest"}</h4>
                     </div>
                     <div className="profile-info-div">
                       <p>Email Address:</p>
-                      <h4>{Email}</h4>
+                      <h4>{user ? `${user.email}` : "Guest"}</h4>
                     </div>
                     {/* <div className="profile-info-div">
                       <p>Phone Number:</p>
@@ -551,7 +513,15 @@ const ClientSetting = () => {
                     </div> */}
                     <div className="profile-info-div">
                       <p>Availability Badge:</p>
-                      <h4>Available</h4>
+                      <h4>{user ? `${user.status}` : "Guest"}</h4>
+                    </div>
+                    <div className="profile-info-div">
+                      <p>Role:</p>
+                      <h4>{user ? `${user.role}` : "Guest"}</h4>
+                    </div>
+                    <div className="profile-info-div">
+                      <p>Type:</p>
+                      <h4>{user ? `${user.type}` : "Guest"}</h4>
                     </div>
                   </div>
                 </div>
