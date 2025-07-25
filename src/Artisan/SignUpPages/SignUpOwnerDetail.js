@@ -138,21 +138,15 @@ const SignDetail = styled.div`
 
   .react-calendar__tile--active {
     background-color: #4a90e2;
-
     border-radius: 50%;
   }
 
-  .react-calendar__navigation button {
-  }
-  /* .select-head {
-    color: #667085 !important;
-  } */
   button {
     width: 440px;
     height: 45px;
     border-radius: 10px;
     border-style: none;
-    color:  black;
+    color: black;
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 15px;
@@ -188,20 +182,43 @@ const SignDetail = styled.div`
     color: #667085;
     align-items: flex-start;
   }
-  /* .agreement-input {
-    border: 2px solid #10182833;
-    width: 50px !important;
-    height: 50px !important;
-    border-radius: 7px;
-    padding: 10px;
-  } */
   .agreement {
     display: flex;
     flex-direction: column;
     gap: 30px;
   }
-    .why {
-    color: white;}
+  .why {
+    color: white;
+  }
+  
+  .no-questions-message {
+    color: #667085;
+    font-size: 16px;
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+  
+  .questions-container {
+    margin-top: 20px;
+  }
+  
+  .questions-header {
+    color: #101828;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .loading-message {
+    color: #667085;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+  }
 `;
 
 const SignUpOwnerDetail = () => {
@@ -210,7 +227,6 @@ const SignUpOwnerDetail = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
-  const [showElectric, setShowElectric] = useState(false);
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [formData, setFormData] = useState({
@@ -223,41 +239,49 @@ const SignUpOwnerDetail = () => {
     address: "",
     city: "",
     country: "",
-    ElectricalInfo: {}, // Initialize as an empty object
+    ElectricalInfo: {},
   });
-  
 
-useEffect(() => {
-  const fetchUser = async () => {
-    const token = localStorage.getItem("artisanToken");
-    if (!token) return;
+  // Profession and Questions state
+  const [professions, setProfessions] = useState([]);
+  const [selectedProfessionId, setSelectedProfessionId] = useState("");
+  const [selectedProfessionName, setSelectedProfessionName] = useState("");
+  const [questions, setQuestions] = useState([]);
+  const [questionAnswers, setQuestionAnswers] = useState({});
+  const [loadingQuestions, setLoadingQuestions] = useState(false);
+  const [questionsError, setQuestionsError] = useState("");
 
-    try {
-      const response = await fetch("https://blucolar-be.onrender.com/api/users/me", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+  // Fetch user data on mount
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem("artisanToken");
+      if (!token) return;
 
-      const data = await response.json();
-      const user = data.user;
+      try {
+        const response = await fetch("https://blucolar-be.onrender.com/api/users/me", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
-      // ✅ Only update the 3 desired fields
-      setFormData((prev) => ({
-        ...prev,
-        firstName: user.firstName || "",
-        lastName: user.lastName || "",
-        email: user.email || "",
-      }));
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-    }
-  };
+        const data = await response.json();
+        const user = data.user;
 
-  fetchUser();
-}, []);
+        setFormData((prev) => ({
+          ...prev,
+          firstName: user.firstName || "",
+          lastName: user.lastName || "",
+          email: user.email || "",
+        }));
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   // Load countries on component mount
   useEffect(() => {
@@ -306,24 +330,28 @@ useEffect(() => {
     fetchStates();
   }, [formData.country]);
 
-  const elecValid =
-    formData.ElectricalInfo.voltage !== "" &&
-    formData.ElectricalInfo.color !== "" &&
-    formData.ElectricalInfo.device !== "" &&
-    formData.ElectricalInfo.naturalWire !== "" &&
-    formData.ElectricalInfo.unit !== "" &&
-    formData.ElectricalInfo.purpose !== "" &&
-    formData.ElectricalInfo.parallel !== "" &&
-    formData.ElectricalInfo.rcd !== "" &&
-    formData.ElectricalInfo.liveWire !== "" &&
-    formData.ElectricalInfo.tool !== "" &&
-    formData.ElectricalInfo.firstStep !== "" &&
-    formData.ElectricalInfo.current !== "" &&
-    formData.ElectricalInfo.threePhase !== "" &&
-    formData.ElectricalInfo.mainCause !== "" &&
-    formData.ElectricalInfo.insulator !== "";
+  // Fetch professions on component mount
+  useEffect(() => {
+    const fetchProfessions = async () => {
+      try {
+        const response = await fetch(
+          "https://blucolar-be.onrender.com/api/onboarding/profession"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch professions");
+        }
+        const data = await response.json();
+        setProfessions(data);
+      } catch (error) {
+        console.error("Error fetching professions:", error);
+      }
+    };
 
-  const isValid =
+    fetchProfessions();
+  }, []);
+
+  // Validation checks
+  const isPersonalValid =
     formData.firstName !== "" &&
     formData.lastName !== "" &&
     formData.email !== "" &&
@@ -334,22 +362,91 @@ useEffect(() => {
     formData.city !== "" &&
     formData.country !== "";
 
+  const isProfessionValid = selectedProfessionId !== "";
+
+  const areQuestionsValid = () => {
+    if (questions.length === 0) return true; // No questions means valid
+    return questions.every((_, index) => questionAnswers[`question-${index}`]);
+  };
+
+  // Handle profession selection
+  const handleProfessionChange = async (e) => {
+    const selectedProfession = professions.find(
+      (prof) => prof.name === e.target.value
+    );
+
+    if (selectedProfession) {
+      setSelectedProfessionId(selectedProfession._id);
+      setSelectedProfessionName(selectedProfession.name);
+      setQuestions([]);
+      setQuestionAnswers({});
+      setQuestionsError("");
+      
+      // Fetch questions for the selected profession
+      await fetchQuestionsForProfession(selectedProfession._id);
+    } else {
+      setSelectedProfessionId("");
+      setSelectedProfessionName("");
+      setQuestions([]);
+      setQuestionAnswers({});
+      setQuestionsError("");
+    }
+  };
+
+  // Fetch questions for a specific profession
+  const fetchQuestionsForProfession = async (professionId) => {
+    setLoadingQuestions(true);
+    setQuestionsError("");
+
+    try {
+      const response = await fetch(
+        `https://blucolar-be.onrender.com/api/onboarding/questions/${professionId}`
+      );
+      
+      if (!response.ok) {
+        throw new Error("Failed to fetch questions");
+      }
+      
+      const data = await response.json();
+      
+      if (data && data.length > 0) {
+        setQuestions(data);
+      } else {
+        setQuestions([]);
+        setQuestionsError(`No questions available for this profession.`);
+      }
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+      setQuestions([]);
+      setQuestionsError("Failed to load questions. Please try again.");
+    } finally {
+      setLoadingQuestions(false);
+    }
+  };
+
+  // Handle question answers
+  const handleQuestionAnswerChange = (e) => {
+    const { name, value } = e.target;
+    setQuestionAnswers(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   const handleDateChange = (date) => {
     setSelectedDate(date);
     setFormData({
       ...formData,
-      dob: date.toISOString().split("T")[0], // Set dob in YYYY-MM-DD format
+      dob: date.toISOString().split("T")[0],
     });
-
-    setShowCalendar(false); // Close calendar on date selection
+    setShowCalendar(false);
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Check if the field belongs to the `ElectricalInfo` object
     if (name.includes("ElectricalInfo.")) {
-      const fieldName = name.split(".")[1]; // Extract the nested field name
-
+      const fieldName = name.split(".")[1];
       setFormData((prevFormData) => ({
         ...prevFormData,
         ElectricalInfo: {
@@ -358,7 +455,6 @@ useEffect(() => {
         },
       }));
     } else {
-      // For fields at the top level
       setFormData({
         ...formData,
         [name]: value,
@@ -375,27 +471,12 @@ useEffect(() => {
         ? formData.phone
         : `+234${formData.phone.slice(1)}`,
       gender: formData.gender.toLowerCase(),
-      dob: formData.dob, // Ensure this is a valid date string like "1990-01-01"
+      dob: formData.dob,
       address: formData.address,
-      city: formData.city, // This must be included in your form
+      city: formData.city,
       country: formData.country,
-      ElectricalInfo: {
-        voltage: formData.ElectricalInfo.voltage,
-        color: formData.ElectricalInfo.color,
-        device: formData.ElectricalInfo.device,
-        naturalWire: formData.ElectricalInfo.naturalWire,
-        unit: formData.ElectricalInfo.unit,
-        purpose: formData.ElectricalInfo.purpose,
-        parallel: formData.ElectricalInfo.parallel,
-        rcd: formData.ElectricalInfo.rcd,
-        liveWire: formData.ElectricalInfo.liveWire,
-        tool: formData.ElectricalInfo.tool,
-        firstStep: formData.ElectricalInfo.firstStep,
-        current: formData.ElectricalInfo.current,
-        threePhase: formData.ElectricalInfo.threePhase,
-        mainCause: formData.ElectricalInfo.mainCause,
-        insulator: formData.ElectricalInfo.insulator,
-      },
+      profession: selectedProfessionName,
+      questionAnswers: questionAnswers,
     };
 
     console.log("🚀 Payload to backend:", payload);
@@ -437,86 +518,13 @@ useEffect(() => {
     }
   };
 
-  const handleClick = () => {
+  const handlePersonalContinue = () => {
     setActiveLink("work");
   };
 
-  const handleClickAgree = () => {
+  const handleWorkContinue = () => {
     setActiveLink("agreement");
   };
-  const handleClickElectrical = () => {
-    if (profession === "Electrical") {
-      setShowElectric(true);
-    }
-  };
-
-  useEffect(() => {
-    setFormData((prev) => ({
-      ...prev,
-      firstName: localStorage.getItem("artisanFirstName") || "",
-      lastName: localStorage.getItem("artisanLastName") || "",
-      email: localStorage.getItem("artisanEmail") || "",
-      phone: localStorage.getItem("phone") || "",
-    }));
-  }, []);
-
-  const [professions, setProfessions] = useState([]);
-  const [profession, setProfession] = useState("");
-  const [proValid, setProValid] = useState(false);
-  const [questions, setQuestions] = useState([]);
-  const modalRef = useRef(null);
-  const [showQuestionsModal, setShowQuestionsModal] = useState(false);
-  const [selectedProfessionId, setSelectedProfessionId] = useState(""); // Declare selectedProfessionId state
- 
-
-  useEffect(() => {
-    const fetchProfessions = async () => {
-      try {
-        const response = await fetch(
-          "https://blucolar-be.onrender.com/api/onboarding/profession"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch professions");
-        }
-        const data = await response.json();
-        setProfessions(data); // Set the fetched professions
-      } catch (error) {
-        console.error("Error fetching professions:", error);
-      }
-    };
-
-    fetchProfessions();
-  }, []);
-
-  const handleClickContinue = async () => {
-    if (proValid) {
-      try {
-        const response = await fetch(
-          `https://blucolar-be.onrender.com/api/onboarding/questions/${selectedProfessionId}`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch questions");
-        }
-        const data = await response.json();
-        setQuestions(data);
-        setShowQuestionsModal(true); // Show the modal
-      } catch (error) {
-        console.error("Error fetching questions:", error);
-      }
-    }
-  };
-
-  const handleClickOutside = (event) => {
-    if (modalRef.current && !modalRef.current.contains(event.target)) {
-      setShowQuestionsModal(false);
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <SignDetail>
@@ -562,286 +570,259 @@ useEffect(() => {
             <p>Agreement</p>
           </div>
         </div>
-        <div>
-          {activeLink === "personal" && (
-            <>
-              <div className="personal">
-                <div className="person-input-div">
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    placeholder="First Name"
-                    onChange={handleChange}
-                  readOnly />
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    placeholder="Last Name"
-                    onChange={handleChange}
-                  readOnly />
-                </div>
-                <div className="person-input-div">
-                  <input
-                    type="text"
-                    name="email"
-                    value={formData.email}
-                    placeholder="Email Address"
-                    onChange={handleChange}
-                  readOnly />
-                  <input
-                    type="text"
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={formData.phone}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="person-input-div">
-                  <div className="all-calendar">
-                    <div className="date-div-input">
-                      {/* Display the selected date or "Date of Birth" */}
-                      <p>
-                        {formData.dob
-                          ? new Date(formData.dob).toLocaleDateString()
-                          : "Date of Birth"}
-                      </p>
 
-                      {/* Calendar Icon */}
-                      <Icon
-                        onClick={() => setShowCalendar((prev) => !prev)}
-                        className="icon"
-                        width="20px"
-                        height="20px"
-                        icon="solar:calendar-linear"
+        <div>
+          {/* Personal Information Section */}
+          {activeLink === "personal" && (
+            <div className="personal">
+              <div className="person-input-div">
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  placeholder="First Name"
+                  onChange={handleChange}
+                  readOnly
+                />
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  placeholder="Last Name"
+                  onChange={handleChange}
+                  readOnly
+                />
+              </div>
+              <div className="person-input-div">
+                <input
+                  type="text"
+                  name="email"
+                  value={formData.email}
+                  placeholder="Email Address"
+                  onChange={handleChange}
+                  readOnly
+                />
+                <input
+                  type="text"
+                  name="phone"
+                  placeholder="Phone Number"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="person-input-div">
+                <div className="all-calendar">
+                  <div className="date-div-input">
+                    <p>
+                      {formData.dob
+                        ? new Date(formData.dob).toLocaleDateString()
+                        : "Date of Birth"}
+                    </p>
+                    <Icon
+                      onClick={() => setShowCalendar((prev) => !prev)}
+                      className="icon"
+                      width="20px"
+                      height="20px"
+                      icon="solar:calendar-linear"
+                    />
+                  </div>
+                  {showCalendar && (
+                    <div className="calendar-popup">
+                      <Calendar
+                        onChange={handleDateChange}
+                        value={selectedDate}
                       />
                     </div>
-
-                    {/* Calendar Popup */}
-                    {showCalendar && (
-                      <div className="calendar-popup">
-                        <Calendar
-                          onChange={handleDateChange}
-                          value={selectedDate}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <select
-                    name="gender" // Matches the `gender` property in formData
-                    value={formData.gender} // Controlled input
-                    onChange={handleChange}
-                    className="gender-select"
-                  >
-                    <option className="select-head" value="" disabled>
-                      Gender
-                    </option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                </div>{" "}
-                <div className="person-input-div">
-                  <select
-                    name="country"
-                    value={formData.country}
-                    onChange={handleChange}
-                  >
-                    <option className="select-head" value="" disabled>
-                      Country
-                    </option>
-                    {countries.map((country) => (
-                      <option key={country} value={country}>
-                        {country}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    name="city" // Matches the `gender` property in formData
-                    value={formData.city} // Controlled input
-                    onChange={handleChange}
-                    disabled={!formData.country}
-                  >
-                    <option className="select-head" value="" disabled>
-                      State
-                    </option>
-                    {states.map((state) => (
-                      <option key={state} value={state}>
-                        {state}
-                      </option>
-                    ))}
-                  </select>
+                  )}
                 </div>
-                <label>
-                  <input
-                    className="full-lenght"
-                    type="text"
-                    name="address"
-                    placeholder="Address"
-                    value={formData.address}
-                    onChange={handleChange}
-                  />
-                </label>
-                {errorMessage && (
-                  <div style={{ color: "red", marginBottom: "1rem" }}>
-                    {errorMessage}
-                  </div>
-                )}
-                <button
-                  type="button"
-                  className="why"
-                  onClick={handleClick}
-                  disabled={!isValid}
-                  style={{
-                    backgroundColor: isValid ? "#0067D0" : "#abc7e3",
-                    cursor: !isValid ? "not-allowed" : "pointer",
-                    color: "white",
-                  }}
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="gender-select"
                 >
-                  Continue
-                </button>
-              </div>
-            </>
-          )}
-
-          {activeLink === "work" && (
-            <>
-              <div>
-                <div className="work-1">
-                  <label>Select Profession</label>
-                  <select
-                    name="profession"
-                 onChange={(e) => {
-  const selectedProfession = professions.find(
-    (prof) => prof.name === e.target.value
-  );
-
-  const selectedId = selectedProfession ? selectedProfession._id : "";
-
-  setSelectedProfessionId(selectedId);
-  setProValid(e.target.value !== "");
-  setShowQuestionsModal(false); // hide previous questions immediately
-  setQuestions([]); // clear existing questions
-
-  // Simulate fetching profession-specific questions
-  if (selectedId) {
-    handleClickContinue(selectedId);
-  }
-}}
-                    className="gender-select"
-                  >
-                    <option className="select-head" value="" disabled>
-                      Select
-                    </option>
-                    {professions.map((prof) => (
-                      <option key={prof._id} value={prof.name}>
-                        {prof.name}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    onClick={handleClickContinue}
-                     className="why"
-                    disabled={!proValid}
-                    style={{
-                      backgroundColor: proValid ? "#0067D0" : "#abc7e3",
-                      cursor: !proValid ? "not-allowed" : "pointer",
-                    }}
-                  >
-                    Continue
-                  </button>
-                </div>
-
-              {showQuestionsModal && (
-    <div className="all-electric">
-      <h3>
-        Questions for{" "}
-        {selectedProfession?.name || "Selected Profession"}
-      </h3>
-
-      {loading ? (
-        <p style={{ color: "#667085", fontSize: "14px", marginTop: "10px" }}>
-          Loading questions...
-        </p>
-      ) : questions.length === 0 ? (
-        <p style={{ color: "#667085", fontSize: "14px", marginTop: "10px" }}>
-          No questions for this particular profession.
-        </p>
-      ) : (
-        <>
-          {questions.map((question, index) => (
-            <div key={index} className="work-1">
-              <label>{question.question}</label>
-              <select
-                name={`question-${index}`}
-                className="gender-select"
-                onChange={handleChange}
-              >
-                <option className="select-head" value="" disabled selected>
-                  Select
-                </option>
-                {question.options.map((option, idx) => (
-                  <option key={idx} value={option}>
-                    {option}
+                  <option className="select-head" value="" disabled>
+                    Gender
                   </option>
-                ))}
-              </select>
-            </div>
-          ))}
-
-          <button
-            onClick={handleClickAgree}
-            className="why"
-            disabled={!elecValid}
-            style={{
-              backgroundColor: elecValid ? "#0067D0" : "#abc7e3",
-              cursor: !elecValid ? "not-allowed" : "pointer",
-              color: "white",
-            }}
-          >
-            Continue
-          </button>
-        </>
-      )}
-    </div>
-)}
-
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
               </div>
-            </>
-          )}
-          {activeLink === "agreement" && (
-            <>
-              <div className="agreement">
-                <label>
-                  <input type="checkbox" />
-                  Lorem ipsum dolor sit amet consectetur. Ridiculus quis est
-                  eget at interdum quam arcu elementum. Dictum tincidunt semper
-                  nulla enim nulla. Mattis fermentum quam interdum viverra
-                  feugiat fames. Id curabitur.
-                </label>
-                <label>
-                  <input className="agreement-input " type="checkbox" />
-                  Amet consectetur. Id mauris ut mauris quam. Ipsum orci tempus
-                  justo metus aenean urna. Dictum vitae tristique urna volutpat
-                  eu at auctor. Sagittis eu dictumst duis urna tristique enim
-                  viverra consequat duis. Commodo sagittis ac vel consectetur.
-                  Aliquet porttitor sapien viverra ullamcorper quam pharetra
-                  cras.
-                </label>
-                <button
-                  onClick={handleSubmit}
-                   className="why"
-                  disabled={!isValid}
-                  style={{
-                    backgroundColor: isValid ? "#0067D0" : "#abc7e3",
-                    cursor: !isValid ? "not-allowed" : "pointer",
-                    background: "#0067D0",
-                  }}
+              <div className="person-input-div">
+                <select
+                  name="country"
+                  value={formData.country}
+                  onChange={handleChange}
                 >
-                  Continue
-                </button>
+                  <option className="select-head" value="" disabled>
+                    Country
+                  </option>
+                  {countries.map((country) => (
+                    <option key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  disabled={!formData.country}
+                >
+                  <option className="select-head" value="" disabled>
+                    State
+                  </option>
+                  {states.map((state) => (
+                    <option key={state} value={state}>
+                      {state}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </>
+              <label>
+                <input
+                  className="full-lenght"
+                  type="text"
+                  name="address"
+                  placeholder="Address"
+                  value={formData.address}
+                  onChange={handleChange}
+                />
+              </label>
+              {errorMessage && (
+                <div style={{ color: "red", marginBottom: "1rem" }}>
+                  {errorMessage}
+                </div>
+              )}
+              <button
+                type="button"
+                className="why"
+                onClick={handlePersonalContinue}
+                disabled={!isPersonalValid}
+                style={{
+                  backgroundColor: isPersonalValid ? "#0067D0" : "#abc7e3",
+                  cursor: !isPersonalValid ? "not-allowed" : "pointer",
+                  color: "white",
+                }}
+              >
+                Continue
+              </button>
+            </div>
+          )}
+
+          {/* Work Information Section */}
+          {activeLink === "work" && (
+            <div>
+              <div className="work-1">
+                <label>Select Profession</label>
+                <select
+                  name="profession"
+                  value={selectedProfessionName}
+                  onChange={handleProfessionChange}
+                  className="gender-select"
+                >
+                  <option className="select-head" value="" disabled>
+                    Select Profession
+                  </option>
+                  {professions.map((prof) => (
+                    <option key={prof._id} value={prof.name}>
+                      {prof.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Questions Section */}
+              {selectedProfessionId && (
+                <div className="questions-container">
+                  {loadingQuestions && (
+                    <div className="loading-message">
+                      Loading questions for {selectedProfessionName}...
+                    </div>
+                  )}
+
+                  {!loadingQuestions && questionsError && (
+                    <div className="no-questions-message">
+                      {questionsError}
+                    </div>
+                  )}
+
+                  {!loadingQuestions && !questionsError && questions.length > 0 && (
+                    <div className="all-electric">
+                      <div className="questions-header">
+                        Questions for {selectedProfessionName}
+                      </div>
+                      {questions.map((question, index) => (
+                        <div key={index} className="work-1">
+                          <label>{question.question}</label>
+                          <select
+                            name={`question-${index}`}
+                            value={questionAnswers[`question-${index}`] || ""}
+                            onChange={handleQuestionAnswerChange}
+                            className="gender-select"
+                          >
+                            <option className="select-head" value="" disabled>
+                              Select an answer
+                            </option>
+                            {question.options.map((option, idx) => (
+                              <option key={idx} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <button
+                onClick={handleWorkContinue}
+                className="why"
+                disabled={!isProfessionValid || !areQuestionsValid()}
+                style={{
+                  backgroundColor: (isProfessionValid && areQuestionsValid()) ? "#0067D0" : "#abc7e3",
+                  cursor: (!isProfessionValid || !areQuestionsValid()) ? "not-allowed" : "pointer",
+                  color: "white",
+                  marginTop: "20px"
+                }}
+              >
+                Continue
+              </button>
+            </div>
+          )}
+
+          {/* Agreement Section */}
+          {activeLink === "agreement" && (
+            <div className="agreement">
+              <label>
+                <input type="checkbox" />
+                Lorem ipsum dolor sit amet consectetur. Ridiculus quis est
+                eget at interdum quam arcu elementum. Dictum tincidunt semper
+                nulla enim nulla. Mattis fermentum quam interdum viverra
+                feugiat fames. Id curabitur.
+              </label>
+              <label>
+                <input className="agreement-input" type="checkbox" />
+                Amet consectetur. Id mauris ut mauris quam. Ipsum orci tempus
+                justo metus aenean urna. Dictum vitae tristique urna volutpat
+                eu at auctor. Sagittis eu dictumst duis urna tristique enim
+                viverra consequat duis. Commodo sagittis ac vel consectetur.
+                Aliquet porttitor sapien viverra ullamcorper quam pharetra
+                cras.
+              </label>
+              <button
+                onClick={handleSubmit}
+                className="why"
+                style={{
+                  backgroundColor: "#0067D0",
+                  color: "white",
+                }}
+              >
+                Complete Registration
+              </button>
+            </div>
           )}
         </div>
       </div>
