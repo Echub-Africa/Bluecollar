@@ -425,7 +425,29 @@ useEffect(() => {
   };
 
 
+useEffect(() => {
+  const fetchUser = async () => {
+    const token = localStorage.getItem("home-ownerToken");
+    if (!token) return;
 
+    try {
+      const response = await fetch("https://blucolar-be.onrender.com/api/users/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      setUser(data.user); // Save the user object (e.g., with lastName)
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
+
+  fetchUser();
+}, []);
 
   return (
     <SettingRap>
