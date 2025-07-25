@@ -762,31 +762,31 @@ useEffect(() => {
 
 
 
-    {questions.length === 0 ? (
-      <p style={{ color: "#667085", fontSize: "14px", marginTop: "10px" }}>
-        No questions for this particular profession.
-      </p>
-    ) : (
-      <>
-        {questions.map((question, index) => (
-          <div key={index} className="work-1">
-            <label>{question.question}</label>
-            <select
-              name={`question-${index}`}
-              className="gender-select"
-              onChange={(e) => handleChange(e)}
-            >
-              <option className="select-head" value="" disabled>
-                Select
-              </option>
-              {question.options.map((option, idx) => (
-                <option key={idx} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
-        ))}
+{!questions || questions.length === 0 ? (
+  <p style={{ color: "#667085", fontSize: "14px", marginTop: "10px" }}>
+    No questions for this particular profession.
+  </p>
+) : (
+  <>
+    {questions.map((question, index) => (
+      <div key={index} className="work-1">
+        <label>{question.question}</label>
+        <select
+          name={`question-${index}`}
+          className="gender-select"
+          onChange={(e) => handleChange(e)}
+        >
+          <option className="select-head" value="" disabled>
+            Select
+          </option>
+          {question.options.map((option, idx) => (
+            <option key={idx} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
+    ))}
 
         <button
           onClick={handleClickAgree}
