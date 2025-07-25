@@ -152,7 +152,7 @@ const SignDetail = styled.div`
     height: 45px;
     border-radius: 10px;
     border-style: none;
-    color: rgb(0, 0, 0);
+    color: white;
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 15px;
@@ -200,6 +200,8 @@ const SignDetail = styled.div`
     flex-direction: column;
     gap: 30px;
   }
+    .why {
+    color: white;}
 `;
 
 const SignUpOwnerDetail = () => {
@@ -687,11 +689,13 @@ useEffect(() => {
                 )}
                 <button
                   type="button"
+                  className="why"
                   onClick={handleClick}
                   disabled={!isValid}
                   style={{
                     backgroundColor: isValid ? "#0067D0" : "#abc7e3",
                     cursor: !isValid ? "not-allowed" : "pointer",
+                    color: "white",
                   }}
                 >
                   Continue
@@ -789,6 +793,7 @@ useEffect(() => {
           style={{
             backgroundColor: elecValid ? "#0067D0" : "#abc7e3",
             cursor: !elecValid ? "not-allowed" : "pointer",
+            color: "white",
           }}
         >
           Continue
