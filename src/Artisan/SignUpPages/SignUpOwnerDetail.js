@@ -753,56 +753,57 @@ useEffect(() => {
                 </div>
 
               {showQuestionsModal && (
-  <div className="all-electric">
-<h3>
-  Questions for {
-    professions.find((prof) => prof._id === selectedProfessionId)?.name || "Selected Profession"
-  }
-</h3>
+    <div className="all-electric">
+      <h3>
+        Questions for{" "}
+        {selectedProfession?.name || "Selected Profession"}
+      </h3>
 
-
-
-{!questions || questions.length === 0 ? (
-  <p style={{ color: "#667085", fontSize: "14px", marginTop: "10px" }}>
-    No questions for this particular profession.
-  </p>
-) : (
-  <>
-    {questions.map((question, index) => (
-      <div key={index} className="work-1">
-        <label>{question.question}</label>
-        <select
-          name={`question-${index}`}
-          className="gender-select"
-          onChange={(e) => handleChange(e)}
-        >
-          <option className="select-head" value="" disabled>
-            Select
-          </option>
-          {question.options.map((option, idx) => (
-            <option key={idx} value={option}>
-              {option}
-            </option>
+      {loading ? (
+        <p style={{ color: "#667085", fontSize: "14px", marginTop: "10px" }}>
+          Loading questions...
+        </p>
+      ) : questions.length === 0 ? (
+        <p style={{ color: "#667085", fontSize: "14px", marginTop: "10px" }}>
+          No questions for this particular profession.
+        </p>
+      ) : (
+        <>
+          {questions.map((question, index) => (
+            <div key={index} className="work-1">
+              <label>{question.question}</label>
+              <select
+                name={`question-${index}`}
+                className="gender-select"
+                onChange={handleChange}
+              >
+                <option className="select-head" value="" disabled selected>
+                  Select
+                </option>
+                {question.options.map((option, idx) => (
+                  <option key={idx} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
           ))}
-        </select>
-      </div>
-    ))}
 
-        <button
-          onClick={handleClickAgree}
-           className="why"
-          disabled={!elecValid}
-          style={{
-            backgroundColor: elecValid ? "#0067D0" : "#abc7e3",
-            cursor: !elecValid ? "not-allowed" : "pointer",
-            color: "white",
-          }}
-        >
-          Continue
-        </button>
-      </>
-    )}
-  </div>
+          <button
+            onClick={handleClickAgree}
+            className="why"
+            disabled={!elecValid}
+            style={{
+              backgroundColor: elecValid ? "#0067D0" : "#abc7e3",
+              cursor: !elecValid ? "not-allowed" : "pointer",
+              color: "white",
+            }}
+          >
+            Continue
+          </button>
+        </>
+      )}
+    </div>
 )}
 
               </div>
