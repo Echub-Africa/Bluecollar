@@ -237,7 +237,7 @@ const ArtisanSetting = () => {
       
       useEffect(() => {
         const fetchUserDetails = async () => {
-          const token = localStorage.getItem("home-ownerToken");
+          const token = localStorage.getItem("artisanToken");
           if (!token) return;
       
           try {
@@ -340,7 +340,7 @@ const ArtisanSetting = () => {
 
 useEffect(() => {
   const fetchUser = async () => {
-    const token = localStorage.getItem("home-ownerToken");
+    const token = localStorage.getItem("artisanToken");
     if (!token) return;
 
     try {
@@ -435,7 +435,7 @@ useEffect(() => {
                     </div>
                     <div className="profile-info-div">
                       <p>Industry:</p>
-                      {/* <h4>{industry}</h4> */}
+                      <h4>{user?.industry || "N/A"}</h4>
                     </div>
                     <div className="profile-info-div">
                       <p>Availability Badge:</p>
