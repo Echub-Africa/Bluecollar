@@ -984,35 +984,31 @@ const ClientHome = () => {
     fetchData();
   }, []);
 
-    const [user, setUser] = useState(null); // Store user data
-
+    const [user, setUser] = useState(null);
 
 useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("home-ownerToken");
+  const fetchUser = async () => {
+    const token = localStorage.getItem("home-ownerToken");
+    if (!token) return;
 
-      try {
-        const response = await fetch("https://blucolar-be.onrender.com/api/users/me", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    try {
+      const response = await fetch("https://blucolar-be.onrender.com/api/users/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch user data");
-        }
+      const data = await response.json();
+      setUser(data.user); // Save the user object (e.g., with lastName)
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
 
-        const data = await response.json();
-        setUser(data.user); // set only the user object
-      } catch (error) {
-        console.error("❌ Error fetching user:", error);
-      }
-    };
-
-    fetchUser();
-  }, []);
+  fetchUser();
+}, []);
 
 
 
@@ -1030,7 +1026,7 @@ useEffect(() => {
                 })}
               </h5>
               <h3>
-                Hi {user.lastName}, <br /> Welcome back.
+                Hi {user ? `${user.firstName}` : "Guest"}, <br /> Welcome back.
               </h3>
             </div>
             <div className="dash-1-sub-2">
@@ -1091,9 +1087,9 @@ useEffect(() => {
             <img src="/images/img-10.png" alt="" />
             <div className="info">
               <h4>
-                {user.lastName || "N/A"} {user.lastName || "N/A"}
+                {user ? `${user.firstName} ${user.lastName}` : "Guest"}
               </h4>
-              <p>{user.email || "N/A"}</p>
+              <p>{user ? `${user.email}` : "Guest"}</p>
             </div>
             <div className="verify">
               <img src="/images/icon-18.png" alt="" />
@@ -1108,19 +1104,19 @@ useEffect(() => {
             <div className="dash-4-body">
               <div className="dash-4-inner">
                 <h6>Availability Badge:</h6>
-                <p>{user.status || "N/A"}</p>
+                <p>{user ? `${user.status}` : "Guest"}</p>
               </div>
               <div className="dash-4-inner">
                 <h6>Email Address:</h6>
-                <p>{user.email || "N/A"}</p>
+                <p>{user ? `${user.email}` : "Guest"}</p>
               </div>
                  <div className="dash-4-inner">
                 <h6>Role</h6>
-                <p>{user.role || "N/A"}</p>
+                <p>{user ? `${user.role}` : "Guest"}</p>
               </div>
                  <div className="dash-4-inner">
-                <h6>Tpe</h6>
-                <p>{user.type || "N/A"}</p>
+                <h6>Type</h6>
+                <p>{user ? `${user.type}` : "Guest"}</p>
               </div>
               {/* <div className="dash-4-inner">
                         <h6>Phone Number:</h6>
