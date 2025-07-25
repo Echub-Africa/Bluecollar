@@ -723,6 +723,8 @@ const ClientHome = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
    const location = useLocation();
+    const [error, setError] = useState("");
+     const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
     projectType: "",
     address: "",
@@ -962,6 +964,39 @@ const ClientHome = () => {
     fetchData();
   }, []);
 
+
+      useEffect(() => {
+      const fetchUserData = async () => {
+        const token = localStorage.getItem('artisanToken'); // Get token from localStorage
+  
+        if (!token) {
+          setError('No auth token found');
+          return;
+        }
+  
+        try {
+          const response = await fetch('https://blucolar-be.onrender.com/api/users/me', {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+  
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+  
+          const data = await response.json();
+          setUser(data.user);
+        } catch (err) {
+          setError(err.message);
+        }
+      };
+  
+      fetchUserData();
+    }, []);
+
+
   return (
     <HomeRap>
       <div className="containary all-dash">
@@ -976,7 +1011,7 @@ const ClientHome = () => {
                 })}
               </h5>
               <h3>
-                Hi {companyName}, <br /> Welcome back.
+                Hi {user ? `${user.firstName} ${user.lastName}`  : "Guest"}, <br /> Welcome back.
               </h3>
             </div>
             <div className="dash-1-sub-2">
@@ -1037,9 +1072,9 @@ const ClientHome = () => {
             <img src="/images/img-10.png" alt="" />
             <div className="info">
               <h4>
-                {companyName} {companyNamee}
+                {user ? `${user.firstName} ${user.lastName}`  : "Guest"}
               </h4>
-              <p>{Email}</p>
+              {/* <p>{user ? `${user.email}`  : "Guest"}</p> */}
             </div>
             <div className="verify">
               <img src="/images/icon-18.png" alt="" />
@@ -1054,11 +1089,11 @@ const ClientHome = () => {
             <div className="dash-4-body">
               <div className="dash-4-inner">
                 <h6>Availability Badge:</h6>
-                <p>Available</p>
+                <p>{user ? `${user.status}`  : "Guest"}</p>
               </div>
               <div className="dash-4-inner">
                 <h6>Email Address:</h6>
-                <p>{Email}</p>
+                <p>{user ? `${user.email}`  : "Guest"}</p>
               </div>
               {/* <div className="dash-4-inner">
                         <h6>Phone Number:</h6>

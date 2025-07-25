@@ -395,7 +395,7 @@ useEffect(() => {
                 My Jobs
               </Link>
 
-              <Link
+              {/* <Link
                 className={`nav-link ${
                   activeLink === "messages" ? "active" : ""
                 }`}
@@ -403,7 +403,7 @@ useEffect(() => {
                 onClick={() => handleLinkClick("messages")}
               >
                 Messages
-              </Link>
+              </Link> */}
             </div>
             <div className="sub-nav-div-right">
               <div className="all-notify">

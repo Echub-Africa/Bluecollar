@@ -670,7 +670,7 @@ const ArisanHome = () => {
               <h4>
                {user ? `${user.firstName} ${user.lastName}`  : "Guest"}
               </h4>
-              <p>Electrical Engineer</p>
+              {/* <p>Electrical Engineer</p> */}
             </div>
             <div className="verify">
               <img src="/images/icon-18.png" alt="" />
@@ -689,7 +689,7 @@ const ArisanHome = () => {
               </div>
               <div className="dash-4-inner">
                 <h6>Email Address:</h6>
-                <p>{Email}</p>
+                <p>{user?.email || 'N/A'}</p>
               </div>
               <div className="dash-4-inner">
                 <h6>Phone Number:</h6>
