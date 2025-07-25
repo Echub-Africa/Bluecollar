@@ -587,7 +587,7 @@ const ArisanHome = () => {
                 })}
               </h5>
               <h3>
-                {getGreeting()}, {firstName} {lastName}
+                {getGreeting()}, {user ? `${user.firstName} ${user.lastName}`  : "Guest"}, 
               </h3>
             </div>
             <div className="dash-1-sub-2">
@@ -668,7 +668,7 @@ const ArisanHome = () => {
             <img src="/images/img-10.png" alt="" />
             <div className="info">
               <h4>
-                {firstName} {lastName}
+               {user ? `${user.firstName} ${user.lastName}`  : "Guest"}
               </h4>
               <p>Electrical Engineer</p>
             </div>

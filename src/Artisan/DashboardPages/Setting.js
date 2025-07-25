@@ -225,6 +225,49 @@ const ArtisanSetting = () => {
         }
       }, [navigate]);
 
+
+        const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        role: "",
+        type: "",
+        industry: ""
+      });
+      
+      useEffect(() => {
+        const fetchUserDetails = async () => {
+          const token = localStorage.getItem("home-ownerToken");
+          if (!token) return;
+      
+          try {
+            const response = await fetch("https://blucolar-be.onrender.com/api/users/me", {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            });
+      
+            const data = await response.json();
+            const user = data.user;
+      
+            setFormData({
+              firstName: user.firstName || "",
+              lastName: user.lastName || "",
+              email: user.email || "",
+              role: user.role || "",
+              type: user.type || "",
+              industry: user.industry || ""
+            });
+          } catch (error) {
+            console.error("Failed to fetch user:", error);
+          }
+        };
+      
+        fetchUserDetails();
+      }, []);
+
       useEffect(() => {
       const fetchUserData = async () => {
         const token = localStorage.getItem('artisanToken'); // Get token from localStorage
@@ -257,37 +300,14 @@ const ArtisanSetting = () => {
     }, []);
       
   const [activeLink, setActiveLink] = useState("profile");
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: ""
-  });
+
 
   
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };
 
-      useEffect(() => {
-      setFormData((prev) => ({
-        ...prev,
-        firstName: localStorage.getItem("artisanFirstName") || "",
-        lastName: localStorage.getItem("artisanLastName") || "",
-      }));
-    }, []);
-
-      const firstName = localStorage.getItem("artisanFirstName");
-  const lastName = localStorage.getItem("artisanLastName");
-  const Email = localStorage.getItem("artisanEmail");
-  const role = localStorage.getItem("artisanRole");
-  const type = localStorage.getItem("artisanType");
-  const industry = localStorage.getItem("artisanIndustry");
-
-
-  const [form, setForm] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
+   
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -405,11 +425,11 @@ const ArtisanSetting = () => {
                   <div className="profile-info">
                     <div className="profile-info-div">
                       <p>Name:</p>
-                      <h4>{firstName} {lastName}</h4>
+                      <h4>{user ? `${user.firstName} ${user.lastName}`  : "Guest"}</h4>
                     </div>
                     <div className="profile-info-div">
                       <p>Email Address:</p>
-                      <h4>{Email}</h4>
+                      <h4>{user?.email || 'N/A'}</h4>
                     </div>
                    <div className="profile-info-div">
                       <p>Phone:</p>
