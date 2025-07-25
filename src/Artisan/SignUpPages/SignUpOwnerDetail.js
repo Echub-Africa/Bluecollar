@@ -223,6 +223,39 @@ const SignUpOwnerDetail = () => {
     country: "",
     ElectricalInfo: {}, // Initialize as an empty object
   });
+  
+
+useEffect(() => {
+  const fetchUser = async () => {
+    const token = localStorage.getItem("artisanToken");
+    if (!token) return;
+
+    try {
+      const response = await fetch("https://blucolar-be.onrender.com/api/users/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      const user = data.user;
+
+      // ✅ Only update the 3 desired fields
+      setFormData((prev) => ({
+        ...prev,
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        email: user.email || "",
+      }));
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  };
+
+  fetchUser();
+}, []);
 
   // Load countries on component mount
   useEffect(() => {
@@ -538,14 +571,14 @@ const SignUpOwnerDetail = () => {
                     value={formData.firstName}
                     placeholder="First Name"
                     onChange={handleChange}
-                  />
+                  readOnly />
                   <input
                     type="text"
                     name="lastName"
                     value={formData.lastName}
                     placeholder="Last Name"
                     onChange={handleChange}
-                  />
+                  readOnly />
                 </div>
                 <div className="person-input-div">
                   <input
@@ -554,7 +587,7 @@ const SignUpOwnerDetail = () => {
                     value={formData.email}
                     placeholder="Email Address"
                     onChange={handleChange}
-                  />
+                  readOnly />
                   <input
                     type="text"
                     name="phone"
