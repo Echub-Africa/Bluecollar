@@ -204,6 +204,13 @@ const ClientJobs = () => {
 const companyName = localStorage.getItem("companyfirstName");
 const companyNamee = localStorage.getItem("companylastName") ;
 
+     const [searchTerm, setSearchTerm] = useState("");
+  
+     const filteredJobs = requests?.filter((item) =>
+    item?.jobId?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+
   return (
     <RequestRap>
       <div className="containary">
@@ -213,7 +220,12 @@ const companyNamee = localStorage.getItem("companylastName") ;
           </div>
           <div className="request-2">
             <div className="search-div">
-              <input type="text" placeholder="Enter Job ID..." />
+                    <input
+                    type="text"
+                    placeholder="Enter Job ID..."
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                  />
               <Icon
                 className="search-icon"
                 width="16px"
@@ -250,8 +262,8 @@ const companyNamee = localStorage.getItem("companylastName") ;
                       <tr>
                         <td colSpan="10">{error}</td>
                       </tr>
-                    ) : requests?.length > 0 ? (
-                      requests.map((item, index) => (
+                    ) : filteredJobs?.length > 0 ? (
+                      filteredJobs.map((item, index) => (
                         <tr
                           key={item._id}
                           style={{ cursor: "pointer" }}

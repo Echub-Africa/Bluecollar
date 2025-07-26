@@ -367,7 +367,7 @@ const HomeRap = styled.div`
   }
   .verify {
     background: #27a5491f;
-    width: 94px;
+    width: 110px;
     height: 28px;
     border-radius: 100px;
     display: flex;
@@ -714,7 +714,9 @@ const HomeRap = styled.div`
     transform: scale(1);
   }
 }
-
+.wo {
+color: red;
+}
 
 `;
 
@@ -967,7 +969,7 @@ const ClientHome = () => {
 
       useEffect(() => {
       const fetchUserData = async () => {
-        const token = localStorage.getItem('artisanToken'); // Get token from localStorage
+        const token = localStorage.getItem('companyToken'); // Get token from localStorage
   
         if (!token) {
           setError('No auth token found');
@@ -1011,7 +1013,7 @@ const ClientHome = () => {
                 })}
               </h5>
               <h3>
-                Hi {user ? `${user.firstName} ${user.lastName}`  : "Guest"}, <br /> Welcome back.
+                Hi {user ? `${user.companyName}`  : "Guest"}, <br /> Welcome back.
               </h3>
             </div>
             <div className="dash-1-sub-2">
@@ -1095,6 +1097,10 @@ const ClientHome = () => {
                 <h6>Email Address:</h6>
                 <p>{user ? `${user.email}`  : "Guest"}</p>
               </div>
+               <div className="dash-4-inner">
+                <h6>Type:</h6>
+                <p>{user ? `${user.type}`  : "Guest"}</p>
+              </div>
               {/* <div className="dash-4-inner">
                         <h6>Phone Number:</h6>
                         <p>08066091125</p>
@@ -1111,7 +1117,7 @@ const ClientHome = () => {
           <div className="dropdown-container">
           <div className="dropdown-show">
             <div className="dropdown-show-header">
-              <h4>Projects</h4>
+              <h4>Quick Fixes & Maintenance</h4>
               <Icon
                 onClick={() => setQuickShow(false)}
                 className="icon"
@@ -1121,26 +1127,37 @@ const ClientHome = () => {
                 style={{ color: "#667085" }}
               />
             </div>
-            <form onSubmit={handleSubmit}>
+         <form onSubmit={handleSubmit}>
               <div className="dropdown-show-body">
                 <div className="category-div-sub">
-                  <label>Service Type</label>
+                  <label>Service Type <span className="wo">*</span></label>
                   <select
                     name="projectType"
                     value={formData.projectType}
                     onChange={handleInputChange}
+                    required
                   >
                     <option value="">Select</option>
                     <option value="Electrical">Electrical</option>
                     <option value="Carpentry">Carpentry</option>
                     <option value="Painting">Painting</option>
-                    <option value="General Handyman">General Handyman</option>
+                    <option value="Flooring">Flooring</option>
+ <option value="Woodwork & Carpentry">Woodwork & Carpentry</option>
+ <option value="Plumbing">Plumbing</option>
+                     <option value="Masonry & Construction">Masonry & Construction</option>
+                      <option value="Smart Homes">Smart Homes</option>
+                       <option value="HVAC & Cooling Systems">HVAC & Cooling Systems</option>
+                        <option value="Painting">Painting</option>
+                         <option value="Roofing">Roofing</option>
+                         <option value="Metalwork & Welding">Metalwork & Welding</option>
+                         <option value="General Maintenance">General Maintenance</option>
+
                   </select>
                 </div>
 
                 <div className="category-div-sub">
                   <label>
-                    Location <span>Saved address</span>
+                    Location <span>Saved address <span className="wo">*</span></span>
                   </label>
                   <input
                     type="text"
@@ -1148,25 +1165,26 @@ const ClientHome = () => {
                     placeholder="Enter address"
                     value={formData.address}
                     onChange={handleInputChange}
-                  />
+                  required />
                 </div>
 
                 <div className="category-div-sub">
-                  <label>Additional details</label>
+                  <label>Additional details (Please a detailed description on the work you want done min 2 paragraphs) <span className="wo">*</span></label>
                   <textarea
                     name="description"
                     placeholder="Enter additional details"
                     value={formData.description}
                     onChange={handleInputChange}
-                  ></textarea>
+                  required ></textarea>
                 </div>
 
                 <div className="category-div-sub">
-                  <label>images upload</label>
+                  <label>images upload (min 3 images) <span className="wo">*</span></label>
                   <UploadWrapper
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                     onClick={triggerFileInput}
+                    required
                   >
                     <HiddenInput
                       type="file"
@@ -1196,7 +1214,7 @@ const ClientHome = () => {
                 </div>
 
                 <div className="category-div-sub">
-                  <label>Start Date</label>
+                  <label>Start Date (when you want the work to begin) <span className="wo">*</span></label>
                   <div style={{ position: "relative" }}>
                     <input
                       type="date"
@@ -1208,12 +1226,12 @@ const ClientHome = () => {
                         }))
                       }
                       className="timeline-date-input"
-                    />
+                    required />
                   </div>
                 </div>
 
                 <div className="category-div-sub">
-                  <label>Finish Date</label>
+                  <label>Finish Date (when you want the work to be concluded) <span className="wo">*</span></label>
                   <div style={{ position: "relative" }}>
                     <input
                       type="date"
@@ -1225,19 +1243,19 @@ const ClientHome = () => {
                         }))
                       }
                       className="timeline-date-input"
-                    />
+                     required />
                   </div>
                 </div>
 
                 <div className="category-div-sub">
-                  <label>Budget</label>
+                  <label>Budget <span className="wo">*</span></label>
                   <input
                     type="text"
                     name="budget"
-                    placeholder="0.00"
+                    placeholder="please input plain amount without comma eg 100000"
                     value={formData.budget}
                     onChange={handleInputChange}
-                  />
+                  required />
                 </div>
                 {errorMessage && (
                   <div style={{ color: "red", marginBottom: "1rem" }}>
@@ -1307,26 +1325,37 @@ const ClientHome = () => {
                 style={{ color: "#667085" }}
               />
             </div>
-            <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
               <div className="dropdown-show-body">
                 <div className="category-div-sub">
-                  <label>Service Type</label>
+                  <label>Service Type <span className="wo">*</span></label>
                   <select
                     name="projectType"
                     value={formData.projectType}
                     onChange={handleInputChange}
+                    required
                   >
                     <option value="">Select</option>
                     <option value="Electrical">Electrical</option>
                     <option value="Carpentry">Carpentry</option>
                     <option value="Painting">Painting</option>
-                    <option value="General Handyman">General Handyman</option>
+                    <option value="Flooring">Flooring</option>
+ <option value="Woodwork & Carpentry">Woodwork & Carpentry</option>
+ <option value="Plumbing">Plumbing</option>
+                     <option value="Masonry & Construction">Masonry & Construction</option>
+                      <option value="Smart Homes">Smart Homes</option>
+                       <option value="HVAC & Cooling Systems">HVAC & Cooling Systems</option>
+                        <option value="Painting">Painting</option>
+                         <option value="Roofing">Roofing</option>
+                         <option value="Metalwork & Welding">Metalwork & Welding</option>
+                         <option value="General Maintenance">General Maintenance</option>
+
                   </select>
                 </div>
 
                 <div className="category-div-sub">
                   <label>
-                    Location <span>Saved address</span>
+                    Location <span>Saved address <span className="wo">*</span></span>
                   </label>
                   <input
                     type="text"
@@ -1334,25 +1363,26 @@ const ClientHome = () => {
                     placeholder="Enter address"
                     value={formData.address}
                     onChange={handleInputChange}
-                  />
+                  required />
                 </div>
 
                 <div className="category-div-sub">
-                  <label>Additional details</label>
+                  <label>Additional details (Please a detailed description on the work you want done min 2 paragraphs) <span className="wo">*</span></label>
                   <textarea
                     name="description"
                     placeholder="Enter additional details"
                     value={formData.description}
                     onChange={handleInputChange}
-                  ></textarea>
+                  required ></textarea>
                 </div>
 
                 <div className="category-div-sub">
-                  <label>images upload</label>
+                  <label>images upload (min 3 images) <span className="wo">*</span></label>
                   <UploadWrapper
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                     onClick={triggerFileInput}
+                    required
                   >
                     <HiddenInput
                       type="file"
@@ -1382,7 +1412,7 @@ const ClientHome = () => {
                 </div>
 
                 <div className="category-div-sub">
-                  <label>Start Date</label>
+                  <label>Start Date (when you want the work to begin) <span className="wo">*</span></label>
                   <div style={{ position: "relative" }}>
                     <input
                       type="date"
@@ -1394,12 +1424,12 @@ const ClientHome = () => {
                         }))
                       }
                       className="timeline-date-input"
-                    />
+                    required />
                   </div>
                 </div>
 
                 <div className="category-div-sub">
-                  <label>Finish Date</label>
+                  <label>Finish Date (when you want the work to be concluded) <span className="wo">*</span></label>
                   <div style={{ position: "relative" }}>
                     <input
                       type="date"
@@ -1411,19 +1441,19 @@ const ClientHome = () => {
                         }))
                       }
                       className="timeline-date-input"
-                    />
+                     required />
                   </div>
                 </div>
 
                 <div className="category-div-sub">
-                  <label>Budget</label>
+                  <label>Budget <span className="wo">*</span></label>
                   <input
                     type="text"
                     name="budget"
-                    placeholder="0.00"
+                    placeholder="please input plain amount without comma eg 100000"
                     value={formData.budget}
                     onChange={handleInputChange}
-                  />
+                  required />
                 </div>
                 {errorMessage && (
                   <div style={{ color: "red", marginBottom: "1rem" }}>
@@ -1469,7 +1499,7 @@ const ClientHome = () => {
            <div className="dropdown-container">
             <div className="dropdown-show">
               <div className="dropdown-show-header">
-                <h4>Projects</h4>
+                <h4>Consultation & Advisory Services</h4>
                 <Icon
                 onClick={() => setConsultationShow(false)}
                   className="icon"
@@ -1479,158 +1509,170 @@ const ClientHome = () => {
                   style={{ color: "#667085" }}
                 />
               </div>
-              <form onSubmit={handleSubmit}>
-                <div className="dropdown-show-body">
-                  <div className="category-div-sub">
-                    <label>Service Type</label>
-                    <select
-                      name="projectType"
-                      value={formData.projectType}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select</option>
-                      <option value="Electrical">Electrical</option>
-                      <option value="Carpentry">Carpentry</option>
-                      <option value="Painting">Painting</option>
-                      <option value="General Handyman">General Handyman</option>
-                    </select>
-                  </div>
-  
-                  <div className="category-div-sub">
-                    <label>
-                      Location <span>Saved address</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="address"
-                      placeholder="Enter address"
-                      value={formData.address}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-  
-                  <div className="category-div-sub">
-                    <label>Additional details</label>
-                    <textarea
-                      name="description"
-                      placeholder="Enter additional details"
-                      value={formData.description}
-                      onChange={handleInputChange}
-                    ></textarea>
-                  </div>
-  
-                  <div className="category-div-sub">
-                    <label>images upload</label>
-                    <UploadWrapper
-                      onDrop={handleDrop}
-                      onDragOver={handleDragOver}
-                      onClick={triggerFileInput}
-                    >
-                      <HiddenInput
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={handleFileChangeSecond}
-                        accept="image/*"
-                        multiple
-                      />
-                      <img src="/images/file-icon.png" alt="" />
-                      <Text>
-                        Click to upload <SubText>or drag and drop</SubText>
-                      </Text>
-                    </UploadWrapper>
-  
-                    {previewUrls.map((url, index) => (
-                      <div key={index} className="image-preview-container">
-                        <img
-                          src={url}
-                          alt={`Preview ${index}`}
-                          className="image-preview"
-                        />
-                        <button onClick={() => handleRemoveImage(index)}>
-                          Remove
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-  
-                  <div className="category-div-sub">
-                    <label>Start Date</label>
-                    <div style={{ position: "relative" }}>
-                      <input
-                        type="date"
-                        value={formData.start}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            start: e.target.value,
-                          }))
-                        }
-                        className="timeline-date-input"
-                      />
-                    </div>
-                  </div>
-  
-                  <div className="category-div-sub">
-                    <label>Finish Date</label>
-                    <div style={{ position: "relative" }}>
-                      <input
-                        type="date"
-                        value={formData.end || ""}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            end: e.target.value,
-                          }))
-                        }
-                        className="timeline-date-input"
-                      />
-                    </div>
-                  </div>
-  
-                  <div className="category-div-sub">
-                    <label>Budget</label>
-                    <input
-                      type="text"
-                      name="budget"
-                      placeholder="0.00"
-                      value={formData.budget}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  {errorMessage && (
-                    <div style={{ color: "red", marginBottom: "1rem" }}>
-                      {errorMessage}
-                    </div>
-                  )}
-                  {showSuccessModal && (
-                    <div className="success-modal">
-                      <div className="success-modal-content">
-                        <Icon
-                          icon="mdi:check-circle-outline"
-                          width="32"
-                          height="32"
-                          style={{ color: "#10B981" }}
-                        />
-                        <h3>Project Created Successfully!</h3>
-                        <p>
-                          Your project has been submitted. Await Admin
-                          verification once approved the work would comence.
-                        </p>
-                        <button
-                          className="close-btn"
-                          onClick={() => setShowSuccessModal(false)}
-                        >
-                          Close
-                        </button>
-                      </div>
-                    </div>
-                  )}
-  
-                  <button className="winch" type="submit">
-                    Create request
-                  </button>
+          <form onSubmit={handleSubmit}>
+              <div className="dropdown-show-body">
+                <div className="category-div-sub">
+                  <label>Service Type <span className="wo">*</span></label>
+                  <select
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Carpentry">Carpentry</option>
+                    <option value="Painting">Painting</option>
+                    <option value="Flooring">Flooring</option>
+ <option value="Woodwork & Carpentry">Woodwork & Carpentry</option>
+ <option value="Plumbing">Plumbing</option>
+                     <option value="Masonry & Construction">Masonry & Construction</option>
+                      <option value="Smart Homes">Smart Homes</option>
+                       <option value="HVAC & Cooling Systems">HVAC & Cooling Systems</option>
+                        <option value="Painting">Painting</option>
+                         <option value="Roofing">Roofing</option>
+                         <option value="Metalwork & Welding">Metalwork & Welding</option>
+                         <option value="General Maintenance">General Maintenance</option>
+
+                  </select>
                 </div>
-              </form>
+
+                <div className="category-div-sub">
+                  <label>
+                    Location <span>Saved address <span className="wo">*</span></span>
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    placeholder="Enter address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                  required />
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Additional details (Please a detailed description on the work you want done min 2 paragraphs) <span className="wo">*</span></label>
+                  <textarea
+                    name="description"
+                    placeholder="Enter additional details"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  required ></textarea>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>images upload (min 3 images) <span className="wo">*</span></label>
+                  <UploadWrapper
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onClick={triggerFileInput}
+                    required
+                  >
+                    <HiddenInput
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChangeSecond}
+                      accept="image/*"
+                      multiple
+                    />
+                    <img src="/images/file-icon.png" alt="" />
+                    <Text>
+                      Click to upload <SubText>or drag and drop</SubText>
+                    </Text>
+                  </UploadWrapper>
+
+                  {previewUrls.map((url, index) => (
+                    <div key={index} className="image-preview-container">
+                      <img
+                        src={url}
+                        alt={`Preview ${index}`}
+                        className="image-preview"
+                      />
+                      <button onClick={() => handleRemoveImage(index)}>
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Start Date (when you want the work to begin) <span className="wo">*</span></label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.start}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          start: e.target.value,
+                        }))
+                      }
+                      className="timeline-date-input"
+                    required />
+                  </div>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Finish Date (when you want the work to be concluded) <span className="wo">*</span></label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="date"
+                      value={formData.end || ""}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          end: e.target.value,
+                        }))
+                      }
+                      className="timeline-date-input"
+                     required />
+                  </div>
+                </div>
+
+                <div className="category-div-sub">
+                  <label>Budget <span className="wo">*</span></label>
+                  <input
+                    type="text"
+                    name="budget"
+                    placeholder="please input plain amount without comma eg 100000"
+                    value={formData.budget}
+                    onChange={handleInputChange}
+                  required />
+                </div>
+                {errorMessage && (
+                  <div style={{ color: "red", marginBottom: "1rem" }}>
+                    {errorMessage}
+                  </div>
+                )}
+                {showSuccessModal && (
+                  <div className="success-modal">
+                    <div className="success-modal-content">
+                      <Icon
+                        icon="mdi:check-circle-outline"
+                        width="32"
+                        height="32"
+                        style={{ color: "#10B981" }}
+                      />
+                      <h3>Project Created Successfully!</h3>
+                      <p>
+                        Your project has been submitted. Await Admin
+                        verification once approved the work would comence.
+                      </p>
+                      <button
+                        className="close-btn"
+                        onClick={() => setShowSuccessModal(false)}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <button className="winch" type="submit">
+                  Create request
+                </button>
+              </div>
+            </form>
             </div>
           </div>
         ) : (

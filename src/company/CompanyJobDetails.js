@@ -451,7 +451,7 @@ const ClientJobDetail = () => {
   const [propose, setPropose] = useState(false);
   const [completePop, setCompletePop] = useState(false);
   const { id } = useParams();
-
+   const [user, setUser] = useState(null);
   const [jobData, setJobData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -467,6 +467,37 @@ const ClientJobDetail = () => {
         navigate("/companyAuth/login");
       }
     }, [navigate]);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+          const token = localStorage.getItem('companyToken'); // Get token from localStorage
+    
+          if (!token) {
+            setError('No auth token found');
+            return;
+          }
+    
+          try {
+            const response = await fetch('https://blucolar-be.onrender.com/api/users/me', {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            });
+    
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            setUser(data.user);
+          } catch (err) {
+            setError(err.message);
+          }
+        };
+    
+        fetchUserData();
+      }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("companyToken");
@@ -495,6 +526,13 @@ const ClientJobDetail = () => {
     return <p style={{ padding: "20px", color: "red" }}>Error: {error}</p>;
   if (!jobData) return <p>No project data found.</p>;
 
+
+
+   
+  
+
+
+
   return (
     <DetailRap>
       <div className="containary all-detail ">
@@ -515,8 +553,8 @@ const ClientJobDetail = () => {
                 <p>
                   Company:{" "}
                   <span>
-                    {jobData.client?.firstName}{" "}
-                    {jobData.client?.lastName || "N/A"}
+                    
+                    {user ? `${user.companyName}` : "Guest"}
                   </span>
                 </p>
                 <p>{new Date(jobData.createdAt).toLocaleDateString()}</p>

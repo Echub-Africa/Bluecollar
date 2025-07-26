@@ -375,7 +375,7 @@ const t = 1000;
                     style={{ color: "#667085" }}
                   />
                 </div>
-            <div className="filter-div">
+            {/* <div className="filter-div">
               <p>Status All</p>
               <Icon
                 width="16px"
@@ -383,7 +383,7 @@ const t = 1000;
                 icon="ep:arrow-down-bold"
                 style={{ color: "#667085" }}
               />
-            </div>
+            </div> */}
           </div>
         
           <div className="table-container">

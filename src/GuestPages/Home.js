@@ -794,12 +794,12 @@ const Home = () => {
 
 
       <div className="home-1 containery">
-        <div className="home-sub-1">
+        <div className="home-sub-1" data-aos="fade-right" data-aos-duration="1000" data-aos-delay="300" >
           <div className="small-top-div">
             <span></span>
             <p>Led by a team of over a decade of experience, we are →</p>
           </div>
-          <h1>
+          <h1 data-aos="fade-down" data-aos-duration="1000" data-aos-delay="300" >
             Powering solutions in
             <Typewriter
               texts={["Repairs", "Maintenance", "Construction"]}
@@ -819,7 +819,7 @@ const Home = () => {
             <Link to="/artisanAuth/login" className="become">Sign in</Link>
           </div>
         </div>
-        <div>
+        <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" >
           <img src="/images/image-1.png" alt="" />
         </div>
       </div>
@@ -828,26 +828,26 @@ const Home = () => {
       <br />
       <br />
        <div className="home-6 containery">
-        <div className="sub-home-6">
+        <div className="sub-home-6" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="300" >
           <h3>1K+</h3>
           <p>Top Rated, highly skilled technical talent pool</p>
         </div>
-        <div className="sub-home-6">
+        <div className="sub-home-6" data-aos="fade-top" data-aos-duration="1000" data-aos-delay="300" >
           <h3>$10K</h3>
           <p>Cost savings on projects handled by ECHub</p>
         </div>
-        <div className="sub-home-6">
+        <div className="sub-home-6" data-aos="fade-bottom" data-aos-duration="1000" data-aos-delay="300" >
           <h3>86%</h3>
           <p>Faster time to get profesionals for any phase of project</p>
         </div>
-        <div className="sub-home-6">
+        <div className="sub-home-6" data-aos="fade-right" data-aos-duration="1000" data-aos-delay="300" >
           <h3>74%</h3>
           <p>Faster Project Delivery</p>
         </div>
       </div>
       <div className="all-home-3 containery">
         <div className="home-3 ">
-          <div className="sub-home-3">
+          <div className="sub-home-3" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="300" >
             <img src="/images/image-2.png" alt="" />
             <Link to="/artisanAuth/signUp"><div className="sub-home-3-sub">
               <h4>Facility Management</h4>
@@ -855,14 +855,14 @@ const Home = () => {
                 commercial properties.</p>
             </div></Link>
           </div>
-          <div className="sub-home-3">
+          <div className="sub-home-3" data-aos="fade-top" data-aos-duration="1000" data-aos-delay="300" >
             <img src="/images/image-3.png" alt="" />
            <Link to="/artisanAuth/signUp"> <div className="sub-home-3-sub">
               <h4>Construction & Renovation</h4>
               <p>We provide End-to-end project execution.</p>
             </div></Link> 
           </div>
-          <div className="sub-home-3">
+          <div className="sub-home-3" data-aos="fade-right" data-aos-duration="1000" data-aos-delay="300" >
             <img src="/images/image-4.png" alt="" />
              <Link to="/artisanAuth/signUp"><div className="sub-home-3-sub">
               <h4>Workforce Outsourcing</h4>
@@ -874,7 +874,7 @@ const Home = () => {
         <Link to="/artisanAuth/signUp" className="start-today">Start a Project Today</Link>
       </div>
       <div className="home-4 containery">
-        <div className="sub-home-4">
+        <div className="sub-home-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" >
           <h2>Beyond the satisfactory job, we also provide...</h2>
           <div className="sub-home-4-sub">
             <div className="inner-sub-home-4">
@@ -951,12 +951,12 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div>
+        <div data-aos="fade-down" data-aos-duration="1000" data-aos-delay="300" >
           <img src="/images/image-5.png" className="disturb" alt="" />
         </div>
       </div>
      
-      <div className="home-7 containery">
+      <div className="home-7 containery" data-aos="fade-top" data-aos-duration="1000" data-aos-delay="300" >
         <p>As featured on</p>
            <Marquee pauseOnHover={true} speed={30} direction="left">
           <div className="sub-home-22">
@@ -969,81 +969,81 @@ const Home = () => {
       </div>
       <div className="home-8 containery">
         <div className="upper-home-8">
-          <h2>
+          <h2 data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" >
             Need the right team for the job? we have already built it for you
           </h2>
-          <p>
+          <p data-aos="fade-down" data-aos-duration="1000" data-aos-delay="300" >
             We provide direct maintenance, construction, installation, and
             repair services across multiple sectors, ready for your next project
           </p>
         </div>
         <div className="mid-home-8">
-          <div className="sub-home-8">
+          <div className="sub-home-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/icon-1.png" alt="" />
             <p>Electrical Services</p>
           </div>
-          <div className="sub-home-8">
+          <div className="sub-home-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/icon-2.png" alt="" />
             <p>Flooring</p>
           </div>
-          <div className="sub-home-8">
+          <div className="sub-home-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/icon-3.png" alt="" />
             <p>Masonry & Construction</p>
           </div>
-          <div className="sub-home-8">
+          <div className="sub-home-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/icon-4.png" alt="" />
             <p>Plumbing Services</p>
           </div>
-          <div className="sub-home-8">
+          <div className="sub-home-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/icon-5.png" alt="" />
             <p>Woodwork & Carpentry</p>
           </div>
-          <div className="sub-home-8">
+          <div className="sub-home-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/icon-6.png" alt="" />
             <p>Smart Homes</p>
           </div>
-          <div className="sub-home-8">
+          <div className="sub-home-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/icon-7.png" alt="" />
             <p>HVAC & Cooling Systems</p>
           </div>
-          <div className="sub-home-8">
+          <div className="sub-home-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/icon-8.png" alt="" />
             <p>Painting</p>
           </div>
-          <div className="sub-home-8">
+          <div className="sub-home-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/icon-9.png" alt="" />
             <p>Roofing</p>
           </div>
-          <div className="sub-home-8">
+          <div className="sub-home-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/icon-10.png" alt="" />
             <p>Plumbing</p>
           </div>
-          <div className="sub-home-8">
+          <div className="sub-home-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/icon-11.png" alt="" />
             <p>Metalwork & Welding</p>
           </div>
-          <div className="sub-home-8">
+          <div className="sub-home-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/icon-12.png" alt="" />
             <p>General Maintenance</p>
           </div>
         </div>
-        <div className="down-home-8">
+        <div className="down-home-8" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="300">
           <Link to="/clientAuth/signUp" className="indi-project">Start an Individual Project</Link>
           <Link to="/companyAuth/signUp" className="cor-project">Hire or start a corporate project</Link>
         </div>
       </div>
       <div className="home-5 containery">
         <div className="upper-home-5">
-          <h2>Enjoy the ECHub experience</h2>
-          <p>
+          <h2 data-aos="fade-left" data-aos-duration="1000" data-aos-delay="300">Enjoy the ECHub experience</h2>
+          <p data-aos="fade-right" data-aos-duration="1000" data-aos-delay="300">
 At ECHub, we believe no one deserves to see "shege" from technicians/artisans, and so we
 built our customer experience around the following.
           </p>
         </div>
         <div className="down-home-5">
-          <div className="sub-home-5">
+          <div className="sub-home-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/img-1.png" alt="" />
-            <div className="sub-home-5-sub">
+            <div className="sub-home-5-sub" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
               <h4>Peace of Mind, On Demand</h4>
               <p>
 Because one phone call shouldn't turn into 10, we provide certified, background-checked artisans backed by service gurantees and insurance
@@ -1060,7 +1060,7 @@ Because one phone call shouldn't turn into 10, we provide certified, background-
               </Link>
             </div>
           </div>
-          <div className="sub-home-5">
+          <div className="sub-home-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/img-2.png" alt="" />
             <div className="sub-home-5-sub">
               <h4>Tech + Touch. Real Service, Real Time</h4>
@@ -1079,7 +1079,7 @@ audits. we fuse technology with human support so you're always in control even w
               </Link>
             </div>
           </div>
-          <div className="sub-home-5">
+          <div className="sub-home-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/img-3.png" alt="" />
             <div className="sub-home-5-sub">
               <h4>No Excuses. Just Execution.</h4>
@@ -1098,7 +1098,7 @@ audits. we fuse technology with human support so you're always in control even w
               </Link>
             </div>
           </div>
-   <div className="sub-home-5">
+   <div className="sub-home-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             <img src="/images/img-2.png" alt="" />
             <div className="sub-home-5-sub">
               <h4>Total Property Wellness</h4>
@@ -1121,7 +1121,7 @@ so you avoid big surprises and costly damage.
         </div>
       </div>
 
-      <div className="home-2 containery">
+      <div className="home-2 containery" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
         <p>Trusted by top companies and contractors</p>
         <Marquee pauseOnHover={true} speed={10} direction="left">
           <div className="sub-home-2">
@@ -1140,7 +1140,7 @@ so you avoid big surprises and costly damage.
         </Marquee>
       </div>
 
-      <div className="home-9 containery">
+      <div className="home-9 containery" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
         <h2>See what our customers have to say about us</h2>
         <div className="all-home-9-sub">
           <div className="home-9-sub">
@@ -1290,11 +1290,11 @@ so you avoid big surprises and costly damage.
         </div>
       </div>
 
-      <div className="home-10 containery">
+      <div className="home-10 containery" >
         <div className="home-10-left">
-          <h2>Frequently Asked Questions</h2>
-          <p>Do you still have any questions?</p>
-          <a href="/contact" className="contact-btn">
+          <h2 data-aos="fade-left" data-aos-duration="1000" data-aos-delay="300">Frequently Asked Questions</h2>
+          <p data-aos="fade-right" data-aos-duration="1000" data-aos-delay="300">Do you still have any questions?</p>
+          <a href="/contact" className="contact-btn" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
             Contact us
             <Icon
               width="14px"
@@ -1312,6 +1312,7 @@ so you avoid big surprises and costly damage.
               className="sub-home-10"
               onClick={() => toggleFAQ(index)}
               style={{ cursor: "pointer" }}
+              data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300"
             >
               <div
                 style={{
@@ -1343,7 +1344,7 @@ so you avoid big surprises and costly damage.
         </div>
       </div>
 
-      <div className="containery">
+      <div className="containery" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
         <div className="home-11">
           <div className="home-11-left">
             <h2>Build your career join the ECHub family today.</h2>

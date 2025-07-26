@@ -430,10 +430,7 @@ const ArisanHome = () => {
   const role = localStorage.getItem("artisanRole");
   const type = localStorage.getItem("artisanType");
 
-
     const [user, setUser] = useState(null);
-
-
 
   const [showAll, setShowAll] = useState(false);
   const [jobs, setJobs] = useState([]);
